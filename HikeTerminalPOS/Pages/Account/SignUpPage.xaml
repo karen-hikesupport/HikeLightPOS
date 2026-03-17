@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.SignUpPage" xmlns:local="clr-namespace:HikePOS" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+		xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:SignUpViewModel"
+		x:DataType="vm:SignUpViewModel"
+		xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+		xmlns:behaviors="clr-namespace:HikePOS.Behaviors" 
+		xmlns:enums="clr-namespace:HikePOS.Enums"
+		BackgroundColor="White" Title="{Binding Title}">
+	<ContentPage.Content>
+		<userControls:FixedScrollView x:Name="MainScroll" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+			<Grid RowSpacing="0" ColumnSpacing="0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="20*" />
+					<RowDefinition Height="80*" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="{OnIdiom Phone='10*',Default='30*'}" />
+					<ColumnDefinition Width="{OnIdiom Phone='80*',Default='40*'}"/>
+					<ColumnDefinition Width="{OnIdiom Phone='10*',Default='30*'}" />
+				</Grid.ColumnDefinitions>
+				<StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+					<Image Source="{x:Static resources:AppImages.HikeLogo}" HeightRequest="150" Aspect="AspectFit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+				</StackLayout>
+				<StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{x:Static resources:AppColors.LoginBackgroundColor}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+					<Image x:Name="Backgroundimage" Source="{x:Static resources:AppImages.hike_signup_bottom_Backgrund}"  VerticalOptions="EndAndExpand" HorizontalOptions="EndAndExpand" />
+				</StackLayout>
+
+				
+				<Grid x:Name="MainGrid" RowSpacing="2" Grid.Row="1" Grid.Column="1" VerticalOptions="Center">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="60" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="60" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="60" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="40" />
+					</Grid.RowDefinitions>
+
+					<Border Grid.Row="0"  Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+						<Grid ColumnSpacing="0" RowSpacing="0">
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							<userControls:CustomEntry Text="{Binding StoreWebAddress}" Grid.Row="0" Grid.Column="0" Placeholder="{Localize:Translate StoreName_Placeholder}" x:Name="txtStoreWebAddress" Style="{x:Static resources:Styles.FormBigEntryStyle}" Focused="EntryKeyboardHandle_Focused">
+								<Entry.Behaviors>
+									<behaviors:EntryValidatorBehavior x:Name="StoreWebAddressValidator" HikeEntryType="{x:Static enums:EntryType.StoreName}" InValidMessage="{Localize:Translate StoreName_InValidMessage}" EmptyMessage="{Localize:Translate StoreName_EmptyMessage}" />
+								</Entry.Behaviors>
+							</userControls:CustomEntry>
+							<ContentView Grid.Row="0" Grid.Column="1" BackgroundColor="Transparent" Padding="20,0,20,0">
+								<Label Text="{Localize:Translate StoreName_LabelText}" VerticalTextAlignment="Center" TextColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="60" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" />
+							</ContentView>
+						</Grid>
+					</Border>
+					<Label Grid.Row="1" Text="{Binding Source={x:Reference StoreWebAddressValidator}, Path=ErrorMessage}" IsVisible="{Binding Source={x:Reference StoreWebAddressValidator}, Path=IsValid, Converter={Helpers:InverseBoolConverter}}" Style="{x:Static resources:Styles.FormErrorLabelStyle}" />
+					<Border Grid.Row="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+						<userControls:CustomEntry Text="{Binding Email}" Placeholder="{Localize:Translate Email_Placeholder}" x:Name="txtEmail" Style="{x:Static resources:Styles.FormBigEntryStyle}" Keyboard="Email" Focused="EntryKeyboardHandle_Focused">
+							<Entry.Behaviors>
+								<behaviors:EntryValidatorBehavior x:Name="EmailValidator" HikeEntryType="{x:Static enums:EntryType.Email}" InValidMessage="{Localize:Translate Email_InValidMessage}" EmptyMessage="{Localize:Translate Email_EmptyMessage}" />
+							</Entry.Behaviors>
+						</userControls:CustomEntry>
+					</Border>
+					<Label Grid.Row="3" Text="{Binding Source={x:Reference EmailValidator}, Path=ErrorMessage}" IsVisible="{Binding Source={x:Reference EmailValidator}, Path=IsValid, Converter={Helpers:InverseBoolConverter}}" Style="{x:Static resources:Styles.FormErrorLabelStyle}" />
+					<Border Grid.Row="4" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+						<userControls:CustomEntry x:Name="txtPassword" Text="{Binding Password}" Placeholder="{Localize:Translate Password_Placeholder}" IsPassword="True" Style="{x:Static resources:Styles.FormBigEntryStyle}" Focused="EntryKeyboardHandle_Focused">
+							<Entry.Behaviors>
+								<behaviors:EntryValidatorBehavior x:Name="PasswordValidator" HikeEntryType="{x:Static enums:EntryType.Password}" InValidMessage="{Localize:Translate Password_InValidMessage}" EmptyMessage="{Localize:Translate Password_EmptyMessage}" />
+							</Entry.Behaviors>
+						</userControls:CustomEntry>
+					</Border>
+					<!--<Label Grid.Row="5" Text="{Binding Source={x:Reference PasswordValidator}, Path=ErrorMessage}" IsVisible="{Binding Source={x:Reference PasswordValidator}, Path=IsValid, Converter={Helpers:InverseBoolConverter}}" Style="{x:Static resources:Styles.FormErrorLabelStyle}" />-->
+					<Button Grid.Row="6" Command="{Binding SubmitButtonCommand}" Text="{Localize:Translate Submit_ButtonText}" Margin="0,10,0,0" Style="{x:Static resources:Styles.LoginSignupButtonStyle}">
+						<Button.Triggers>
+							<MultiTrigger TargetType="Button">
+								<MultiTrigger.Conditions>
+									<BindingCondition Binding="{Binding Source={x:Reference txtStoreWebAddress}, Path=Text.Length, Converter={Helpers:MultiTriggerConverter}}" Value="true" />
+									<BindingCondition Binding="{Binding Source={x:Reference txtEmail}, Path=Text.Length, Converter={Helpers:MultiTriggerConverter}}" Value="true" />
+									<!--<BindingCondition Binding="{Binding Source={x:Reference txtPassword}, Path=Text.Length, Converter={Helpers:MultiTriggerConverter}}" Value="true" />-->
+								</MultiTrigger.Conditions>
+								<Setter Property="IsEnabled" Value="True" />
+							</MultiTrigger>
+						</Button.Triggers>
+					</Button>
+					<StackLayout Grid.Row="7" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Margin="0,15,0,0">
+						<Label Text="{Localize:Translate Already_LabelText}" Style="{x:Static resources:Styles.LoginSignupLinkStyle}" />
+						<Label Text="{Localize:Translate Login_ButtonText}" Style="{x:Static resources:Styles.LoginSignupLinkStyle}">
+							<Label.Effects>
+								<Helpers:UnderlineEffect />
+							</Label.Effects>
+						</Label>
+						<StackLayout.GestureRecognizers>
+							<TapGestureRecognizer Command="{Binding NavigateToBackCommand}" />
+						</StackLayout.GestureRecognizers>
+					</StackLayout>
+				</Grid>
+			</Grid>
+		</userControls:FixedScrollView>
+	</ContentPage.Content>
+</local:BaseContentPage>

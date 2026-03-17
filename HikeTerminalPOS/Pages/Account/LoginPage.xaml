@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.LoginPage" xmlns:local="clr-namespace:HikePOS" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+		xmlns:behaviors="clr-namespace:HikePOS.Behaviors"
+		xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:LoginViewModel"
+		x:DataType="vm:LoginViewModel"
+		xmlns:enums="clr-namespace:HikePOS.Enums" 
+		BackgroundColor="Transparent" Title="{Binding Title}"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS">
+	<ContentPage.Content>
+		<Grid x:Name="MainScroll" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+			<Image x:Name="LoginBG" Source="{OnIdiom Phone='hike_login_background_phone.png',Default='hike_login_background.png'}" 
+				Aspect="AspectFill" Margin="{OnPlatform iOS='0,-24,0,0', Default='0,0,0,0'}"/>
+			<Grid RowSpacing="0" ColumnSpacing="0">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition Height="550" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="{OnIdiom Phone='*',Default='710'}" />
+					<ColumnDefinition Width="{OnIdiom Phone='0',Default='40*'}"/>
+				</Grid.ColumnDefinitions>
+			    <Grid Grid.Row="1">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="{OnIdiom Phone='0',Default='10*'}"/>
+						<ColumnDefinition Width="{OnIdiom Phone='*',Default='90*'}"/>
+					</Grid.ColumnDefinitions>
+					<Grid Grid.Column="1">
+					<!-- <Image Margin="{OnIdiom Phone='20,0',Default='75,0'}"  Source="{x:Static resources:AppImages.Hike_login_transparent_bg}" Aspect="AspectFill"/> -->
+					<Border Margin="{OnIdiom Phone='20,0',Default='75,0'}" StrokeShape="RoundRectangle 20,20,20,20" BackgroundColor="White" Opacity="0.4">
+					</Border>
+					<Grid x:Name="MainGrid" Margin="{OnIdiom Phone='50,0',Default='150,50'}" RowSpacing="2" VerticalOptions="Center" >
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="60" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="60" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="60" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="60" />
+							<RowDefinition Height="Auto" />
+							<RowDefinition Height="{OnPlatform iOS='50', Default='80'}" />
+						</Grid.RowDefinitions>
+						<Image Source="{x:Static resources:AppImages.HikeLogo}" HeightRequest="200" Aspect="AspectFit" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+						<Border Grid.Row="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Stroke="{x:Static resources:AppColors.LoginEntryBorder}" HeightRequest="60" Padding="2,0,0,0">
+							<Grid ColumnSpacing="0" RowSpacing="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<userControls:BorderLessEntry Text="{Binding StoreWebAddress}" IsSpellCheckEnabled="False" Grid.Row="0" Grid.Column="0" Placeholder="{Localize:Translate StoreName_Placeholder}" x:Name="txtStoreWebAddress" Style="{x:Static resources:Styles.FormBigEntryStyle}" ReturnType="Next" ReturnCommand="{Binding ReturnCommand}"
+										ReturnCommandParameter="{x:Reference txtEmail}">
+									<Entry.Behaviors>
+										<behaviors:EntryValidatorBehavior x:Name="StoreWebAddressValidator" HikeEntryType="{x:Static enums:EntryType.StoreName}" InValidMessage="{Localize:Translate StoreName_InValidMessage}" EmptyMessage="{Localize:Translate StoreName_EmptyMessage}" />
+									</Entry.Behaviors>
+								</userControls:BorderLessEntry>
+								<ContentView Grid.Row="0" Grid.Column="1" BackgroundColor="Transparent" Padding="20,0,20,0">
+									<Label Text="{Localize:Translate StoreName_LabelText}" Style="{x:Static resources:Styles.FormBigEntrySubLableStyle}" />
+								</ContentView>
+							</Grid>
+						</Border>
+						<Label Grid.Row="2" Text="{Binding Source={x:Reference StoreWebAddressValidator}, Path=ErrorMessage}" IsVisible="{Binding Source={x:Reference StoreWebAddressValidator}, Path=IsValid, Converter={Helpers:InverseBoolConverter}}" Style="{x:Static resources:Styles.FormErrorLabelStyle}" />
+						<Border Grid.Row="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Stroke="{x:Static resources:AppColors.LoginEntryBorder}" HeightRequest="60" Padding="2,0,0,0">
+							<userControls:BorderLessEntry Text="{Binding Email}" Placeholder="{Localize:Translate Email_Placeholder}" x:Name="txtEmail" Style="{x:Static resources:Styles.FormBigEntryStyle}" ReturnType="Next" Keyboard="Email"
+										ReturnCommand="{Binding ReturnCommand}"
+										ReturnCommandParameter="{x:Reference txtPassword}">
+								<Entry.Behaviors>
+									<behaviors:EntryValidatorBehavior x:Name="EmailValidator" HikeEntryType="{x:Static enums:EntryType.StoreName}" InValidMessage="{Localize:Translate Email_InValidMessage}" EmptyMessage="{Localize:Translate Email_EmptyMessage}" />
+								</Entry.Behaviors>
+							</userControls:BorderLessEntry>
+						</Border>
+						<Label Grid.Row="4" Text="{Binding Source={x:Reference EmailValidator}, Path=ErrorMessage}" IsVisible="{Binding Source={x:Reference EmailValidator}, Path=IsValid, Converter={Helpers:InverseBoolConverter}}" Style="{x:Static resources:Styles.FormErrorLabelStyle}" />
+						<Border Grid.Row="5" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Stroke="{x:Static resources:AppColors.LoginEntryBorder}" HeightRequest="60" Padding="2,0,0,0">
+							<Grid ColumnSpacing="0" RowSpacing="0">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<userControls:BorderLessEntry x:Name="txtPassword" Grid.Row="0" Grid.Column="0" Text="{Binding Password}" Placeholder="{Localize:Translate Password_Placeholder}" IsPassword="True" Style="{x:Static resources:Styles.FormBigEntryStyle}" ReturnType="Go" ReturnCommand="{Binding LoginCommand}"/>
+								<ContentView Grid.Row="0" Grid.Column="1" BackgroundColor="Transparent" Padding="{OnPlatform Default='20,0,20,0', Android='0,0'}">
+									<Button Text="{Localize:Translate Forgot_ButtonText}" Style="{x:Static resources:Styles.FormBigEntrySubButtonStyle}" Command="{Binding NavigateToForgotPasswordCommand}" />
+								</ContentView>
+							</Grid>
+						</Border>
+						<Button Grid.Row="7" Command="{Binding LoginCommand}" Text="{Localize:Translate Login_ButtonText}" HeightRequest="60" Margin="0,10,0,0" Style="{x:Static resources:Styles.LoginSignupButtonStyle}">
+							<Button.Triggers>
+								<MultiTrigger TargetType="Button">
+									<MultiTrigger.Conditions>
+										<BindingCondition Binding="{Binding Source={x:Reference txtStoreWebAddress}, Path=Text.Length, Converter={Helpers:MultiTriggerConverter}}" Value="true" />
+										<BindingCondition Binding="{Binding Source={x:Reference txtEmail}, Path=Text.Length, Converter={Helpers:MultiTriggerConverter}}" Value="true" />
+									</MultiTrigger.Conditions>
+									<Setter Property="IsEnabled" Value="True" />
+								</MultiTrigger>
+							</Button.Triggers>
+						</Button>
+						<!--<StackLayout Grid.Row="7" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Orientation="Horizontal" Margin="0,15,0,0">
+							<Label Text="{Localize:Translate Signup_LabelText}" Style="{x:Static resources:Styles.LoginSignupLinkStyle}" />
+							<Label Text="{Localize:Translate Register_ButtonText}" Style="{x:Static resources:Styles.LoginSignupLinkStyle}">
+								<Label.Effects>
+									<Helpers:UnderlineEffect />
+								</Label.Effects>
+							</Label>
+							<StackLayout.GestureRecognizers>
+								<TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
+							</StackLayout.GestureRecognizers>
+						</StackLayout>-->
+					</Grid>
+					<!--<Grid.GestureRecognizers>
+						<TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+					</Grid.GestureRecognizers>-->
+					</Grid>
+				</Grid>
+			</Grid>
+		</Grid>
+	</ContentPage.Content>
+</local:BaseContentPage>

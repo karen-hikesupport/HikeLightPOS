@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.CashRegisterPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:TypeArguments="vm:CashRegisterViewModel"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    x:DataType="vm:CashRegisterViewModel"
+    NavigationPage.HasNavigationBar="False"
+    Title="{Localize:Translate CashRegister_TitileText}" >
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                <RowDefinition Height="2" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0"  ColumnDefinitions="70,*,70">
+                <ImageButton Source="ic_hamburger" Grid.Column="0" Grid.Row="0" MinimumHeightRequest="32" MinimumWidthRequest="32" WidthRequest="32" HeightRequest="32" Command="{Binding SliderMenuHandleClickedCommand}" BackgroundColor="Transparent" HorizontalOptions="Start" Margin="20,0,0,0" />
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Grid.Column="1">
+                    <Label Text="{Binding Registerclosure.RegisterName}" 
+                        Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center" />
+                    <Label FontSize="14" Text="{Binding Registerclosure.StartDateTimeString}" Margin="0,2,0,0" 
+                        FontFamily="{x:Static resources:Fonts.HikeLightFont}" IsVisible="{Binding IsLastOpenRegister}"
+                        TextColor="{x:Static resources:AppColors.PrimaryTextColor}" 
+                        VerticalOptions="Center"  />
+                </HorizontalStackLayout>
+            </Grid>
+            <BoxView Grid.Row="1" HeightRequest="2" Color="{x:Static resources:AppColors.HeaderSepratorColor}" />
+            <local:CloseRegisterReceipt x:Name="closeRegisterReceipt" Scale="0" Grid.Row="2" HorizontalOptions="Start" IsVisible="{Binding IsLastOpenRegister}"/>
+            <Grid Grid.Row="2" ColumnSpacing="0" IsVisible="{Binding IsLastOpenRegister}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60*" />
+                    <ColumnDefinition Width="0.5" />
+                    <ColumnDefinition Width="40*" />
+                </Grid.ColumnDefinitions>
+                <BoxView Grid.Row="1" Grid.Column="1"
+                     WidthRequest="0.5" Color="{x:Static resources:AppColors.LightBordersColor}" />
+                <Grid BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Grid.ColumnSpan="3"
+                    Grid.Row="0" Column="0" HeightRequest="60" ColumnSpacing="12" Padding="0,0,10,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Margin="20,0" Text="{Localize:Translate Payment_Tally}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HeightRequest="50"/>
+                    <Button x:Name="PrintButton" Grid.Row="1" Grid.Column="1" IsVisible="{Binding AllowPrint}" MinimumWidthRequest ="100"
+                        Text="{Localize:Translate PrintText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" 
+                        VerticalOptions="Center" Padding="8,5" Command="{Binding PrintCommand}" IsEnabled="{Binding EnablePrint}">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsOpenRegister}" Value="False">
+                                <Setter Property="Text" Value="{Localize:Translate PrinPreviousText}" />
+                                <!-- <Setter Property="WidthRequest" Value="140" /> -->
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <!--Start #92768 Pratik-->
+                    <Button Grid.Row="1" Grid.Column="2" IsVisible="{Binding IsOpenRegister,Converter={Helpers:InverseBoolConverter}}" MinimumWidthRequest ="100"
+                        Text="Email Summary" Style="{x:Static resources:Styles.WhiteButtonStyle}" 
+                        VerticalOptions="Center" Padding="8,5" Command="{Binding ShowSendEmailCommand}">
+                    </Button>
+                    <!--End #92768 Pratik-->
+                    <Button x:Name="AddRemoveCashButton" Grid.Row="2" Grid.Column="3" IsVisible="{Binding AllowAddRemoveCash}" 
+                        VerticalOptions="Center" Padding="8,5" 
+                         Text="{Localize:Translate Cash_In_Out}" Style="{x:Static resources:Styles.WhiteButtonStyle}" 
+                         Command ="{Binding AddRemoveCashCommand}"/>
+                         <!--Start #91261 iOS:FR counted amount upon closing by Pratik-->
+                    <Button x:Name="OpenCloseRegisterButton" Grid.Row="3" Grid.Column="4" IsVisible="{Binding AllowOpenCloseRegister}" 
+                        VerticalOptions="Center" Padding="8,5" Text="{Localize:Translate CloseRegisterText}" 
+                        Style="{x:Static resources:Styles.WhiteButtonStyle}"
+                        Command="{Binding CloseRegisterCommand}" IsEnabled="{Binding EnableOpenCloseRegister}"
+                        TextColor="{Binding EnableOpenCloseRegister, Converter={Helpers:EnableTextColorConverter}}">
+                        <!--End #91261 by Pratik-->
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsOpenRegister}" Value="False">
+                                <Setter Property="Text" Value="Open Register" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding NotAllowOpenRegister}" Value="True">
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Setter Property="TextColor" Value="{x:Static resources:AppColors.PrimaryLightTextColor}" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button x:Name="ResetButton" Grid.Row="4" Grid.Column="5"
+                        Text="{Localize:Translate ChangeRegisterOutletText}" 
+                        Style="{x:Static resources:Styles.WhiteButtonStyle}" 
+                        VerticalOptions="Center" Padding="8,5" Command="{Binding ChangeOutletRegisterCommand}" />
+                </Grid>
+                <Grid RowDefinitions="46,*" Grid.Row="1" Grid.Column="0" RowSpacing="10" Margin="20,0">
+                    <!--<Label Grid.Row="0" Text="PAYMENT TALLY" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HeightRequest="50"/>-->
+                    <Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0" Margin="0,5,0,5" VerticalOptions="Start">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.5" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="0.5" />
+                        </Grid.RowDefinitions>
+                        <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" VerticalOptions="Start" />
+                        <Label Grid.Row="1" Grid.Column="0" Text="{Localize:Translate PaymentTypeText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                        <!--Start #91261 iOS:FR counted amount upon closing by Pratik-->
+                        <Label Grid.Row="1" Grid.Column="1" Text="{Localize:Translate ExpectedText}" IsVisible="{Binding ShowExpectedColumn}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  />
+                        <!--End #91261 by Pratik-->
+                        <Label Grid.Row="1" Grid.Column="2" Text="{Localize:Translate CountedText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                        <Label Grid.Row="1" Grid.Column="3" Text="{Localize:Translate DifferenceText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  />
+                        <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" VerticalOptions="Start" />
+                    </Grid>
+                    <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Never">
+                    <VerticalStackLayout >
+                    <VerticalStackLayout x:Name="PaymentList"
+                        BindableLayout.ItemsSource="{Binding Registerclosure.RegisterclosuresTallys}"
+                        Margin="0,0,0,5"
+                        BackgroundColor="Transparent">
+                       <BindableLayout.ItemTemplate>
+                             <DataTemplate x:DataType="model:RegisterclosuresTallyDto">
+                                <Grid RowSpacing="0"  ColumnSpacing="0" HeightRequest="60">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="180" />
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="55" />
+                                        <RowDefinition Height="0.5" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding PaymentOptionName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" 
+                                        TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" 
+                                        VerticalTextAlignment="Center" />
+                                    <!--Start #91261 iOS:FR counted amount upon closing by Pratik-->
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding ActualTotal, StringFormat='{}{0:c}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                         TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" 
+                                         IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:CashRegisterViewModel}}, Path=ShowExpectedColumn, x:DataType=vm:CashRegisterViewModel}" />
+                                    <!--End #91261 by Pratik-->
+                                    <Border Grid.Row="0" Grid.Column="2" Margin="20,10,0,10" VerticalOptions="Center" StrokeShape="RoundRectangle 5,5,5,5" BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" Padding="0">
+                                        <Grid Padding="0" RowSpacing="0" ColumnSpacing="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Column="0" IsVisible="false" VerticalTextAlignment="Center" Text="{Localize:Translate CalculatorIconUnicode}" Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Start">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionName}" Value="Cash">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CashRegisterViewModel}}, Path=OpenCashCalculatorCommand, x:DataType=vm:CashRegisterViewModel}" CommandParameter="{Binding .}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <!--Start #91261 iOS:FR counted amount upon closing by Pratik-->
+                                            <userControls:CustomEntry   Grid.Column="0" ItemId="{Binding PaymentOptionId}" Grid.ColumnSpan="2" HeightRequest="30" 
+                                                IsEnabled="{Binding Source={RelativeSource AncestorType={x:Type vm:CashRegisterViewModel}}, Path=IsOpenRegister, x:DataType=vm:CashRegisterViewModel}" PlaceholderColor="{x:Static resources:AppColors.PlaceholderColor}"
+                                                    Keyboard="Numeric" FontSize="14" Text="{Binding StrRegisteredTotal}" OnlyAllowDecimalValue="true" Margin="0,0,7,0" 
+                                                    HorizontalTextAlignment="End" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}"
+                                                    VerticalOptions="FillAndExpand" Placeholder="Enter Amount" Unfocused="CustomEntry_Unfocused" TextChanged="CustomEntry_TextChanged">
+                                                    <!--End #91261 by Pratik-->
+                                                <!-- <userControls:CustomEntry.Behaviors>
+                                                    <toolkit:EventToCommandBehavior EventName="Unfocused" Command="{Binding Source={x:Reference PaymentList}, Path=BindingContext.UnfocusedCommand}" CommandParameter="{Binding PaymentOptionId}" />
+                                                    <toolkit:EventToCommandBehavior
+                                                        EventName="TextChanged"
+                                                        Command="{Binding Source={x:Reference PaymentList}, Path=BindingContext.RegisteredTotalCommand}" CommandParameter="{Binding PaymentOptionId}" />
+                                                </userControls:CustomEntry.Behaviors> -->
+                                                <userControls:CustomEntry.Triggers>
+                                                    <DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding PaymentOptionName}" Value="Credit balance">
+                                                        <Setter Property="IsVisible" Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding PaymentOptionName}" Value="Gift card">
+                                                        <Setter Property="IsVisible" Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding PaymentOptionName}" Value="Cash">
+                                                        <Setter Property="Grid.ColumnSpan" Value="1" />
+                                                        <Setter Property="Grid.Column" Value="1" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding PaymentOptionId}" Value="3">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding PaymentOptionId}" Value="5">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </userControls:CustomEntry.Triggers>
+                                            </userControls:CustomEntry>
+
+                                            <Label Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="40" IsVisible="false" FontSize="14" Text="{Binding RegisteredTotal}" Margin="0,0,7,0" HorizontalTextAlignment="End" VerticalTextAlignment="Center" VerticalOptions="Center" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" >
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionName}" Value="Credit balance">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionName}" Value="Gift card">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Grid>
+                                    </Border>
+                                    <Label Grid.Row="0" Grid.Column="3" Text="{Binding DifferenceTotal, StringFormat='{}{0:c}'}" FontSize="14" 
+                                        FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" 
+                                        HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="White" HeightRequest="0.5" VerticalOptions="Start" />
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                     <StackLayout Spacing="0" Padding="0,20,0,0">
+                                <Label Text="{Localize:Translate Notes}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" 
+                                    TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}"
+                                     HorizontalOptions="Start" VerticalOptions="End"  Margin="0,5"/>
+                                <Border Grid.Row="1" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" Margin="0,5" VerticalOptions="Start" HeightRequest="110">
+                                    <userControls:CustomEditor x:Name="txtNote" Text="{Binding Registerclosure.Notes}" Style="{x:Static resources:Styles.FormEditorStyle}" HeightRequest="110"/>
+                                </Border>
+                   </StackLayout>
+                   </VerticalStackLayout>
+                   </ScrollView>
+                </Grid>
+                <ScrollView  Grid.Row="1"  Grid.Column="2" Padding="20,0" Margin="0,0,0,24" VerticalScrollBarVisibility = "Never">
+                    <VerticalStackLayout Spacing="12">
+                        <!-- Start #94427 Disable cash option on a single register By Pratik -->
+                        <userControls:ExpandCollapseView IsVisible="{Binding IsActiveCashPayment}"
+                                    Title="{Localize:Translate Cash_In_Out}" 
+                                    Command="{Binding CashInOutCommand}"
+                                    IsActive="{Binding IsCashInOut}">
+                        <!-- End #94427 By Pratik -->
+                            <userControls:ExpandCollapseView.ContainerContent>
+                                 <!--Ticket start: #91266 iOS:FR register report by pratik-->
+                                <Grid RowDefinitions="51,*,101" RowSpacing="0">
+                                    <Grid RowSpacing="0" ColumnSpacing="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="0.5" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0"  FlowDirection="LeftToRight"  
+                                            Text="Transaction" FontSize="16" 
+                                            FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" 
+                                            TextColor="{x:Static resources:AppColors.PrimaryTextColor}" 
+                                            HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Grid.Row="0" Grid.Column="1"  Text="User" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                        <Label Grid.Row="0" Grid.Column="2"   Text="{Localize:Translate AmountText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+                                    </Grid>
+                                    <VerticalStackLayout Grid.Row="1" x:Name="InOutCashList"
+                                                            BindableLayout.ItemsSource="{Binding Registerclosure.RegisterCashInOuts}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="model:RegisterCashInOutDto">
+                                                <Grid RowSpacing="0" ColumnSpacing="0" HeightRequest="51">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="50" />
+                                                        <RowDefinition Height="0.5" />
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding RegisterCashTypeName}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding UserBy}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  />
+                                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding Amount, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
+                                    <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="0" HeightRequest="101">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="50" />
+                                                <RowDefinition Height="0.5" />
+                                                <RowDefinition Height="50" />
+                                                <RowDefinition Height="0.5" />
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0"  Text="Total cash in:" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" />
+                                            <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Registerclosure.RegisterTotalCashIn, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+
+                                            <Label Grid.Row="2" Grid.Column="0"  Text="Total cash out:" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" />
+                                            <Label Grid.Row="2" Grid.Column="1"  Text="{Binding Registerclosure.RegisterTotalCashOuts, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                            <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+                                        </Grid>
+                                </Grid>
+                                <!--Ticket end: #91266 by pratik-->
+                            </userControls:ExpandCollapseView.ContainerContent>
+                        </userControls:ExpandCollapseView>
+
+                        <userControls:ExpandCollapseView
+                                    Title="{Localize:Translate Payment_Summary}" 
+                                    Command="{Binding PaymentSummaryCommand}"
+                                    IsActive="{Binding IsPaymentSummary}">
+                            <userControls:ExpandCollapseView.ContainerContent>
+                                <Grid  RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate PaymentsReceivedText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Registerclosure.TotalPayments, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="2" Grid.Column="0" Text="{Localize:Translate RefundsText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Registerclosure.TotalRefunds, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="4" Grid.Column="0" Text="{Localize:Translate Net_Receipts}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="4" Grid.Column="1" Text="{Binding Registerclosure.NetReceipts, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"  />
+                                </Grid>
+                            </userControls:ExpandCollapseView.ContainerContent>
+                        </userControls:ExpandCollapseView>
+
+                        <userControls:ExpandCollapseView
+                                    Title="{Localize:Translate Sales_Summary}" 
+                                    Command="{Binding SalesSummaryCommand}"
+                                    IsActive="{Binding IsSalesSummary}">
+                            <userControls:ExpandCollapseView.ContainerContent>
+                                <Grid  RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                        <RowDefinition Height="50" />
+                                        <RowDefinition Height="0.5" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate SalesText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Registerclosure.TotalSales, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="2" Grid.Column="0" Text="{Localize:Translate On_Account_Sales}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Registerclosure.TotalOnAccountSales, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="4" Grid.Column="0" Text="{Localize:Translate Item_Discounts}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="4" Grid.Column="1" Text="{Binding Registerclosure.ItemDiscounts, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="6" Grid.Column="0" Text="{Localize:Translate Order_Discounts}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="6" Grid.Column="1" Text="{Binding Registerclosure.TotalDiscounts, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="8" Grid.Column="0" Text="{Localize:Translate Surcharge}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="8" Grid.Column="1" Text="{Binding Registerclosure.TotalTip, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  />
+                                    <BoxView Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start" />
+
+                                    <Label Grid.Row="10" Grid.Column="0" Text="{Localize:Translate ShippingLabel}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="10" Grid.Column="1" Text="{Binding Registerclosure.TotalShipping, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"  />
+
+                                    <Label Grid.Row="12" Grid.Column="0" Text="{Localize:Translate AverageSaleValueText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="12" Grid.Column="1" Text="{Binding Registerclosure.registerClosureTransactionDetailsDto.AvgSaleAmount, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+
+                                    <Label Grid.Row="14" Grid.Column="0" Text="{Localize:Translate NumberOfTransactionsText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                    <Label Grid.Row="14" Grid.Column="1" Text="{Binding Registerclosure.registerClosureTransactionDetailsDto.TotalTransactions}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  />
+                                    <BoxView Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"  />
+
+                                    <Label Grid.Row="16" Grid.Column="0" Text="{Localize:Translate NewCustomersText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  />
+                                    <Label Grid.Row="16" Grid.Column="1" Text="{Binding Registerclosure.registerClosureTransactionDetailsDto.TotalNewCustomers}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                    <BoxView Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"  />
+                                </Grid>
+                            </userControls:ExpandCollapseView.ContainerContent>
+                        </userControls:ExpandCollapseView>
+
+                        <userControls:ExpandCollapseView
+                                    Title="{Localize:Translate Tax_Summary}" 
+                                    Command="{Binding TaxSummaryCommand}"
+                                    IsActive="{Binding IsTaxSummary}">
+                            <userControls:ExpandCollapseView.ContainerContent>
+                                <Grid  RowDefinitions="51,*,50">
+                                    <Grid RowSpacing="0" ColumnSpacing="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="0.5" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0"  FlowDirection="LeftToRight"  Text="{Localize:Translate TaxText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" 
+                                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                                        <Label Grid.Row="0" Grid.Column="1"  Text="{Binding SalesColumn}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        <Label Grid.Row="0" Grid.Column="2"   Text="{Binding TaxColumn}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+                                    </Grid>
+                                    <StackLayout x:Name="TaxSummaryList" Grid.Row="1" BindableLayout.ItemsSource="{Binding Registerclosure.TaxList}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="model:TaxList">
+                                                <Grid RowSpacing="0" ColumnSpacing="0" HeightRequest="51">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="50" />
+                                                        <RowDefinition Height="0.5" />
+                                                    </Grid.RowDefinitions>
+                                                    <Label Grid.Row="0" Grid.Column="0"  FlowDirection="LeftToRight" Text="{Binding TaxName}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                                    <Label Grid.Row="0" Grid.Column="1"  Text="{Binding TaxSaleAmount, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                                    <Label Grid.Row="0" Grid.Column="2"  Text="{Binding TaxAmount, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                    <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="0.5" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="1"  Text="{Localize:Translate TotalText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        <Label Grid.Row="0" Grid.Column="2"  Text="{Binding Registerclosure.TotalTax, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+                                    </Grid>
+                                </Grid>
+                            </userControls:ExpandCollapseView.ContainerContent>
+                        </userControls:ExpandCollapseView>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </Grid>
+             <Label Grid.Row="2" Text="{Localize:Translate CashRegister_EmptyMsg}" IsVisible="{Binding IsLastOpenRegister,Converter={Helpers:InverseBoolConverter}}" Margin="50,0"
+                   TextColor="{StaticResource Black}" FontSize="18" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontFamily="OpenSansRegular"
+                   BackgroundColor="White"/>
+        </Grid>
+    </ContentPage.Content>
+</local:BaseContentPage>

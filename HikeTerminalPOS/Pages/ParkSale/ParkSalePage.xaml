@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.ParkSalePage" xmlns:local="clr-namespace:HikePOS" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:ParkSaleViewModel"
+        x:DataType="vm:ParkSaleViewModel"
+        xmlns:model="clr-namespace:HikePOS.Models"
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit" Padding="0,0,0,20"
+        Title="{Localize:Translate SalesHistoryText}">
+    <ContentPage.Resources>
+        <Style TargetType="Grid">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="White" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <Grid RowSpacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid ColumnSpacing="20" RowSpacing="5" BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                        <RowDefinition Height="2" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    <ImageButton Source="ic_hamburger" Grid.Column="0" Grid.Row="0"  Margin="20,0,0,0" HorizontalOptions="Start" MinimumHeightRequest="32" MinimumWidthRequest="32" WidthRequest="32" HeightRequest="32" Command="{Binding SliderMenuHandleClickedCommand}" BackgroundColor="Transparent"/>
+                    <Label Text="{Localize:Translate SalesHistoryText}" Grid.Column="1" Grid.Row="0" Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
+                    <StackLayout Grid.Column="2" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Start" IsVisible="{Binding CanRefundOnDifferentOutlet}">
+                        <Button x:Name="FilterOutletButton" Text="{Binding SelectedOutletForFilter}" Command="{Binding FilterOutletHandleClickeCommand}" Style="{x:Static resources:Styles.FilterByStatusButtonStyle}" />
+                        <Label Text="{Localize:Translate FilterIconUnicode}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeAwesomeFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalOptions="Center" VerticalTextAlignment="Center" Margin="0,3,0,0"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="3" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="Center">
+                        <Button x:Name="FilterStatusButton" Text="{Localize:Translate FilterByStatusText}" Command="{Binding FilterOptionHandleClickedCommand}" Style="{x:Static resources:Styles.FilterByStatusButtonStyle}"/>
+                        <Label Text="{Localize:Translate FilterIconUnicode}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeAwesomeFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalOptions="Start" HorizontalTextAlignment="Start" VerticalOptions="Center" VerticalTextAlignment="Center" Margin="0,3,0,0"/>
+                    </StackLayout>
+
+                    <StackLayout Grid.Column="4" Grid.Row="0" Orientation="Horizontal" HorizontalOptions="End">
+                        <Button x:Name="FilterDateRangeButton" Text="{Binding SelectedDateRangeText}" Command="{Binding FilterDateRangeHandleClickedCommand}" Style="{x:Static resources:Styles.FilterByStatusButtonStyle}" HorizontalOptions="End"/>
+                        <Label Text="{Localize:Translate FilterIconUnicode}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeAwesomeFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalOptions="End" HorizontalTextAlignment="Start" VerticalOptions="Center" VerticalTextAlignment="Center" Margin="0,3,0,0"/>
+                    </StackLayout>
+                     <!--Ticket start:#30840 Hide Discarded Sales/Void in Sales History.by rupesh-->
+                    <ImageButton Source="ic_search" Grid.Column="5" Grid.Row="0"  WidthRequest="28" HeightRequest="28" Command="{Binding SearchSaleHandleClickedCommand}" BackgroundColor="Transparent" HorizontalOptions="End" Padding="5"/>
+
+                     <ImageButton Source="icon_setting" Grid.Column="6" Grid.Row="0"  WidthRequest="28" HeightRequest="28" Command="{Binding IncludeDiscardedSaleViewHandleClickedCommand}" BackgroundColor="Transparent" HorizontalOptions="Center" Padding="6" />
+                     <!--Ticket end:#30840 .by rupesh-->
+
+                    <Grid x:Name="SearchSaleView" IsVisible="{Binding IsOpenSearchPopUp}" RowSpacing="0" ColumnSpacing="0" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7"  BackgroundColor="White" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="ic_search" Grid.Column="0" Grid.Row="0" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center" Margin="10,0,0,0"/>
+                        <userControls:BorderLessEntry x:Name="SearchSaleEntry"  Grid.Row="0" Grid.Column="1" Placeholder="Search by customer or order number"
+                             TextColor="Black" BackgroundColor="White" PlaceholderColor="Gray" TextChanged="SearchSaleEntry_TextChanged">
+                         <!-- <userControls:BorderLessEntry.Behaviors>
+                                             <toolkit:EventToCommandBehavior
+                                                  EventName="TextChanged"
+                                                  Command="{Binding SearchHandleTextChangedCommand}"
+                                                 CommandParameter="{x:Reference SearchSaleEntry}"
+                                             />
+                                           </userControls:BorderLessEntry.Behaviors> -->
+                         </userControls:BorderLessEntry>
+                        <ImageButton Source="close" Grid.Column="2" Grid.Row="0" WidthRequest="{OnPlatform Default='30', Android='22'}" Padding="15,7,0,7"  HeightRequest="{OnPlatform Default='30', Android='22'}" Command="{Binding CloseSearchSaleHandleClickedCommand}" BackgroundColor="Transparent" HorizontalOptions="End" Margin="0,0,20,0"/>
+                        <Grid.GestureRecognizers>
+                           <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                       <!--Ticket start:#30840 Hide Discarded Sales/Void in Sales History.by rupesh-->
+                     <!--//START ticket #76208 IOS:FR:Terms of payments by Pratik-->
+                      <Grid x:Name="IncludeDiscardedSaleView" IsVisible="{Binding IsOpenIncludeDiscardPopUp}"
+                            RowSpacing="0" ColumnSpacing="0" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="7"  BackgroundColor="White">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="70" />
+                        </Grid.ColumnDefinitions>
+                         <StackLayout Orientation="Horizontal" Grid.Column="0" Spacing="20" HorizontalOptions="End" Margin="0,0,20,0">
+                            <StackLayout Orientation="Horizontal" Spacing="0">
+                                  <ImageButton Source="icon_uncheck" Padding="2" WidthRequest="30" HeightRequest="30"
+                                    HorizontalOptions="Center" Command="{Binding IncludeDiscardSaledClickedCommand}">
+                                     <ImageButton.Triggers>
+                                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsIncludeDiscard}" Value="True">
+                                            <Setter Property="Source" Value="icon_checked" />
+                                         </DataTrigger>
+                                     </ImageButton.Triggers>
+                                  </ImageButton>
+                                  <Label Text="{Localize:Translate IncludeVoidedDiscardedText}" HorizontalOptions="Start" VerticalOptions="Center"/>
+                            </StackLayout>
+                             <StackLayout Orientation="Horizontal" Spacing="0" IsVisible="{Binding IsOverdueDisplay}">
+                                 <ImageButton Source="icon_uncheck" Padding="2" WidthRequest="30" HeightRequest="30"
+                                    HorizontalOptions="Center" Command="{Binding OverdueClickedCommand}">
+                                     <ImageButton.Triggers>
+                                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsOverdue}" Value="True">
+                                            <Setter Property="Source" Value="icon_checked" />
+                                         </DataTrigger>
+                                     </ImageButton.Triggers>
+                                  </ImageButton>
+                                  <Label Text="Overdue" HorizontalOptions="Start" VerticalOptions="Center"/>
+                            </StackLayout>
+                        </StackLayout>
+                        
+                        <ImageButton Source="close" Grid.Column="1" Grid.Row="0" WidthRequest="{OnPlatform Default='30', Android='22'}" Padding="15,7,0,7"  HeightRequest="{OnPlatform Default='30', Android='22'}" Command="{Binding CloseIncludeDiscardedSaleViewHandleClickedCommand}" BackgroundColor="Transparent" HorizontalOptions="End" Margin="0,0,20,0"/>
+                       <Grid.GestureRecognizers>
+                           <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                       </Grid.GestureRecognizers>
+                    </Grid>
+                    <!--//End ticket #76208 by Pratik-->
+                   <!--Ticket end:#30840 .by rupesh-->
+
+                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="7" Color="{x:Static resources:AppColors.HeaderSepratorColor}" />
+                </Grid>
+                <Grid Grid.Row="1" ColumnSpacing="10" RowSpacing="0" Margin="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="15" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="15" />
+                        <ColumnDefinition Width="120" />
+                        <ColumnDefinition Width="135" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate SalesText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="20,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="1" Text="{Localize:Translate DateText}" HorizontalTextAlignment="Center" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="2" Text="{Localize:Translate CustomerText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="3" Text="{Localize:Translate SourceText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Text="{Localize:Translate FulfillmentStatusText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="2" Text="{Localize:Translate PaymentStatusText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,15"/>
+                    <Label Grid.Row="0" Grid.Column="8" Text="{Localize:Translate SaleTotalText}" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,20,15"/>
+
+                </Grid>
+                <Grid Grid.Row="2"  BackgroundColor="White" HorizontalOptions="FillAndExpand">
+                    <RefreshView Command="{Binding RefreshCommand}"
+                                RefreshColor="Black" IsRefreshing="{Binding IsRefresh}">
+                        <CollectionView x:Name="ParkedListView" SelectionMode="None"
+                                        RemainingItemsThresholdReached="ParkedListView_RemainingItemsThresholdReached"
+                                        RemainingItemsThreshold="1" 
+                                        ItemsSource="{Binding ParkSales}" BackgroundColor="White"
+                                        ItemsUpdatingScrollMode="KeepScrollOffset" >
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:InvoiceDto">
+                                    <Grid ColumnSpacing="10" RowSpacing="0" HorizontalOptions="FillAndExpand">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="1" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="100" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="80" />
+                                            <ColumnDefinition Width="15" />
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="15" />
+                                            <ColumnDefinition Width="120" />
+                                            <ColumnDefinition Width="135" />
+                                        </Grid.ColumnDefinitions>
+                                            <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=ParkedListViewSelectionCommand, x:DataType=vm:ParkSaleViewModel}" CommandParameter="{Binding .}" />
+                                        </Grid.GestureRecognizers>
+                                        <Label Grid.Column="0" Text="{Binding Number}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="20,15,0,15"/>
+                                        <Label Grid.Column="1" Text="{Binding TransactionStoreDate, StringFormat='{0:dd MMM}'}" HorizontalTextAlignment="Center" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15"/>
+                                        <!--Ticket start:#45648 iPad: Make the Customer field editable for the Walk In customers from the Sales History paged.by rupesh-->
+                                        <Label Grid.Column="2"
+                                                IsVisible="{Binding CustomerId,Converter={Helpers:NullOrZeroValueToBoolConverter}}" Text="{Binding CustomerName}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=IsEditWalkInCustomerName, x:DataType=vm:ParkSaleViewModel,Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSEditWalkInCustomerName}" Value="False" >
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="2" IsVisible="False" Text="{Binding CustomerName}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" HorizontalOptions="StartAndExpand" TextColor="Blue">
+                                                <Label.Triggers>
+                                                <MultiTrigger TargetType="Label">
+                                                <MultiTrigger.Conditions>
+                                                        <BindingCondition Binding="{Binding CustomerId,Converter={Helpers:NullOrZeroValueToBoolConverter}}"  Value="False"/>
+                                                        <BindingCondition Binding="{Binding IsToUpdateCustomerName}" Value="False" />
+                                                        <BindingCondition Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=IsEditWalkInCustomerName, x:DataType=vm:ParkSaleViewModel, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSEditWalkInCustomerName}" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                    <Setter Property="IsVisible" Value="True"/>
+                                                </MultiTrigger>
+                                                </Label.Triggers>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=OpenUpdateCustomerNameViewCommand, x:DataType=vm:ParkSaleViewModel}" CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <StackLayout IsVisible="{Binding IsToUpdateCustomerName}" Margin="0,5,0,5" Grid.Column="2" Spacing="6" Orientation="Horizontal"  VerticalOptions="Center">
+                                            <userControls:CustomEntry x:Name="CustomerName" Margin="-12,0,0,0" IsEnabled="{Binding IsToUpdateCustomerName}" Text="{Binding UpdatedCustomerName}"
+                                                Style="{x:Static resources:Styles.FormEntryStyle}" Unfocused="CustomerName_Unfocused" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"  WidthRequest="100">
+                                            <!-- <userControls:CustomEntry.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                    EventName="Unfocused"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=UpdateCustomerUnfocusedCommand, x:DataType=vm:ParkSaleViewModel}"
+                                                    CommandParameter="{x:Reference CustomerName}"
+                                                />
+                                            </userControls:CustomEntry.Behaviors> -->
+                                            </userControls:CustomEntry>
+                                            <ImageButton  Source="tick_mark" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=UpdateCustomerNameCommand, x:DataType=vm:ParkSaleViewModel}" CommandParameter="{Binding .}" HeightRequest="24" WidthRequest="30" MinimumHeightRequest="15" MinimumWidthRequest="20"/>
+                                            <ImageButton  Source="cross_mark" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=CloseUpdateCustomerNameViewCommand, x:DataType=vm:ParkSaleViewModel}" CommandParameter="{Binding .}" BorderWidth="1" BorderColor="{x:Static resources:AppColors.BordersColor}"  HeightRequest="24" WidthRequest="24" MinimumHeightRequest="15" MinimumWidthRequest="20"/>
+                                        </StackLayout>
+                                        <!--Ticket end:#45648.by rupesh-->
+                                        <StackLayout Grid.Column="3" VerticalOptions="Center" Spacing="1" Margin="0,1">
+                                            <Label  Text="{Binding InvoiceFrom, Converter={Helpers:EnumToStringConverter}}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                                            <Label  HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" FontSize="Small" IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=IsOutlateNameDisplay, x:DataType=vm:ParkSaleViewModel}" Text="{Binding OutletName}"/>
+                                        </StackLayout>
+                                        <Label x:Name="StatusIcon" Grid.Column="4" Text="" Style="{x:Static resources:Styles.TableHeaderIconLabelStyle}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="0,15,0,15" TextColor="{Binding StatusColor}" />
+
+                                        <StackLayout Orientation="Horizontal" Grid.Column="5" Spacing="0">
+                                            <Label x:Name="Status" Text="{Binding StatusText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15"/>
+                                            <Label IsVisible="false" Text=" | " HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="6">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label IsVisible="false" Text="{Localize:Translate CreatePOText}" TextColor="{x:Static resources:AppColors.ProductBlueColor}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="6">
+                                                        <Setter Property="IsVisible" Value="True" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding CreatedPoOrNot}" Value="True">
+                                                        <Setter Property="Text" Value="{Localize:Translate POCreatedText}" />
+                                                    </DataTrigger>
+
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="9">
+                                                        <Setter Property="Text" Value="Voided" />
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="10">
+                                                        <Setter Property="Text" Value="Voided" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=GetPOCommand, x:DataType=vm:ParkSaleViewModel}" CommandParameter="{Binding .}" />
+                                                </Label.GestureRecognizers>
+                                            </Label>
+
+                                        </StackLayout>
+
+
+                                        <Label x:Name="PaymentStatusIcon" Grid.Column="6" Text="" Style="{x:Static resources:Styles.TableHeaderIconLabelStyle}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="0,15,0,15" Rotation="180" TextColor="{Binding StatusColor}">
+                                            <Label.Triggers>
+                                                <DataTrigger TargetType="Label" Binding="{Binding IsPartialPaid}" Value="True">
+                                                    <Setter Property="Text" Value="" />
+                                                </DataTrigger>
+                                            </Label.Triggers>
+                                        </Label>
+                                        <Label Grid.Column="7"  Text="{Binding OutstandingText}" Style="{x:Static resources:Styles.TableItemLabelStyle}" HorizontalTextAlignment="Start" Margin="0,15,0,15" />
+                                        <StackLayout Grid.Column="8" Orientation="Horizontal" HorizontalOptions="End" Spacing="10" Margin="0,0,20,0">
+                                            <Label Text="{Binding NetAmount, StringFormat='{}{0:c}' }" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableItemLabelStyle}" Margin="0,15,0,15" >
+                                                <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:ParkSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:ParkSaleViewModel}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding NetAmount, StringFormat='{}{0:c2}'}" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <!--#Ticket #7760 End:By Nikhil.-->
+
+
+                                            <Label x:Name="SyncStatus" Grid.Column="9" IsVisible="{Binding HasError}" Text="" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableHeaderIconLabelStyle}" TextColor="{x:Static resources:AppColors.ProductRedColor}" Margin="0,15,0,15">
+                                                <!--<Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding isSync}" Value="False">
+                                                            <Setter Property="Text" Value="" />
+                                                            <Setter Property="TextColor" Value="{x:Static resources:AppColors.ProductOrangeColor}" />
+                                                            </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding isSync}" Value="True">
+                                                            <Setter Property="Text" Value="" />
+                                                            <Setter Property="TextColor" Value="{x:Static resources:AppColors.ProductBlueColor}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding HasError}" Value="True">
+                                                            <Setter Property="Text" Value="" />
+                                                            <Setter Property="TextColor" Value="{x:Static resources:AppColors.ProductRedColor}" />
+                                                        </DataTrigger>
+                                                    </Label.Triggers>-->
+                                            </Label>
+                                        </StackLayout>
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="9" HeightRequest="1" Color="{x:Static resources:AppColors.MainBackgroundColor}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </RefreshView>
+                </Grid>
+            </Grid>
+            <BoxView Grid.Row="0" Grid.Column="0" Margin="0,-20,0,-20"  Color="{x:Static resources:AppColors.BackgroundOverlayColor}" Scale="{Binding IsOpenFilterOptionPopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterOptionPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OverlayHandleTappedCommand}" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <BoxView Grid.Row="0" Grid.Column="0" Margin="0,-20,0,-20" Color="{x:Static resources:AppColors.BackgroundOverlayColor}" Scale="{Binding IsOpenFilterDateRangePopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterDateRangePopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OverlayHandleTappedCommand}" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <BoxView Grid.Row="0" Grid.Column="0" Margin="0,-20,0,-20" Color="{x:Static resources:AppColors.BackgroundOverlayColor}" Scale="{Binding IsOpenFilterOutletPopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterOutletPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OverlayHandleTappedCommand}" />
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+            <StackLayout Grid.Row="0" Grid.Column="0" Margin="0,50,510,0" VerticalOptions="Start" HorizontalOptions="End" Scale="{Binding IsOpenFilterOutletPopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterOutletPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <local:ParkSaleFilterOutletMenuView x:Name="ParkSaleFilterOutletMenuView" ItemChanged ="FilterOutletHandle_ItemChanged" />
+            </StackLayout>
+            <StackLayout Grid.Row="0" Grid.Column="0" Margin="0,50,360,0" VerticalOptions="Start" HorizontalOptions="End" Scale="{Binding IsOpenFilterOptionPopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterOptionPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <local:ParkSaleFilterOptionMenuView ItemChanged="FilterOptionHandle_ItemChangedAsync" />
+            </StackLayout>
+            <StackLayout Grid.Row="0" Grid.Column="0" Margin="0,50,130,0" VerticalOptions="Start" HorizontalOptions="End" Scale="{Binding IsOpenFilterDateRangePopUp}" IsVisible="{OnPlatform Android={Binding IsOpenFilterDateRangePopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                <local:ParkSaleFilterDateRangeMenuView ItemChanged="FilterDateRangeHandle_ItemChanged" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:BaseContentPage>

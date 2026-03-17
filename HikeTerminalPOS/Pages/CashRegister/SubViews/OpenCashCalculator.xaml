@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.OpenCashCalculatorPage" xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:OpenCashCalculatorViewModel"
+        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:OpenCashCalculatorViewModel"
+        BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                   <Button Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                   <Button Text="{Localize:Translate Save_ButtonText}" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                   <Button Text="{Localize:Translate Edit_ButtonText}" Command="{Binding EditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate Save_ButtonText}" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                        <Button Text="{Localize:Translate Edit_ButtonText}" Command="{Binding EditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid RowDefinitions="110,0.5,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Grid.Row="0" Text="Cash count" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="40" />
+                <BoxView Grid.Row="1" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" VerticalOptions="Start" Margin="{OnIdiom Phone='20,0',Default='40,0'}" />
+                <CollectionView Grid.Row="2" x:Name="CashCountList" SelectionMode="None" 
+                    ItemsSource="{Binding RegisterclosuresTally.RegisterClosureTallyDenominations}" 
+                    Margin="{OnIdiom Phone='20,0',Default='40,0'}" VerticalOptions="FillAndExpand" BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:RegisterClosureTallyDenominationDto">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="0.5" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding DenominationValue, StringFormat='{}{0:c}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                                <Label Grid.Row="0" Grid.Column="1" Text="X" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+                                <StackLayout Grid.Row="0" Grid.Column="2" Margin="10">
+                                    <Border StrokeShape="RoundRectangle 5,5,5,5" Stroke="{x:Static resources:AppColors.LightBordersColor}" Padding="0"  VerticalOptions="FillAndExpand">
+                                        <userControls:CustomEntry x:Name="textEntry" Grid.Column="0" Grid.ColumnSpan="2" HeightRequest="40" PlaceholderColor="{x:Static resources:AppColors.PlaceholderColor}" Keyboard="Numeric" 
+                                            FontSize="14" Text="{Binding Quantity}" OnlyAllowNumericValue="true" Margin="0,0,7,0" HorizontalTextAlignment="Start" 
+                                            FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" 
+                                            VerticalOptions="FillAndExpand" Unfocused="textEntry_Unfocused" Focused="textEntry_Focused" TextChanged="textEntry_TextChanged">
+                                            <!-- <userControls:CustomEntry.Behaviors>
+                                                <toolkit:EventToCommandBehavior EventName="Unfocused" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OpenCashCalculatorViewModel}}, Path=UnfocusedCommand, x:DataType=vm:OpenCashCalculatorViewModel}" CommandParameter="{x:Reference textEntry}" />
+                                                <toolkit:EventToCommandBehavior EventName="Focused" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OpenCashCalculatorViewModel}}, Path=FocusedCommand, x:DataType=vm:OpenCashCalculatorViewModel}" CommandParameter="{x:Reference textEntry}"/>
+                                                <toolkit:EventToCommandBehavior EventName="TextChanged" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:OpenCashCalculatorViewModel}}, Path=QuatityTextChangedCommand, x:DataType=vm:OpenCashCalculatorViewModel}"/>
+                                            </userControls:CustomEntry.Behaviors> -->
+                                        </userControls:CustomEntry>
+                                    </Border>
+                                </StackLayout>
+                                <Label Grid.Row="0" Grid.Column="3" Text="=" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" />
+                                <Label Grid.Row="0" Grid.Column="4" Text="{Binding Total, StringFormat='{}{0:c}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="5,0,0,0" />
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Color="White" HeightRequest="0.5" VerticalOptions="Start" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.Footer>
+                        <Grid RowSpacing="0" ColumnSpacing="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="20" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="0.5" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="2" Text="Total" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="10,5,0,0"/>
+                            <Label Grid.Row="0" Grid.Column="3" Text="=" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="0,5,0,0"/>
+                            <Label Grid.Row="0" Grid.Column="4" Text="{Binding RegisterclosuresTally.CashCalculatorTotal, StringFormat='{}{0:c}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="5,5,0,0" />
+                        </Grid>
+                    </CollectionView.Footer>
+                </CollectionView>
+
+                <!-- <Button 
+                    x:Name="CloseRegister" 
+                    HeightRequest="60" 
+                    WidthRequest="180"
+                    BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" 
+                    FontSize="22"
+                    FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                    BorderRadius="5"
+                    TextColor="White"  
+                    VerticalOptions="Start" 
+                    HorizontalOptions="Center" 
+                    Margin="40,20,40,40"
+                    Text="{Localize:Translate CloseRegisterText}"
+                    Clicked="CloseRegisterHandle_Clicked"/>-->
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

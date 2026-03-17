@@ -1,0 +1,409 @@
+﻿using System;
+using SPIClient;
+using System.Diagnostics;
+namespace HikePOS.Services.Payment
+{
+    public class AssemblyPaymentService
+    {
+        Spi _spi;
+        Secrets spiSecrets = null;
+        public string posId, eftposAddress, encKey, hmacKey;
+
+        public EventHandler<TransactionFlowState> TransactionFlowStateChanged;
+        public EventHandler<PairingFlowState> PairingFlowStateChanged;
+        public EventHandler<SpiStatusEventArgs> StatusChanged;
+        public EventHandler<string> ProcessStatusChanged;
+
+
+        public void Start()
+        {
+
+            if (string.IsNullOrEmpty(posId) || string.IsNullOrEmpty(eftposAddress) || string.IsNullOrEmpty(encKey) || string.IsNullOrEmpty(hmacKey))
+            {
+                return;
+            }
+
+            //spiSecrets = new Secrets(encKey,hmacKey);
+
+            var incomingMessageJsonStr = @"
+                {
+                    ""message"": {
+                        ""event"": ""key_request"",
+                        ""id"": ""62"",
+                        ""data"": {
+                            ""enc"": {
+                                ""A"": ""17E7BE43D53102647040FC090000C215810E28E5E0CBD4F47923E194AE72AB0CDADF922642B73C568AA94A84B61874A475549E1F95847BE2725462E3D635F019BE39B2064F1EFFBE6B80CE97FBB7C0913ADC06A2445980B57647778B127FFCCE8B28A44BADEDE0110A5AFB05FEF7AA3F54988AFB04310A113F713601683D8E30CA2BAFC2EC34879127019E3352D8CAB9603184283AE3C9359D40C12474500018B8640AF371DC8712A06A3A443DF41DA9C1C60FAD2ACB02564A6694382B18811AA30CE38A1FC251DE0669504CAB620C2BA4A84CCC8FBDCBB30BBB3EACA76008599F74C2FDF6231773DC0439969CB5F2904A71DDF57F7DF9394AA29CBE4856FC82""
+                            },
+                            ""hmac"": {
+                                ""A"": ""89708531EADF129B4F67F00ECBF883C825A0EF3D766E32BC2BA13508B53FC3F5928316DE05CBE82FA1BBF4116E58A68C6F9C3C8FEF492051498188F4E80F82D5764FF50331B34E418E41480FAE0C794F20D9F7AE9819CB317AD2351B165783D57D12C39F95D9A5A292B89D3A26F9BBDE5C218EEC3FE63D910DCB0E1A0E6B570AF94BBD3025EB5E23FFBD9E8D58FE68403B3E50566DA8E2E54EED1A4D754689ECB7266B3D4804E39FB868F1741896757E7844C3389DA49F87D23FB2E9F6ADDBE9C14CC92F322CF3B471CE217E48D0762D5C963827AA6F4316B905F19E0262A35DC4B62E2FB95B7AAD5616C61F31C9A74008EE51BAB2CD6F646320FA30A6DDC4D7"" 
+                            }
+                        }                        
+                    }
+                }";
+            var incomingMessage = Message.FromJson(incomingMessageJsonStr, spiSecrets);
+            var keyRequest = new KeyRequest(incomingMessage);
+
+            // Let's generate the Secrets and the KeyResponse
+            var result = PairingHelper.GenerateSecretsAndKeyResponse(keyRequest);
+
+            spiSecrets = result.Secrets;
+
+
+            //if(spiSecrets == null)
+            //{
+            //    return;
+            //}
+
+
+			#region Spi Setup
+			// This is how you instantiate Spi.
+			_spi = new Spi(posId, eftposAddress, spiSecrets);
+            _spi.StatusChanged += OnStatusChanged; // Called when Status changes between Unpaired, PairedConnected and PairedConnecting
+            _spi.SecretsChanged += OnSecretsChanged; // Called when Secrets are set or changed or voided.
+            _spi.PairingFlowStateChanged += OnPairingFlowStateChanged; // Called throughout to pairing process to update us with progress
+            _spi.TxFlowStateChanged += OnTxFlowStateChanged; // Called throughout to transaction process to update us with progress
+            _spi.Start();
+            #endregion
+
+            // And Now we just accept user input and display to the user what is happening.
+
+            Debug.WriteLine("# ");
+            Debug.WriteLine("# Howdy and welcome to ACME-POS! My name is {0}.", posId);
+            Debug.WriteLine("# I integrate with SPI.");
+            Debug.WriteLine("# ");
+
+            PrintStatusAndActions();
+        }
+
+        public void Stop()
+        {
+
+            if (_spi != null)
+            {
+                _spi.StatusChanged -= OnStatusChanged; // Called when Status changes between Unpaired, PairedConnected and PairedConnecting
+                _spi.SecretsChanged -= OnSecretsChanged; // Called when Secrets are set or changed or voided.
+                _spi.PairingFlowStateChanged -= OnPairingFlowStateChanged; // Called throughout to pairing process to update us with progress
+                _spi.TxFlowStateChanged -= OnTxFlowStateChanged; // Called throughout to transaction process to update us with progress
+                _spi = null;
+            }
+        }
+
+
+        // Called when we received a Status Update i.e. Unpaired/PairedConnecting/PairedConnected
+        private void OnStatusChanged(object sender, SpiStatusEventArgs spiStatus)
+        {
+            StatusChanged?.Invoke(sender, spiStatus);
+            //if (_spi.CurrentFlow == SpiFlow.Idle){
+                
+            //}
+            PrintStatusAndActions();
+        }
+
+        // Called during the pairing process to let us know how it's going.
+        // We just update our screen with the information, and provide relevant Actions to the user.
+        private void OnPairingFlowStateChanged(object sender, PairingFlowState pairingFlowState)
+        {
+            PairingFlowStateChanged?.Invoke(sender, pairingFlowState);
+            Debug.WriteLine("# --------- PAIRING FLOW UPDATE -----------");
+            Debug.WriteLine("# Message: {0}", pairingFlowState.Message);
+            if (!string.IsNullOrEmpty(pairingFlowState.ConfirmationCode))
+            {
+                Debug.WriteLine("# Confirmation Code: {0}", pairingFlowState.ConfirmationCode);
+            }
+            PrintStatusAndActions();
+        }
+
+
+        /// Called during a transaction to let us know how it's going.
+        /// We just update our screen with the information, and provide relevant Actions to the user.
+        private void OnTxFlowStateChanged(object sender, TransactionFlowState txFlowState)
+        {
+            TransactionFlowStateChanged?.Invoke(sender, txFlowState);
+            Debug.WriteLine("# --------- TRANSACTION FLOW UPDATE -----------");
+            Debug.WriteLine("# Id: {0}", txFlowState.Id);
+            Debug.WriteLine("# Type: {0}", txFlowState.Type);
+            Debug.WriteLine("# RequestSent: {0}", txFlowState.RequestSent);
+            Debug.WriteLine("# WaitingForSignature: {0}", txFlowState.AwaitingSignatureCheck);
+            Debug.WriteLine("# Attempting to Cancel : {0}", txFlowState.AttemptingToCancel);
+            Debug.WriteLine("# Finished: {0}", txFlowState.Finished);
+            Debug.WriteLine("# Success: {0}", txFlowState.Success);
+            Debug.WriteLine("# Display Message: {0}", txFlowState.DisplayMessage);
+
+            if (txFlowState.AwaitingSignatureCheck)
+            {
+                // We need to print the receipt for the customer to sign.
+                Debug.WriteLine(txFlowState.SignatureRequiredMessage.GetMerchantReceipt().TrimEnd());
+            }
+
+            // If the transaction is finished, we take some extra steps.
+            if (txFlowState.Finished)
+            {
+                if (txFlowState.Success == Message.SuccessState.Unknown)
+                {
+                    // TH-4T, TH-4N, TH-2T - This is the dge case when we can't be sure what happened to the transaction.
+                    // Invite the merchant to look at the last transaction on the EFTPOS using the dicumented shortcuts.
+                    // Now offer your merchant user the options to:
+                    // A. Retry the transaction from scrtatch or pay using a different method - If Merchant is confident that tx didn't go through.
+                    // B. Override Order as Paid in you POS - If Merchant is confident that payment went through.
+                    // C. Cancel out of the order all together - If the customer has left / given up without paying 
+                    Debug.WriteLine("# NOT SURE IF WE GOT PAID OR NOT. CHECK LAST TRANSACTION MANUALLY ON EFTPOS!");
+                }
+                else
+                {
+                    // We have a result...
+                    switch (txFlowState.Type)
+                    {
+                        // Depending on what type of transaction it was, we might act diffeently or use different data.
+                        case TransactionType.Purchase:
+                            if (txFlowState.Response != null)
+                            {
+                                var purchaseResponse = new PurchaseResponse(txFlowState.Response);
+                                Debug.WriteLine("# Scheme: {0}", purchaseResponse.SchemeName);
+                                Debug.WriteLine("# Response: {0}", purchaseResponse.GetResponseText());
+                                Debug.WriteLine("# RRN: {0}", purchaseResponse.GetRRN());
+                                Debug.WriteLine("# Error: {0}", txFlowState.Response.GetError());
+                                Debug.WriteLine("# Customer Receipt:");
+                                Debug.WriteLine(purchaseResponse.GetCustomerReceipt().TrimEnd());
+                            }
+                            else
+                            {
+                                // We did not even get a response, like in the case of a time-out.
+                            }
+                            if (txFlowState.Success == Message.SuccessState.Success)
+                            {
+                                // TH-6A
+                                Debug.WriteLine("# HOORAY WE GOT PAID (TH-7A). CLOSE THE ORDER!");
+                            }
+                            else
+                            {
+                                // TH-6E
+                                Debug.WriteLine("# WE DIDN'T GET PAID. RETRY PAYMENT (TH-5R) OR GIVE UP (TH-5C)!");
+                            }
+                            break;
+                        case TransactionType.Refund:
+                            if (txFlowState.Response != null)
+                            {
+                                var refundResponse = new RefundResponse(txFlowState.Response);
+                                Debug.WriteLine("# Scheme: {0}", refundResponse.SchemeName);
+                                Debug.WriteLine("# Response: {0}", refundResponse.GetResponseText());
+                                Debug.WriteLine("# RRN: {0}", refundResponse.GetRRN());
+                                Debug.WriteLine("# Error: {0}", txFlowState.Response.GetError());
+                                Debug.WriteLine("# Customer Receipt:");
+                                Debug.WriteLine(refundResponse.GetCustomerReceipt().TrimEnd());
+                            }
+                            else
+                            {
+                                // We did not even get a response, like in the case of a time-out.
+                            }
+                            break;
+                        case TransactionType.Settle:
+                            if (txFlowState.Response != null)
+                            {
+                                var settleResponse = new Settlement(txFlowState.Response);
+                                Debug.WriteLine("# Response: {0}", settleResponse.GetResponseText());
+                                Debug.WriteLine("# Error: {0}", txFlowState.Response.GetError());
+                                Debug.WriteLine("# Merchant Receipt:");
+                                Debug.WriteLine(settleResponse.GetReceipt().TrimEnd());
+                            }
+                            else
+                            {
+                                // We did not even get a response, like in the case of a time-out.
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            // Let's show the user what options he has at this stage.
+            PrintStatusAndActions();
+        }
+
+
+        /// Called when Secrets are set or changed or voided.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="newSecrets"></param>
+        private void OnSecretsChanged(object sender, Secrets newSecrets)
+        {
+            spiSecrets = newSecrets;
+            if (spiSecrets != null)
+            {
+                Debug.WriteLine("\n\n\n# --------- I GOT NEW SECRETS -----------");
+                Debug.WriteLine("# ---------- PERSIST THEM SAFELY ----------");
+                Debug.WriteLine("# {0}:{1}", spiSecrets.EncKey, spiSecrets.HmacKey);
+                Debug.WriteLine("# -----------------------------------------");
+            }
+            else
+            {
+                Debug.WriteLine("\n\n\n# --------- THE SECRETS HAVE BEEN VOIDED -----------");
+                Debug.WriteLine("# ---------- CONSIDER ME UNPAIRED ----------");
+                Debug.WriteLine("# -----------------------------------------");
+            }
+        }
+
+        /// <summary>
+        /// This method prints the current Spi Status and Flow
+        /// and lists available actions to the user.
+        /// </summary>
+        private void PrintStatusAndActions()
+        {
+            Debug.WriteLine("# ----------- AVAILABLE ACTIONS ------------");
+
+            // Available Actions depend on the current status (Unpaired/PairedConnecting/PairedConnected)
+            switch (_spi.CurrentStatus)
+            {
+                case SpiStatus.Unpaired: //Unpaired...
+                    switch (_spi.CurrentFlow)
+                    {
+                        case SpiFlow.Idle: // Unpaired, Idle
+                            Debug.WriteLine("# [pos_id:MYPOSNAME] - sets your POS instance ID");
+                            Debug.WriteLine("# [eftpos_address:10.10.10.10] - sets IP address of target EFTPOS");
+                            Debug.WriteLine("# [pair] - start pairing");
+                            break;
+
+                        case SpiFlow.Pairing: // Unpaired, PairingFlow
+                            var pairingState = _spi.CurrentPairingFlowState;
+                            if (pairingState.AwaitingCheckFromPos)
+                            {
+                                ProcessStatusChanged?.Invoke(this, "Pair confirm - Confirm the code matches");
+                            }
+                            if (!pairingState.Finished)
+                            {
+                                ProcessStatusChanged?.Invoke(this, "Pair cancel - cancel pairing process");
+                            }
+                            else
+                            {
+                                Debug.WriteLine("# [ok] - acknowledge");
+                            }
+                            break;
+
+                        case SpiFlow.Transaction: // Unpaired, TransactionFlow - Should never be the case!
+                        default:
+                            ProcessStatusChanged?.Invoke(this, "# .. Unexpected Flow .. "+ _spi.CurrentFlow);
+                            break;
+                    }
+                    break;
+
+                case SpiStatus.PairedConnected:
+                    switch (_spi.CurrentFlow)
+                    {
+                        case SpiFlow.Idle: // Paired, Idle
+                            ProcessStatusChanged?.Invoke(this, "Device is Idle");
+                            break;
+                        case SpiFlow.Transaction: // Paired, Transaction
+                            if (_spi.CurrentTxFlowState.AwaitingSignatureCheck)
+                            {
+                                ProcessStatusChanged?.Invoke(this, "Transaction sign accept - Accept Signature");
+                                ProcessStatusChanged?.Invoke(this, "Transaction sign decline - Decline Signature");
+                            }
+                            if (!_spi.CurrentTxFlowState.Finished)
+                            {
+                                ProcessStatusChanged?.Invoke(this, "Transaction cancel - Attempt to Cancel Transaction");
+                            }else
+                            {
+                                ProcessStatusChanged?.Invoke(this, "ok - acknowledge");
+                            }
+                            break;
+                        case SpiFlow.Pairing: // Paired, Pairing - we have just finished the pairing flow. OK to ack.
+                            ProcessStatusChanged?.Invoke(this, "ok - acknowledge");
+                            break;
+                        default:
+                            ProcessStatusChanged?.Invoke(this, "Unexpected Flow .. " + _spi.CurrentFlow);
+                            break;
+                    }
+                    break;
+
+                case SpiStatus.PairedConnecting: // This is still considered as a Paired kind of state, but...
+                    goto case SpiStatus.PairedConnected;
+
+                default:
+                    ProcessStatusChanged?.Invoke(this, "Unexpected State .." + _spi.CurrentStatus);
+                    break;
+            }
+            ProcessStatusChanged?.Invoke(this, "Status :" + _spi.CurrentStatus + "  and Flow is:" + _spi.CurrentFlow);
+        }
+
+        public bool PairDevice()
+        {
+            return _spi.Pair();
+        }
+
+        public void ConfirmPairingCode()
+        {
+            _spi.PairingConfirmCode();
+        }
+
+        public void CancelPairing()
+        {
+            _spi.PairingCancel();
+        }
+
+        public bool UnpairDevice()
+        {
+            return _spi.Unpair();
+        }
+
+        public InitiateTxResult Purchase(string posRefId, int amount)
+        {
+            var pres = _spi.InitiatePurchaseTx(posRefId, amount);
+            if (pres.Initiated)
+            {
+                ProcessStatusChanged?.Invoke(this, "Purchase Initiated. Will be updated with Progress.");
+            }
+            else
+            {
+                ProcessStatusChanged?.Invoke(this, "Could not initiate purchase:" + pres.Message + ".Please Retry.");
+            }
+            return pres;
+
+        }
+
+        public InitiateTxResult Refund(string posRefId, int amount)
+        {
+            var rres = _spi.InitiateRefundTx(posRefId, amount);
+            if (rres.Initiated)
+            {
+                ProcessStatusChanged?.Invoke(this, "Refund Initiated. Will be updated with Progress.");
+            }
+            else
+            {
+                ProcessStatusChanged?.Invoke(this, "Could not initiate refund: " + rres.Message + ".Please Retry.");
+            }
+            return rres;
+        }
+
+        public InitiateTxResult Settle(string posRefId)
+        {
+            var sres = _spi.InitiateSettleTx(posRefId);
+            if (sres.Initiated)
+            {
+                ProcessStatusChanged?.Invoke(this, "Settle Initiated. Will be updated with Progress.");
+            }
+            else
+            {
+                ProcessStatusChanged?.Invoke(this, "Could not initiate settle: " + sres.Message + ". Please Retry.");
+            }
+            return sres;
+        }
+
+        public MidTxResult AcceptSignature(bool accept)
+        {
+            return _spi.AcceptSignature(accept);
+        }
+
+        public MidTxResult CancelTransaction()
+        {
+            return _spi.CancelTransaction();
+        }
+
+        public bool AckFlowEndedAndBackToIdle()
+        {
+            var result = _spi.AckFlowEndedAndBackToIdle();
+            PrintStatusAndActions();
+            return result;
+        }
+                    
+    }
+}

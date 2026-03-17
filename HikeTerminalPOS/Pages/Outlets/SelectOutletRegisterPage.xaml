@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.SelectOutletRegisterPage" xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:SelectOutletRegisterViewModel"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        x:DataType="vm:SelectOutletRegisterViewModel" 
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:Name="selectoutlateRegPage" Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                  <StackLayout x:Name="CloseStk" Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                  </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                      <Button IsVisible="{Binding Source={x:Reference CloseStk},
+                              Path=IsVisible}"  Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid RowDefinitions="Auto,Auto,27,*"  Grid.Row="0" Grid.Column="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" RowSpacing="0" >
+                <Label Grid.Row="0" Text="{Localize:Translate SelectRegister_TitleText}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="40,40,40,30" />
+                <BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" TranslationY="28" Margin="30,0,30,0" />
+                <CollectionView x:Name="OutletListView" Grid.Row="2" Margin="30,0,30,0" HeightRequest="27" SelectionMode="None"
+                    ItemsSource="{Binding Stores}" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:OutletDto_POS">
+                                <Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="FillAndExpand" WidthRequest="160">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="26" />
+                                        <RowDefinition Height="1" />
+                                    </Grid.RowDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Title}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" HeightRequest="26" MinimumWidthRequest="26" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                                        <BoxView.Triggers>
+                                            <DataTrigger TargetType="BoxView" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </BoxView.Triggers>
+                                    </BoxView>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectOutletRegisterViewModel}}, Path=OutletTappedCommand, x:DataType=vm:SelectOutletRegisterViewModel}" CommandParameter="{Binding .}"/>
+                                </Grid.GestureRecognizers>
+                                </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <CollectionView x:Name="lstViewRegisterList" Grid.Row="3" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="20,20,20,30"  SelectionMode="None" ItemsSource="{Binding OutletRegisters}">
+                    <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="2" VerticalItemSpacing="10" HorizontalItemSpacing="10"/> 
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:RegisterDto">
+                                <Border Padding="0"  Stroke ="{x:Static resources:AppColors.LightBordersColor}"
+                                        StrokeThickness="1" BackgroundColor="White" HeightRequest="100">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="5" />
+                                    </Border.StrokeShape>
+                                    <Grid>
+                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                        <Label Grid.Row="1" Grid.RowSpan="2" Text="{Binding Name}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeAwesomeFont}" VerticalTextAlignment="Start"
+HeightRequest="60" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand"
+                            VerticalOptions="CenterAndExpand" Margin="10" />
+                                        <!--Ticket #10280 Start : Cash register showing wrongly open issue. By Nikhil-->
+                                        <Label Grid.Row="0" Text="OPEN" TextColor="White" BackgroundColor="{x:Static resources:AppColors.RegisterOpenTextColor}"   HorizontalOptions="End" FontSize="14" HeightRequest="30"
+                   IsVisible="{Binding IsRegisterOpen}" FontFamily="{x:Static resources:Fonts.HikeAwesomeFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" WidthRequest="60" Margin="10" />
+                                        <!--Ticket #10280 End : By Nikhil-->
+                                          <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SelectOutletRegisterViewModel}}, Path=RegisterSelectionChangedCommand, x:DataType=vm:SelectOutletRegisterViewModel}" CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+                                    </Grid>
+                                </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

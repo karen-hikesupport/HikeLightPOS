@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.CustomPaymentTransactionPage" 
+        xmlns:local="clr-namespace:HikePOS"
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:CustomPaymentTransactonViewModel"
+        x:DataType="vm:CustomPaymentTransactonViewModel"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                        <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Binding HeaderText}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <userControls:CustomPaymentWebView x:Name="customPaymentWebView" Uri="{Binding WebURL, Mode=TwoWay}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                </userControls:CustomPaymentWebView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

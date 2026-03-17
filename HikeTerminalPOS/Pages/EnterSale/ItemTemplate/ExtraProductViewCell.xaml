@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.ExtraProductViewCell" 
+        x:DataType="model:ProductDto_POS"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:Helpers="clr-namespace:HikePOS.Helpers">
+    <ContentView BackgroundColor="#d0d7de">
+        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="{Binding ColorType, Converter={Helpers:ColorTypeToColorConverter}}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name, Converter={Helpers:StringToAvtarNameConverter}}" Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Image Grid.Row="0" Grid.Column="0" x:Name="ProductImage"
+                    Aspect="AspectFit" 
+                    VerticalOptions="FillAndExpand" 
+                    HorizontalOptions="FillAndExpand"
+                    >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding ItemImageUrl, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium_Entersale}" 
+                            CacheValidity="30" 
+                            CachingEnabled="true"/>
+                    </Image.Source>
+                </Image>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate GiftIconUnicode}"  IsVisible="{Binding IsInAnyOffer}" Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" HeightRequest="25" WidthRequest="25" VerticalOptions="Start" HorizontalOptions="Start" TranslationX="5" TranslationY="5"/>
+                <Image Grid.Row="0" Grid.Column="0" IsVisible="{Binding isSelected}" Source="check_icon" Aspect="Fill" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </Grid>
+            <!--start #94426 Product Optional Extras display enhancement By Pratik-->
+            <Grid x:Name="ItemName" RowSpacing="3" Grid.Row="1" Grid.Column="0"  Padding="5,4"  BackgroundColor="White">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+              </Grid.RowDefinitions>
+                <Label Grid.Row="0" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Text="{Binding Name}" MaxLines="1" LineBreakMode="TailTruncation"/>
+                <Label Grid.Row="1" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Text="{Binding ProductOutlet.SellingPrice, StringFormat='{}{0:c}'}"
+                     MaxLines="1" LineBreakMode="TailTruncation"/>
+            </Grid>
+            <ContentView x:Name="ItemName1" Grid.Row="1" Grid.Column="0" TranslationY="-16">
+                <Border  Padding="0" Margin="0" BackgroundColor="Transparent" StrokeShape="RoundRectangle 10" Stroke="Transparent"  
+                    HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Center">
+                    <Grid ColumnSpacing="0" RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <BoxView Grid.Row="0" HeightRequest="24" WidthRequest="24" IsVisible="{Binding IsInAnyOffer}" BackgroundColor="#000000" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                        <Label Grid.Row="0" IsVisible="{Binding IsInAnyOffer}" Text="{Localize:Translate GiftIconUnicode}" 
+                             Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" />
+                        <BoxView x:Name="InventoryCountBG" IsVisible="{Binding ShowStockCountOnEnterSale}" Grid.Row="0" BackgroundColor="#347ec0" 
+                            HeightRequest="24" WidthRequest="40" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                        <Label x:Name="InventoryCountLabel" IsVisible="{Binding ShowStockCountOnEnterSale}" Grid.Row="0" Text="{Binding Stock}" 
+                            Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="40" HorizontalOptions="Center" MaxLines="1" />
+                    </Grid>
+                </Border>
+            </ContentView>
+            <!--end #94426 By Pratik-->
+        </Grid>
+    </ContentView>
+</Grid>

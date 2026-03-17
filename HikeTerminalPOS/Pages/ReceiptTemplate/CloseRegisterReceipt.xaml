@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		x:Class="HikePOS.CloseRegisterReceipt" xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:vm="clr-namespace:HikePOS.ViewModels" 
+        x:DataType="vm:CashRegisterViewModel" 
+        xmlns:model="clr-namespace:HikePOS.Models"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:userControls="clr-namespace:HikePOS" xmlns:customControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+    <StackLayout x:Name="ChildStack" BackgroundColor="White" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Padding="10,0,5,0" Spacing="5">
+        <Label FontSize="40" Text="Register Summary" Margin="10" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="Center"  />
+        <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <Grid Margin="10,0,10,0" HorizontalOptions="FillAndExpand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" FontSize="25" Text="{Binding Registerclosure.RegisterName}" Margin="10,5,0,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" />
+            <Label Grid.Column="0" Grid.Row="1" FontSize="25" Text="{Binding Registerclosure.OutletName}" Margin="10,5,0,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" />
+            <StackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+                <Label x:Name="StartDateTime" FontSize="25" Margin="0,5,10,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalOptions="EndAndExpand" />
+            </StackLayout>
+        </Grid>
+        <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <Grid Margin="10,0,10,0" x:Name="GridTotal" RowSpacing="0" ColumnSpacing="0" VerticalOptions="Start">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <userControls:LblValueTemplate x:Name="totalSales" Grid.Row="0" Label="Total sales:" Value="{Binding Registerclosure.TotalSales, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+           
+            <userControls:LblValueTemplate x:Name="totalTax" Grid.Row="1" Label="Tax collected:" Value="{Binding Registerclosure.TotalTax, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+
+            <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+            <StackLayout  Margin="0,0,0,10" x:Name="RegisterTaxList"  Grid.Row="2" VerticalOptions="Start" BindableLayout.ItemsSource="{Binding Registerclosure.TaxList}" HorizontalOptions="FillAndExpand">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="model:TaxList" >
+                        <Grid RowSpacing="0" ColumnSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70*" />
+                                <ColumnDefinition Width="30*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"  FontSize="25" FlowDirection="LeftToRight"  Text="{Binding TaxFullName}"  TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="Start" HorizontalOptions="StartAndExpand" VerticalTextAlignment="Center" />
+                            <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+                            <customControls:AutoFitLabel Grid.Column="1" FontSize="25" Text="{Binding TaxAmount, StringFormat='{}{0:c}'}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="End" HorizontalOptions="EndAndExpand" VerticalTextAlignment="Center" MaxLines="1"/>
+                            <!--Ticket end: #62808 .by rupesh-->
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            <!--Ticket end: #62808 .by rupesh-->
+
+            <!--Ticket start:#62955 IOS Cash register not showing discount amount.by rupesh-->
+            <userControls:LblValueTemplate x:Name="totalDiscounts" Grid.Row="3" Label="Discounts:" Value="{Binding Registerclosure.Discounts, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+            <!--Ticket end:#62955.by rupesh-->
+            <userControls:LblValueTemplate x:Name="tipSurcharge" Grid.Row="4" Label="Tip/surcharge:" Value="{Binding Registerclosure.TotalTip, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+
+            <!--#32365 iPad :: Feature request :: Shipping fee not being recorded in Hike-->
+            <userControls:LblValueTemplate x:Name="ShippingLabel" Grid.Row="5" Label="Shipping:" Value="{Binding Registerclosure.TotalShipping, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+            <!--#32365 iPad :: Feature request :: Shipping fee not being recorded in Hike-->
+
+            <userControls:LblValueTemplate x:Name="totalPayments" Grid.Row="6" Label="Payments:" Value="{Binding Registerclosure.TotalPayments, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+            <userControls:LblValueTemplate x:Name="totalRefunds" Grid.Row="7" Label="Refunds:" Value="{Binding Registerclosure.TotalRefunds, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+            <userControls:LblValueTemplate x:Name="netReceipts" Grid.Row="8" Label="Net receipts:" Value="{Binding Registerclosure.NetReceipts, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+        </Grid>
+        <BoxView x:Name="noteLine" Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <Grid x:Name="note" Margin="10,5" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="78" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"  Text="Note :" FontSize="27"
+                FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" />
+            <Label Grid.Column="1" Text="{Binding Registerclosure.Notes}"
+                FontSize="25" LineBreakMode="WordWrap" MaxLines="12"/>
+        </Grid>
+        <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <Grid Margin="10,0,10,0" x:Name="GridCash" RowSpacing="0" ColumnSpacing="0" VerticalOptions="Start">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <userControls:LblValueTemplate x:Name="cashInTillExpected" Grid.Row="0" IsVisible="{Binding Registerclosure.ShowExpectedColumn}" Label="Cash in till expected:" Value="" ViewHeight="40"/>
+            <userControls:LblValueTemplate x:Name="cashInTillActual" Grid.Row="1" Label="Cash in till actual:" Value="" ViewHeight="40"/>
+            <userControls:LblValueTemplate x:Name="cashSale" Grid.Row="2" Label="Cash sale:" Value="" ViewHeight="40"/>
+            <userControls:LblValueTemplate x:Name="cashDifference" Grid.Row="3" Label="Cash difference:" Value="" ViewHeight="40"/>
+        </Grid>
+
+        <BoxView Margin="10,0,10,0" Color="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+
+        <StackLayout x:Name="StkSmallHdr">
+             <Grid Margin="10,0,10,0">
+                <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40*" />
+                            <ColumnDefinition Width="30*" />
+                            <ColumnDefinition Width="30*" />
+               </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Label Grid.Column="0" Grid.Row="0" FontSize="25" Text="Payment type" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label Grid.Column="1" Grid.Row="0" FontSize="25" Text="Expected" IsVisible="{Binding Registerclosure.ShowExpectedColumn}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/> <!--Ticket start: #91261 Pratik-->
+                <Label Grid.Column="2" Grid.Row="0" FontSize="25" Text="Counted" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            </Grid>
+
+            <StackLayout  Margin="10,0,10,0" VerticalOptions="Start" x:Name="PaymentList" BindableLayout.ItemsSource="{Binding Registerclosure.RegisterclosuresTallys}" HorizontalOptions="FillAndExpand" IsClippedToBounds="True">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="model:RegisterclosuresTallyDto">
+                        <Grid RowSpacing="0" HorizontalOptions="FillAndExpand" IsClippedToBounds="True">
+                           <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40*" />
+                            <ColumnDefinition Width="30*" />
+                            <ColumnDefinition Width="30*" />
+                        </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0"  FontSize="25" Text="{Binding PaymentOptionName}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                             <!--Ticket start: #62808 #91261(Pratik) iPad:Print Receipt spacing issues.by rupesh-->
+                            <customControls:AutoFitLabel Grid.Column="1" FontSize="25" Text="{Binding ActualTotal, StringFormat='{}{0:c}'}" IsVisible="{Binding Source={x:Reference PaymentList},Path=BindingContext.Registerclosure.ShowExpectedColumn}"  TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" MaxLines="1"/>
+                            <customControls:AutoFitLabel  Grid.Column="2" FontSize="25" Text="{Binding RegisteredTotal, StringFormat='{}{0:c}'}" TextColor="{x:Static resources:AppColors.DarkTextColor}"  HorizontalTextAlignment="End" VerticalTextAlignment="Center" MaxLines="1"/>
+                             <!--Ticket end: #62808.by rupesh-->
+                        </Grid>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+
+            <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+
+            <Grid Margin="10,0,10,5">
+                <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40*" />
+                            <ColumnDefinition Width="30*" />
+                            <ColumnDefinition Width="30*" />
+                        </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Text="Transaction" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" />
+                <Label Grid.Column="1"  Text="User" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"/>
+                <Label Grid.Column="2" Text="Amounts" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="End" VerticalTextAlignment="Center"/>
+            </Grid>
+            <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+            <StackLayout Margin="10,0,10,0" VerticalOptions="Start"  BindableLayout.ItemsSource="{Binding Registerclosure.RegisterCashInOuts}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="model:RegisterCashInOutDto">
+                            <StackLayout Spacing="0">
+                                <Grid Padding="0,0,0,7">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40*" />
+                                        <ColumnDefinition Width="30*" />
+                                        <ColumnDefinition Width="30*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0" Text="{Binding RegisterCashTypeName}" FontSize="25" HorizontalOptions="Start" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                    <Label Grid.Column="1"  Text="{Binding UserBy}" FontSize="25" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" LineBreakMode="WordWrap"/>
+                                    <customControls:AutoFitLabel Grid.Column="2" Text="{Binding Amount, StringFormat='{}{0:c}'}"
+                                                                          FontSize="25" HorizontalTextAlignment="End" VerticalTextAlignment="Center"
+                                                                          LineBreakMode="CharacterWrap" MaxLines="1"/>
+                                </Grid>
+                                <Label IsVisible="{Binding Note, Converter={Helpers:NullValueBoolConverter}}" Text="{Binding Note, StringFormat='Note : {0}'}" 
+                                    FontSize="22" LineBreakMode="WordWrap" VerticalTextAlignment="Center"/>
+                            </StackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+            <!--Ticket end: #62808 .by rupesh-->
+
+            <!--Ticket start: #91266 iOS:FR register report by pratik-->
+            <Grid Margin="10,0,10,0" RowSpacing="0" ColumnSpacing="0" HeightRequest="101">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="0.5" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="0.5" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0"  Text="Total cash in:" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" />
+                <Label Grid.Row="0" Grid.Column="1"  Text="{Binding Registerclosure.RegisterTotalCashIn, StringFormat='{}{0:c}'}" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+
+                <Label Grid.Row="2" Grid.Column="0"  Text="Total cash out:" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" />
+                <Label Grid.Row="2" Grid.Column="1"  Text="{Binding Registerclosure.RegisterTotalCashOuts, StringFormat='{}{0:c}'}" FontSize="25" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
+                <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
+            </Grid>
+            <!--Ticket end: #91266 by pratik-->                   
+        </StackLayout>
+
+        <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <Grid  Margin="10,0,10,0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="20*" />
+                <ColumnDefinition Width="40*" />
+            </Grid.ColumnDefinitions>
+            <userControls:LblValueTemplate x:Name="totalNewCustomers" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Label="{Localize:Translate NewCustomersText}" Value="{Binding Registerclosure.registerClosureTransactionDetailsDto.TotalNewCustomers}" ViewHeight="40"/>
+          
+            <userControls:LblValueTemplate x:Name="totalTransactions" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Label="{Localize:Translate NumberOfTransactionsText}" Value="{Binding Registerclosure.registerClosureTransactionDetailsDto.TotalTransactions}" ViewHeight="40"/>
+          
+            <userControls:LblValueTemplate x:Name="avgSaleValue" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Label="{Localize:Translate AverageSaleValueText}" Value="{Binding Registerclosure.registerClosureTransactionDetailsDto.AvgSaleAmount, StringFormat='{}{0:c}'}" ViewHeight="40"/>
+        </Grid>
+        <BoxView Margin="10,0,10,0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+        <StackLayout Margin="10,0,10,0" VerticalOptions="Start" BackgroundColor="White">
+            <Label Text="{Binding Registerclosure.StartByUser, StringFormat='Opened by: {0}'}" FontSize="25" HeightRequest="40" />
+            <Label x:Name="ClosedByUser" FontSize="25" HeightRequest="40" >
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label"  Binding="{Binding Source={x:Reference ClosedByUser}, Path=Text.Length}" Value="0" >
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </Label.Triggers>
+                </Label>
+        </StackLayout>
+    </StackLayout>
+</ScrollView>

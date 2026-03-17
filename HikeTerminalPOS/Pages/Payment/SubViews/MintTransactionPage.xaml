@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.MintTransactionPage" 
+        xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:MintTransactionViewModel"
+        x:DataType="vm:MintTransactionViewModel"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button Text="{Localize:Translate ChargeButtonText}" Clicked="PayHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                        <Button Text="{Localize:Translate UpdateReaderButtonText}" Clicked="UpdateHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                        <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate ChargeButtonText}" Clicked="PayHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate UpdateReaderButtonText}" Clicked="UpdateHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Localize:Translate MintTransactionHeader}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid RowSpacing="5" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Text="{Localize:Translate AmountText}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                    <Label Grid.Row="2" Text="{Binding Invoice.TenderAmount, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.PaymentChangeAmountLabelStyle}" HorizontalTextAlignment="Center"/>
+                    <ActivityIndicator Grid.Row="3" IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HeightRequest="50" WidthRequest="50" Scale="2" Color="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalOptions="End" HorizontalOptions="Center" />
+                    <Label x:Name="StatusMessage" Grid.Row="4" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand" VerticalOptions="Start" HorizontalTextAlignment="Center"/>
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

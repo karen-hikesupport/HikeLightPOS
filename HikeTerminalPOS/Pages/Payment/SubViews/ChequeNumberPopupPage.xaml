@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HikePOS"
+            xmlns:resources="clr-namespace:HikePOS.Resources"
+            xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+            xmlns:userControls="clr-namespace:HikePOS.UserControls"
+            xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+            xmlns:vm="clr-namespace:HikePOS.ViewModels"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            x:TypeArguments="vm:BaseViewModel"
+            x:Class="HikePOS.Pages.ChequeNumberPopupPage"
+            ShowDirection="TopToBottom"
+            Title="Title"
+            x:Name="PopupPage"
+            IsFullScreen="false" BackgroundColor="{StaticResource PopupBG}">
+
+    <Grid RowSpacing="0" Padding="10" HeightRequest="220" WidthRequest="340" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="0.5"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="0.5"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="PaymentReferenceID" Grid.Row="0" Text="{Localize:Translate PaymentReferenceID}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" 
+                   HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center"/>
+            <Grid Grid.Row="2" VerticalOptions="Center" Margin="20,0">
+               <Border Grid.Row="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HeightRequest="55" Padding="2,0,0,0">
+                    <userControls:BorderLessEntry x:Name="txtReference" Placeholder=" " Style="{x:Static resources:Styles.FormBigEntryStyle}" TextChanged="txtReference_TextChanged"/>
+                </Border>
+            </Grid>
+            <StackLayout Orientation="Horizontal" Grid.Row="4" HeightRequest="50" Margin="0,10,0,10" HorizontalOptions="Center">
+                 <Button x:Name="btnContinue" Text="{Localize:Translate Continue_Lbl}" 
+                    IsEnabled="false" 
+                    Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" WidthRequest="150"
+                         Padding="10,0" Clicked="btnContinue_Clicked">
+                 </Button>  
+            </StackLayout>
+            </Grid>
+</local:PopupBasePage>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+    x:Class="HikePOS.AddCustomerStoreCreditPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:TypeArguments="vm:AddCustomerStoreCreditViewModel" 
+    x:DataType="vm:AddCustomerStoreCreditViewModel" 
+    BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+			    <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    <Button Text="{Localize:Translate Save_ButtonText}" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                      <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                      <Button Text="{Localize:Translate Save_ButtonText}" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+                </OnIdiom>
+            <StackLayout Grid.Row="0" Grid.Column="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Localize:Translate IssueCustomerStoreCredit_Text}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Label Text="{Localize:Translate StoreCreditValue_Text}" Margin="30,30,30,0" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="End" />
+                    <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" Margin="30,0,30,0" Padding="0" VerticalOptions="Start" >
+                        <userControls:CustomEntry x:Name="txtAmount" Text="{Binding StrAmount}" OnlyAllowDecimalValue="true" Keyboard="Numeric" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HeightRequest="60">
+                        </userControls:CustomEntry>
+                    </Border>
+                    <Label Text="{Localize:Translate NoteText}" Margin="30,0,30,0" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="End" />
+                    <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" Margin="30,0,30,0" VerticalOptions="Start" HeightRequest="150">
+                        <userControls:CustomEditor x:Name="txtNote" Style="{x:Static resources:Styles.FormEditorStyle}" HeightRequest="150"/>
+                    </Border>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

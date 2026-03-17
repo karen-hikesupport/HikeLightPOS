@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HikePOS.Pages.PhonePages.Payment.TapToPayEducationPagePhone"
+             xmlns:resources="clr-namespace:HikePOS.Resources" 
+             Title="TapToPayEducationPagePhone">
+    <Grid Margin="20" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row ="0" Source="hike_logo_login.png"
+            VerticalOptions="Start" 
+            HorizontalOptions="Start" />
+        <Button Text="Skip" Grid.Row ="0" Clicked="Close_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"  HorizontalOptions="End"/>
+        <VerticalStackLayout Grid.Row ="1" Spacing="30">
+            <Label Text ="Setting up your iPhone..." Style="{x:Static resources:Styles.PageTitleLabelStyle}" HorizontalTextAlignment="Center" />
+            <ProgressBar x:Name="ProgressBar" ProgressColor="{x:Static resources:AppColors.HikeColor}" Progress="0.2"></ProgressBar>
+        </VerticalStackLayout>
+        <VerticalStackLayout Grid.Row ="2" Spacing="8">
+            <CarouselView x:Name="Carousal" Loop="False" PeekAreaInsets="20" HeightRequest="400" PositionChanged="Position_changed"  Scrolled="OnCarouselViewScrolled" IsSwipeEnabled="True" ItemsUpdatingScrollMode="KeepLastItemInView" IndicatorView="indicatorView" >
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"
+                           SnapPointsType="MandatorySingle"
+                           SnapPointsAlignment="Center" ItemSpacing="10"/>
+                </CarouselView.ItemsLayout>
+
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Image Source="{Binding .}"></Image>
+                        </StackLayout>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+            <IndicatorView x:Name="indicatorView" 
+                   IndicatorColor="LightGray"
+                   SelectedIndicatorColor="DarkGray"
+                   HorizontalOptions="Center" />
+            <Button x:Name="ReadyButton" Text="Ready to Go" IsVisible="False" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" Clicked="Close_Clicked" TextColor="White" BackgroundColor = "{x:Static resources:AppColors.HikeColor}" WidthRequest="200" Margin="24"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

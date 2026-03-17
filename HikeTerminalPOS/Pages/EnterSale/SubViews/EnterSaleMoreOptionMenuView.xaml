@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.EnterSaleMoreOptionMenuView"
+		xmlns:resources="clr-namespace:HikePOS.Resources"
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		Padding="1"
+		xmlns:model="clr-namespace:HikePOS.ViewModels"
+		x:DataType="model:InvoiceViewModel" 
+		BackgroundColor="{x:Static resources:AppColors.BordersColor}">
+	<ContentView.Content>
+		<StackLayout WidthRequest="220" Spacing="1" BackgroundColor="Transparent">
+        <!-- <Button IsVisible="{Binding PermissionGiftCardSale}" BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30" Command="{Binding ToolMenuCommand}" CommandParameter="AddGiftCard" FontSize="14" Text="{Localize:Translate AddGiftCardText}" CornerRadius="0" BorderWidth="0"
+				TextColor="{Binding GiftcardButtonTextColor, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikeGiftCardFeature}"/> -->
+        <Button IsVisible="{Binding PermissionDoCustomSale}" BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30" Command="{Binding ToolMenuCommand}" CommandParameter="CustomSale" FontSize="14" Text="{Localize:Translate CustomSale_TitleText}" TextColor="Black" CornerRadius="0" BorderWidth="0"/>
+        <Button BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30"  FontSize="14" IsVisible="{Binding IsParkSale}" Command="{Binding ToolMenuCommand}" CommandParameter="Parked" TextColor="Black" Text="{Localize:Translate ParkThisSaleText}" CornerRadius="0" BorderWidth="0">
+			<Button.Triggers>
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="Completed">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="Refunded">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="Voided">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>			
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="LayBy">
+					<Setter Property="CommandParameter" Value="LayBy" />
+					<Setter Property="Text" Value="{Localize:Translate LayByText}" />
+					<Setter Property="IsVisible" Value="True" />
+				</DataTrigger>
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="BackOrder">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="OnAccount">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+	             <DataTrigger TargetType="Button" Binding="{Binding Invoice.InvoiceLineItemsCnt}" Value="0">
+					<Setter Property="IsVisible" Value="False" />
+				</DataTrigger>
+			</Button.Triggers>
+		</Button>
+        <!-- <Button IsVisible="{Binding PermissionOpenCashDrawer}" BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30" Command="{Binding ToolMenuCommand}" CommandParameter="OpenCashDrawer" FontSize="14" Text="{Localize:Translate OpenCashDrawerText}" TextColor="Black" CornerRadius="0" BorderWidth="0" /> -->
+        <Button IsVisible="{Binding DiscardAndVoidVisible}" BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30" Command="{Binding ToolMenuCommand}" CommandParameter="RefundAndVoid" FontSize="14" Text="{Localize:Translate RefundAndVoidText}" TextColor="Black" CornerRadius="0" BorderWidth="0" />
+        <Button IsVisible="{Binding DiscardVisible}" BackgroundColor="White" VerticalOptions="Start" MinimumHeightRequest="30" Command="{Binding ToolMenuCommand}" CommandParameter="Discard" FontSize="14" Text="{Localize:Translate DiscardText}" TextColor="Black" CornerRadius="0" BorderWidth="0" >
+			<Button.Triggers>
+				<DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="Refunded">
+					<Setter Property="Text" Value="Cancel Refund" />
+				</DataTrigger>
+                <DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="Exchange">
+                    <Setter Property="Text" Value="Cancel Exchange" />
+                </DataTrigger>
+				 <DataTrigger TargetType="Button" Binding="{Binding IsRelease}" Value="True"> <!--#94565-->
+                    <Setter Property="Text" Value="Release" />
+                </DataTrigger>
+			</Button.Triggers>
+		</Button>
+			
+	</StackLayout>
+	</ContentView.Content>
+</ContentView>

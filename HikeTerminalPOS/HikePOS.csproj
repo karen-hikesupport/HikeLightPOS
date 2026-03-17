@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<RootNamespace>HikePOS</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<!-- Display name -->
+		<ApplicationTitle>HikePOS</ApplicationTitle>
+		<!-- App Identifier -->
+		<ApplicationId>com.hikeup</ApplicationId>
+		<ApplicationIdGuid>86379d64-fb85-4f6b-86bf-7dae963ab2ea</ApplicationIdGuid>
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">28.0</SupportedOSPlatformVersion>
+		<TargetFrameworks>net9.0-android</TargetFrameworks>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
+		<PublishTrimmed>true</PublishTrimmed>
+  		<UseNativeAot>true</UseNativeAot> 
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-android|AnyCPU'">
+		<!-- <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk> -->
+		<!-- <AndroidDexTool>d8</AndroidDexTool> -->
+		<!-- <AndroidFastDeployment>false</AndroidFastDeployment> -->
+		<JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
+		<!-- <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+		<RuntimeIdentifiers>android-arm64</RuntimeIdentifiers> -->
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
+		<AndroidPackageFormat>apk</AndroidPackageFormat>
+		<JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
+		<RuntimeIdentifiers>android-arm</RuntimeIdentifiers> 
+	</PropertyGroup>
+	<ItemGroup>
+		<!-- App Icon -->
+		<!--<MauiSplashScreen Include="Resources\Splash\splash.svg" Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) != 'ios'" />-->
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Include="Resources\Login\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<!--		<MauiIcon Include="Resources\AppIcon\appiconfg.svg" />-->
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Adyen" Version="33.0.0" />
+		<PackageReference Include="Microsoft.AppCenter.Crashes" Version="5.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="fusillade" Version="2.6.30" />
+		<PackageReference Include="Refit" Version="8.0.0" />
+		<PackageReference Include="Polly" Version="8.5.2" />
+		<PackageReference Include="ably.io" Version="1.2.15" />
+		<PackageReference Include="PubnubPCL" Version="7.3.8" />
+		<PackageReference Include="NodaTime" Version="3.1.9" />
+		<PackageReference Include="ZXing.Net.Maui" Version="0.4.0" />
+		<PackageReference Include="Serilog" Version="3.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.0" />
+		<PackageReference Include="WebSocket4Net" Version="0.15.2" />
+		<PackageReference Include="SPIClient" Version="2.9.5" />
+		<PackageReference Include="Xam.Plugin.Media" Version="6.0.2" />
+		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
+		<PackageReference Include="Realm" Version="20.1.0" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.82" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.82" />
+		<PackageReference Include="Fody" Version="6.9.1">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="MongoDB.Bson" Version="2.25.0" />
+		<PackageReference Include="Realm.PlatformHelpers" Version="12.5.0" />
+		<PackageReference Include="Remotion.Linq" Version="2.2.0" />
+		<PackageReference Include="System.Buffers" Version="4.5.1" />
+		<PackageReference Include="System.Memory" Version="4.5.5" />
+		<PackageReference Include="System.Net.Security" Version="4.3.2" />
+		<PackageReference Include="System.Net.WebSockets.Client" Version="4.3.2" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+		<PackageReference Include="System.Threading.Channels" Version="8.0.0" />
+		<PackageReference Include="FFImageLoading.Maui" Version="1.3.2" />
+		<PackageReference Include="ImageCropper.Maui" Version="1.1.0.7" />
+		<PackageReference Include="Refit.Newtonsoft.Json" Version="8.0.0" />
+		<PackageReference Include="BarcodeScanning.Native.Maui" Version="2.2.1" />
+		<PackageReference Include="SocketMobile.Capture" Version="1.7.83.246" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+		<!-- <PackageReference Include="Sentry.Maui" Version="5.4.0" /> -->
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Platforms\iOS\DependencyServices\MintPayment.cs" />
+		<Compile Remove="Pages\Payment\SubViews\SignaturePromptPage.xaml.cs" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+		<MauiSplashScreen Include="Resources\Images\hike_logo_login_white.svg" Color="#35BDB9" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" ForegroundScale="0.60" Color="#FFFFFF" BaseSize="456,456" />
+		<PackageReference Include="AndHUD" Version="2.0.2" />
+		<PackageReference Include="Xamarin.AndroidX.Collection.Ktx" Version="1.5.0.2" />
+		<PackageReference Include="Xamarin.AndroidX.Collection" Version="1.5.0.2" />
+		<PackageReference Include="Xamarin.AndroidX.Fragment.Ktx" Version="1.8.6.1" />
+		<PackageReference Include="Xamarin.AndroidX.Core" Version="1.16.0.1" />
+		<PackageReference Include="FlexboxLayout.Xamarin.Android" Version="3.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
+		<PackageReference Include="Xamarin.Kotlin.StdLib" Version="2.2.0" />
+	    <PackageReference Include="Xamarin.Kotlin.Reflect" Version="2.2.0" />
+		<!-- <PackageReference Include="Square.OkHttp3" Version="4.12.0.7" /> -->
+		<PackageReference Include="Xamarin.KotlinX.Serialization.Json.Jvm" Version="1.8.1" />
+
+	</ItemGroup>
+	<ItemGroup>
+		<MauiXaml Remove="Pages\Payment\SubViews\SignaturePromptPage.xaml" />
+	</ItemGroup>
+	<!--	<ItemGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+	  <InterfaceDefinition Include="Resources\MauiSplash.storyboard" />
+	</ItemGroup>-->
+	<ItemGroup>
+		<None Remove="Resources\splashscreen.svg" />
+		<!--	  <None Remove="Resources\AppIcon\appiconfg.svg" />-->
+		<None Remove="Messenger\" />
+		<None Remove="Platforms\Android\Resources\drawable\" />
+		<None Remove="Platforms\Android\Resources\drawable\splashscreen.png" />
+		<None Remove="Platforms\Android\Resources\values\styles.xml" />
+		<None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+		<None Remove="Platforms\Android\Resources\xml\file_paths.xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<BundleResource Include="Resources\splashscreen.png" />
+		<BundleResource Include="Platforms\Android\Resources\drawable\splashscreen.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Messenger\" />
+		<Folder Include="Platforms\Android\Resources\drawable\" />
+	</ItemGroup>
+	<ItemGroup>
+		<AndroidResource Include="Platforms\Android\Resources\values\styles.xml" />
+		<AndroidResource Include="Platforms\Android\Resources\xml\network_security_config.xml" />
+		<AndroidResource Include="Platforms\Android\Resources\xml\file_paths.xml" />
+	</ItemGroup>
+	<Target Name="SelectStaticRegistrar" AfterTargets="SelectRegistrar">
+    <PropertyGroup Condition="'$(Registrar)' == 'managed-static'">
+        <Registrar>static</Registrar>
+    </PropertyGroup>
+</Target>
+
+</Project>

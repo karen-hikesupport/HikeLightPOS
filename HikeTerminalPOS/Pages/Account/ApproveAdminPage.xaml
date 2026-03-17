@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.ApproveAdminPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:TypeArguments="vm:ApproveAdminViewModel"
+    x:DataType="vm:ApproveAdminViewModel"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                     <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                     <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>           
+            <StackLayout Grid.Row="0" Grid.Column="1" BackgroundColor="White" Spacing="0">
+                <Label Text="Get manager or admin approval" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Padding="10,20,10,10" />
+                 <!-- Ticket start:#91263 iOS:FR Redeeming Points.by rupesh -->
+                <Label IsVisible="{Binding IsDescriptionNotShown,Converter={Helpers:InverseBoolConverter}}" Text="Order line item and/or total invoice discount is greater than allowed limit. Manager approval required." FontSize="16" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="20,10,20,10" />
+                 <!-- Ticket end:#91263 .by rupesh -->
+                <ContentView BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand">
+                  <CollectionView x:Name="UserListView" 
+                                VerticalOptions="FillAndExpand" 
+                                HorizontalOptions="FillAndExpand"                                
+                                Margin="20"
+                                SelectionMode="Single"
+                                ItemsSource="{Binding Users}" SelectionChanged="UserSelectHandle_ItemTapped">
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="5" HorizontalItemSpacing="5"/> 
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:UserListDto">
+                                    <ContentView>
+                                        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="20" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border StrokeShape="RoundRectangle 45,45,45,45" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" HeightRequest="90" WidthRequest="90" Stroke="{x:Static resources:AppColors.LightBordersColor}" Padding="0">
+                                                <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                                                    <Label Text="{Binding FullName, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="30" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                                     <Image 
+                                                            Aspect="Fill" 
+                                                            VerticalOptions="FillAndExpand" 
+                                                            HorizontalOptions="FillAndExpand"
+                                                            >
+                                                            <Image.Source>
+                                                                <UriImageSource Uri="{Binding ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                                                    CacheValidity="30" 
+                                                                    CachingEnabled="true"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                </Grid>
+                                            </Border>
+                                            <ContentView Grid.Row="1" Grid.Column="0">
+                                                <Label Text="{Binding FullName}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,10,10,0" />
+                                            </ContentView>
+                                            <ContentView Grid.Row="2" Grid.Column="0">
+                                                <Label Text="{Binding Roles[0].RoleName}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,0,10,0" />
+                                            </ContentView>
+                                        </Grid>
+                                    </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </ContentView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

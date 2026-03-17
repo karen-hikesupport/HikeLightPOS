@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <style name="SplashTheme" parent="Maui.SplashTheme">
+      <item name="android:windowBackground">@drawable/splashscreen</item>
+      <!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
+		<item name="windowNoTitle">true</item>
+		<!--We will be using the toolbar so no need to show ActionBar-->
+		<item name="windowActionBar">false</item>
+        <item name="colorPrimary">#32BDB9</item>
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="colorPrimaryDark">#32BDB9</item>
+		<!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+		<item name="colorAccent">#32BDB9</item>
+		<item name="colorControlNormal">#000000</item>
+		<item name="android:colorPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorLongPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorFocusedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorActivatedHighlight">@color/ListViewSelected</item>
+	    <item name="android:activatedBackgroundIndicator">@color/ListViewSelected</item> 
+
+		<!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+		<item name="windowActionModeOverlay">true</item>
+		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+		<item name="android:ambientShadowAlpha">0</item>
+		<item name="android:spotShadowAlpha">0</item>
+        <item name="android:focusedByDefault">false</item>
+    <item name="android:defaultFocusHighlightEnabled">false</item>
+    </style>
+	  <style name="Maui.MainTheme" parent="Theme.MaterialComponents.DayNight">
+		<item name="windowNoTitle">true</item>
+		<!--We will be using the toolbar so no need to show ActionBar-->
+		<item name="windowActionBar">false</item>
+        <item name="colorPrimary">#32BDB9</item>
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="colorPrimaryDark">#FFFFFF</item>
+		<!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+		<item name="colorAccent">#32BDB9</item>
+		<item name="colorControlNormal">#000000</item>
+		<item name="android:colorPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorLongPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorFocusedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorActivatedHighlight">@color/TransparentColor</item>
+	    <item name="android:activatedBackgroundIndicator">@color/ListViewSelected</item> 
+        <item name="android:windowLightStatusBar">true</item>
+		<!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+		<item name="windowActionModeOverlay">true</item>
+		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+		<item name="android:ambientShadowAlpha">0</item>
+		<item name="android:spotShadowAlpha">0</item>
+		<item name="android:focusedByDefault">false</item>
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+    </style>
+
+    <style name="MyTheme.Base" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+		<!--If you are using revision 22.1 please use just windowNoTitle. Without android:-->
+		<item name="windowNoTitle">true</item>
+		<!--We will be using the toolbar so no need to show ActionBar-->
+		<item name="windowActionBar">false</item>
+		<!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
+		<!-- colorPrimary is used for the default action bar background -->
+		<item name="colorPrimary">#32BDB9</item>
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="colorPrimaryDark">#32BDB9</item>
+		<!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+		<item name="colorAccent">#32BDB9</item>
+		<item name="colorControlNormal">#000000</item>
+		<item name="android:colorPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorLongPressedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorFocusedHighlight">@color/ListViewSelected</item>
+	    <item name="android:colorActivatedHighlight">@color/ListViewSelected</item>
+	    <item name="android:activatedBackgroundIndicator">@color/ListViewSelected</item> 
+        <item name="android:focusedByDefault">false</item>
+        <item name="android:defaultFocusHighlightEnabled">false</item>
+
+		<!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+		<item name="windowActionModeOverlay">true</item>
+		<item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+	</style>
+	<color name="ListViewSelected">#96BCE3</color>
+	<color name="TransparentColor">#00000000</color>
+     <color name="Semi_TransparentColor">#80000000</color>
+	 <style name="MyTransparentTheme" parent="MyTheme.Base">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/Semi_TransparentColor</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+	<style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+		<item name="spinBars">false</item>
+	</style>
+	<style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+		<item name="colorAccent">#32BDB9</item>
+		<item name="colorOnPrimary">#000000</item>
+	</style>
+</resources>
+
+

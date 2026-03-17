@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.CashInOutReceipt"
+			HorizontalOptions="FillAndExpand" BackgroundColor="White" xmlns:userControls="clr-namespace:HikePOS.UserControls" VerticalOptions="Start">
+	 <!--Ticket start:#40099 Print Receipt black out issue in latest Form 5.0.by Rupesh-->
+ <StackLayout  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White" Padding="10,0,10,0" Spacing="5">
+	<Grid VerticalOptions="Start" BackgroundColor="White">
+	 <!--Ticket end:#40099.by Rupesh-->            
+		<Grid.RowDefinitions>
+			<RowDefinition Height="50" />
+			<RowDefinition Height="100" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="50" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		 <Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+	    </Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" FontSize="25" x:Name="CashType" FontAttributes="Bold" Margin="0,20,0,0" TextColor="Black" HorizontalOptions="CenterAndExpand" />
+		<Label Grid.Row="1" Grid.Column="0" FontSize="50" x:Name="CashAmount" TextColor="Black" HorizontalOptions="CenterAndExpand" MaxLines="1" />
+		<Label FontSize="25" Grid.Row="2" Grid.Column="0" x:Name="Date" TextColor="Black" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" />
+		<Label FontSize="25" Grid.Row="3" Grid.Column="0" x:Name="User" TextColor="Black" VerticalTextAlignment="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" />
+		<Label FontSize="25" Grid.Row="4" Grid.Column="0" x:Name="Note" TextColor="Black" VerticalTextAlignment="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center"/>
+        <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+       <userControls:CustomHtmlLabel Text="" IsVisible="false"  HorizontalOptions="CenterAndExpand" Margin="0,5,0,5" TextType="Html"/>
+        <!--Ticket end: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+	</Grid>
+	</StackLayout>
+</ScrollView>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.SearchProductViewCell" xmlns:Helpers="clr-namespace:HikePOS.Helpers" xmlns:resources="clr-namespace:HikePOS.Resources"  xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto"
+    >
+	<Grid RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Color="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start" HeightRequest="0.5" Margin="12,0,17,4" />
+        <Border StrokeShape="RoundRectangle 20" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" Padding="0" Margin="12,5,0,5" Stroke="{x:Static resources:AppColors.LightBordersColor}">
+            <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                <Label Text="{Binding Product.Name, Converter={Helpers:StringToAvtarNameConverter}}" Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Image 
+                    Aspect="Fill" 
+                    VerticalOptions="FillAndExpand" 
+                    HorizontalOptions="FillAndExpand"
+                    >
+                    <!--Ticket #11004 Start : Search bar product image not showing issue resolved. By Nikhil-->
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding Product.ItemImageUrl, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium}" 
+                            CacheValidity="30"
+                            CachingEnabled="true"/>
+                    </Image.Source>
+                    <!--Ticket #11004 End : By Nikhil-->
+                </Image>
+            </Grid>
+        </Border>
+        <Label Text="{Binding Product.Name}" Grid.Row="1" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="16" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,5,5,0" />
+        <!--Ticket start:#36346 Android: SKU is not showing under product list in POS search Bar.by rupesh-->
+        <Label Text="{Binding Product.Sku}" Grid.Row="2" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="10" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,5,0" />
+         <!--Ticket end:#36346 .by rupesh-->
+        <Label Text="{Binding Product.Specification}" Grid.Row="2" Grid.Column="1" FontSize="10" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,5,5" />
+         <!--Ticket start:#20064 Unit of measurement feature for iPad app.by rupesh-->
+        <Label
+            IsVisible="{Binding Product.IsUnitOfMeasure,Converter={Helpers:InverseBoolConverter}}"
+            Text="{Binding Product.ProductOutlet.SellingPrice, StringFormat='{}{0:c}'}"
+            Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="14"
+            VerticalOptions="Center"
+            HorizontalOptions="End"
+            Margin="0,5,17,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" />
+        
+         <Label IsVisible="{Binding Product.IsUnitOfMeasure}"
+                Text="{Binding Product.UOMSellingPrice, StringFormat='{}{0:c}'}"
+                Grid.Row="0" Grid.Column="3" Grid.RowSpan="3"
+                FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                FontSize="14" VerticalOptions="Center"
+                HorizontalOptions="End" Margin="0,5,17,0"
+                TextColor="{x:Static resources:AppColors.DarkTextColor}" >
+             <!--#36847 iPad: UOM product price showing 0 in search bar list-->
+             <Label.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding Product.IsUnitOfMeasure}" Value="True">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+            </Label.Triggers>
+             <!--#36847 iPad: UOM product price showing 0 in search bar list-->
+             </Label>
+           <!--Ticket end:#26980 .by rupesh-->
+         <!--Ticket end:#20064 .by rupesh-->
+    </Grid>
+</ViewCell>

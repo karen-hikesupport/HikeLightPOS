@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:BaseViewModel"
+		xmlns:local="clr-namespace:HikePOS" 
+		x:Class="HikePOS.NoPermissionPage" 
+		BackgroundColor="{x:Static resources:AppColors.LoginBackgroundColor}">
+	 <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                    <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                    <RowDefinition Height="2" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+            <Label Grid.Row="0" x:Name="lbltitle" Text="Permission" Style="{x:Static resources:Styles.PageTitleLabelStyle}" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Center" />
+            <BoxView Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  Color="{x:Static resources:AppColors.HeaderSepratorColor}" />
+            <VerticalStackLayout Grid.Row="2"  VerticalOptions="Center" HorizontalOptions="Center" Spacing="30">
+                 <Label Text="Sorry, You don't have permission. Please contact your administration."
+                      FontFamily="{x:Static resources:Fonts.HikeLightFont}" FontSize="18"
+                      Margin="20,0" HorizontalTextAlignment="Center"/>
+                 <Button IsEnabled="{Binding IsPayment_OnAccountEnable}"
+                        Text="GO BACK" LineBreakMode="WordWrap" Padding="8,2"
+                        Clicked="ImageButton_Clicked"
+                        Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"
+                        HorizontalOptions="Center"
+                        HeightRequest="50" WidthRequest="150"/>
+            </VerticalStackLayout>
+           
+	</Grid>
+</local:BaseContentPage>

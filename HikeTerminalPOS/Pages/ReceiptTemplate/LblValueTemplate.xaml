@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.LblValueTemplate" 
+xmlns:customControls="clr-namespace:HikePOS.UserControls" ColumnSpacing="0" RowSpacing="0" x:Name="this" HeightRequest="{Binding ViewHeight, Source={x:Reference this}}">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="50*" />
+        <ColumnDefinition Width="10" />
+        <ColumnDefinition Width="40*" />
+    </Grid.ColumnDefinitions>
+    <Label x:Name="lbl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding Label, Source={x:Reference this}}" FontSize="25" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,10,0" HeightRequest="{Binding ViewHeight, Source={x:Reference this}}"/>
+    <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+    <customControls:AutoFitLabel x:Name="value" Grid.Row="0" Grid.Column="2" Text="{Binding Value, Source={x:Reference this}}" FontSize="25" VerticalOptions="Center" LineBreakMode="WordWrap" HorizontalOptions="End" HorizontalTextAlignment="End" HeightRequest="{Binding ViewHeight, Source={x:Reference this}}" MaxLines="1"/>
+    <Label x:Name="value1" Grid.Row="0" Grid.Column="2" IsVisible="False"
+                                 Text="{Binding Value, Source={x:Reference this}}" FontSize="25" VerticalOptions="Center"
+                                 LineBreakMode="WordWrap" HorizontalOptions="End" HorizontalTextAlignment="End"
+                                 HeightRequest="{Binding ViewHeight, Source={x:Reference this}}" MaxLines="1"/>
+    <!--Ticket end: #62808 .by rupesh-->
+</Grid> 

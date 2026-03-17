@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HikePOS.Pages.Settings.HikePayConfigurationPage"
+             xmlns:local="clr-namespace:HikePOS"
+		     xmlns:resources="clr-namespace:HikePOS.Resources"
+             xmlns:helper="clr-namespace:HikePOS.Helpers" 
+		     xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+             xmlns:vm="clr-namespace:HikePOS.ViewModels"
+             x:TypeArguments="vm:HikePayConfigurationViewModel"
+             x:DataType="vm:HikePayConfigurationViewModel"
+		     xmlns:userControls="clr-namespace:HikePOS.UserControls"
+             Title="HikePay Configuration" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button Text="{Binding PairUnpairText}" Command="{Binding PairCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Binding PairUnpairText}" Command="{Binding PairCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}"
+                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+                <Label Text="HikePay Configuration" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <VerticalStackLayout Spacing="5" IsVisible="{Binding IsStatusDisplay,Converter={helper:InverseBoolConverter}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="{OnIdiom Phone='20,40',Default='40'}">
+                            <Label Text="IPAddress"
+                                    FontSize="14"
+                                    FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"/>
+                            <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+                                    Padding="0"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,0,10">
+                                <userControls:CustomEntry Text="{Binding IPAddress}"
+                                        Placeholder="Enter IPAddress"
+                                        FontSize="16"
+                                        FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                        TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                                        HeightRequest="60"/>
+                            </Border>
+                            <!-- <Label Text="Port"
+                                    FontSize="14"
+                                    FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="End"/>
+                            <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+                                    Padding="0"
+                                    VerticalOptions="Start"
+                                    Margin="0,0,0,10">
+                                <userControls:CustomEntry Text="{Binding Port}"
+                                        Placeholder="Enter Port"
+                                        FontSize="16"
+                                        FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                        TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                                        HeightRequest="60"/>
+                            </Border> -->
+                        </VerticalStackLayout>
+                        <Label HorizontalOptions="FillAndExpand" Margin="0,20,0,0" VerticalOptions="Start"
+                                FontSize="14" Text="{Binding Status}" IsVisible="{Binding IsStatusDisplay}"
+                                TextColor="Black" HorizontalTextAlignment="Center">
+                            </Label>
+                    </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

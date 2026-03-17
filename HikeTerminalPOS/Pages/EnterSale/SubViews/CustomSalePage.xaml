@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		x:Class="HikePOS.CustomSalePage" 
+        xmlns:local="clr-namespace:HikePOS" 
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:CustomSaleViewModel"
+        x:DataType ="vm:CustomSaleViewModel"
+        Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+	<ContentPage.Content>
+		    <Grid ColumnSpacing="0" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                 <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                      <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                      <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                    </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                      <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                      <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+                </OnIdiom>
+                <Grid x:Name="rootview" RowDefinitions="Auto,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                    <userControls:FixedScrollView  Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,10,20,40',Default='40,10,40,40'}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="{OnPlatform Default='90', Android='100'}" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="Auto" />
+                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="120" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Name" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding CustomSale.Title}" Style="{x:Static resources:Styles.FormEntryStyle}" />
+                            </Border>
+                        
+                            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="10" RowSpacing="0" HorizontalOptions="Center" Margin="0,10,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="{OnPlatform Default='70', Android='80'}" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseHandleCommand}" Text="-" Style="{x:Static resources:Styles.IncreaseDescreaseButtonStyle}" TextColor="Red"  VerticalOptions="End"/>
+                                <StackLayout Grid.Row="0" Grid.Column="1" Spacing="5" HorizontalOptions="FillAndExpand">
+                                    <Label Text="Quantity" Style="{x:Static resources:Styles.FormTitleLabelStyle}" Margin="0" HeightRequest="30"
+                                           VerticalTextAlignment="End" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                    <userControls:CustomEntry  x:Name="CustomProductQuantity" OnlyAllowDecimalValue="true" Text="{Binding Quantity}" HeightRequest="{OnPlatform Default='36', Android='48'}" 
+                                                               Style="{x:Static resources:Styles.QuantityEntryStyle}" HorizontalOptions="FillAndExpand" Margin="0">
+                                        <userControls:CustomEntry.Behaviors>
+                                            <toolkit:EventToCommandBehavior
+                                                     EventName="Unfocused"
+                                                     Command="{Binding QuantityUnfocusedCommand}" />
+                                        </userControls:CustomEntry.Behaviors>
+                                    </userControls:CustomEntry>
+                                </StackLayout>
+                                <Button Grid.Row="0" Grid.Column="2" Command="{Binding IncreaseHandleCommand}" Text="+" Style="{x:Static resources:Styles.IncreaseDescreaseButtonStyle}" TextColor="Green" VerticalOptions="End"/>
+                            </Grid>
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Price" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="4" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry OnlyAllowDecimalValue="true" Text="{Binding CustomSale.StrRetailPrice}" Keyboard="Numeric" Style="{x:Static resources:Styles.FormEntryStyle}" />
+                            </Border>
+                            <Label Grid.Row="3" Grid.Column="1" Text="Cost Price" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                                <Border Grid.Row="4" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry x:Name="txtCost" Text="{Binding CustomSale.StrItemCost}" Keyboard="Numeric" OnlyAllowDecimalValue="true" Style="{x:Static resources:Styles.FormEntryStyle}"/>
+                                </Border>
+                            <Label Grid.Row="3" Grid.Column="2" Text="Discount(%)" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="4" Grid.Column="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" >
+                                <userControls:CustomEntry Text="{Binding CustomSale.DiscountValue}" Keyboard="Numeric" Style="{x:Static resources:Styles.FormEntryStyle}" />
+                            </Border>
+                            <Label Grid.Row="5" Grid.Column="0" Text="Tax" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}"/>
+                                    <userControls:CustomPicker BackgroundColor="Transparent" x:Name="PickerTaxList" ItemsSource="{Binding TaxList}" DisplayProperty="Name" SelectedItem="{Binding SelectedTax}" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" IsEnabled="{Binding CanChangeTax}" />
+                                </Grid>
+                            </Border>
+                            <!--Start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik-->
+                            <Label Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Text="Served by (Salesperson)" IsVisible="{Binding IsServedBy}"
+                                   Style="{x:Static resources:Styles.FormTitleLabelStyle}" HeightRequest="30" VerticalTextAlignment="End"/>
+                            <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3" IsVisible="{Binding IsServedBy}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}"/>
+                                    <userControls:CustomPicker BackgroundColor="Transparent"
+                                                               ItemsSource="{Binding Users}" DisplayProperty="FullName" SelectedItem="{Binding SelectedUser}"
+                                                               HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                             <!--End #84287 By Pratik-->
+                            <Label Grid.Row="9" Grid.Column="0" Text="Notes" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" VerticalOptions="Start" HeightRequest="120">
+                                <userControls:CustomEditor Text="{Binding CustomSale.Description}" Style="{x:Static resources:Styles.FormEditorStyle}" HeightRequest="120"  />
+                            </Border>
+                        </Grid>
+                    </userControls:FixedScrollView>
+                    <Label Grid.Row="0" Text="Add custom sale" Margin="0" Padding="40" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />   
+                </Grid>
+            </Grid>
+	</ContentPage.Content>
+</local:PopupBasePage>

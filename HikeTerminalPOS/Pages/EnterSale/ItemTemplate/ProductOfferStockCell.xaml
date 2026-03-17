@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.ProductOfferStockCell"
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" HeightRequest="140"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto">
+     <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="Transparent"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+     <ContentView BackgroundColor="#d0d7de" Margin="5" Opacity="1">
+        <ContentView.Triggers>
+            <DataTrigger TargetType="ContentView" Binding="{Binding Product.Id}" Value="0">
+                <Setter Property="Opacity" Value="0"/>
+            </DataTrigger>
+        </ContentView.Triggers>
+        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.Column="0"
+                BackgroundColor="{Binding Product.ColorType, Converter={Helpers:ColorTypeToColorConverter}}" HorizontalOptions="Fill">
+                <Label x:Name="lblname" TextColor="Black" Margin="5,0"
+                    Text="{Binding Product.ShortName}" Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}"
+                    VerticalOptions="Fill" HorizontalOptions="Fill" MaxLines="3" LineBreakMode="TailTruncation"/>                    
+                <ffimageloading:CachedImage
+                    x:Name="ProductImage"
+                    HeightRequest="95"
+                    Aspect="AspectFit"
+                    VerticalOptions="Fill"
+                    HorizontalOptions="Fill"
+                    Source="{Binding Product.FullItemImageUrl}"
+                    CacheType="All"
+                    CacheDuration="30"
+                    DownsampleToViewSize="True"
+                    RetryCount="1"
+                    RetryDelay="250"
+                    FadeAnimationEnabled="False" />
+            </Grid>
+            <Label Grid.Row="1" Grid.Column="0"  x:Name="ItemName" HeightRequest="35" MaxLines="{x:OnPlatform Android=2,Default=3}" Text="{Binding Product.Name}"
+                BackgroundColor="{Binding Product.LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='name'}"
+                TextColor="{Binding Product.LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='text'}"
+                Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Padding="10,0,10,0" />
+
+            <Border x:Name="ItemName1" Grid.Row="1" Grid.Column="0" Padding="0" Margin="0,-16,0,0"
+                 BackgroundColor="Transparent" StrokeShape="RoundRectangle 10" Stroke="Transparent" 
+                HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Center">
+                <Grid ColumnSpacing="0" RowSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="24" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <BoxView Grid.Row="0" Grid.Column="0" HeightRequest="24" WidthRequest="24" IsVisible="{Binding Product.IsInAnyOffer}" BackgroundColor="#000000" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                    <Label Grid.Row="0" Grid.Column="0" IsVisible="{Binding Product.IsInAnyOffer}" Text="{Localize:Translate GiftIconUnicode}"  Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" />
+                    <BoxView IsVisible="{Binding Product.ShowStockCountOnEnterSale}" Grid.Row="0" Grid.Column="1" BackgroundColor="#347ec0" HeightRequest="24" WidthRequest="40" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                    <Label IsVisible="{Binding Product.ShowStockCountOnEnterSale}" Grid.Row="0" Grid.Column="1" Text="{Binding Product.Stock}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="40" HorizontalOptions="Center" MaxLines="1" />
+                </Grid>
+             </Border> 
+        </Grid>
+    </ContentView>
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+</Grid>

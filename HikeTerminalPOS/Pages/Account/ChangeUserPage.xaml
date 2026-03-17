@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.ChangeUserPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:TypeArguments="vm:ChangeUserViewModel"
+    x:DataType="vm:ChangeUserViewModel"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="30,0,30,0">
+                    <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>           
+            <Grid RowDefinitions="185,Auto,Auto,Auto,*"  Grid.Row="0" Grid.Column="1" BackgroundColor="White">
+                
+                <Border StrokeShape="RoundRectangle 60,60,60,60" Grid.Row="0" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="120" MinimumHeightRequest="120" WidthRequest="120" Padding="0" Margin="10,60,10,5" Stroke="{x:Static resources:AppColors.LightBordersColor}">
+                    <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                        <Label Text="{Binding CurrentUser.DisplayName, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="50" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                        <Image 
+                            Aspect="Fill" 
+                            VerticalOptions="FillAndExpand" 
+                            HorizontalOptions="FillAndExpand"
+                            >
+                            <Image.Source>
+                                <UriImageSource Uri="{Binding CurrentUser.ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                    CacheValidity="30" 
+                                    CachingEnabled="true"/>
+                            </Image.Source>
+                        </Image>
+                    </Grid>
+                </Border>
+                <Label Grid.Row="1" Text="{Binding CurrentUser.DisplayName}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.HikeColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="10,5,10,2" />
+                <Label Grid.Row="2" Text="{Binding CurrentUser.Roles[0].RoleName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="10,2,10,5" />
+                <Button Grid.Row="3"  CornerRadius="3" BackgroundColor="{x:Static resources:AppColors.HikeColor}" Text="{Localize:Translate SignOutBtnText}" Command="{Binding LogoutCommand}" TextColor="White" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" WidthRequest="160" HorizontalOptions="Center" Margin="10,5,10,60" />
+                <ContentView Grid.Row="4"  BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand">
+                    <CollectionView x:Name="UserListView" 
+                                VerticalOptions="FillAndExpand" 
+                                HorizontalOptions="FillAndExpand"                                
+                                Margin="20"
+                                SelectionMode="Single"
+                                SelectionChangedCommand="{Binding UserSelectedCommand}" 
+                                SelectedItem="{Binding SelectedUserDto}"
+                                ItemsSource="{Binding Users}" >
+                        <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="5" HorizontalItemSpacing="5"/> 
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:UserListDto">
+                                    <ContentView>
+                                        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="20" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border StrokeShape="RoundRectangle 45,45,45,45" Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" HeightRequest="90" WidthRequest="90" Stroke="{x:Static resources:AppColors.LightBordersColor}" Padding="0">
+                                                <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                                                    <!--Start #76156 iOS; Switch User display name not working properly By Pratik-->
+                                                    <Label Text="{Binding DisplayName, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="30" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                                    <!--End #76156 By Pratik-->
+                                                     <Image 
+                                                            Aspect="Fill" 
+                                                            VerticalOptions="FillAndExpand" 
+                                                            HorizontalOptions="FillAndExpand"
+                                                            >
+                                                            <Image.Source>
+                                                                <UriImageSource Uri="{Binding ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                                                    CacheValidity="30" 
+                                                                    CachingEnabled="true"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                </Grid>
+                                            </Border>
+                                            <ContentView Grid.Row="1" Grid.Column="0">
+                                                <!--Start #76156 iOS; Switch User display name not working properly By Pratik-->
+                                                <Label Text="{Binding DisplayName}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,10,10,0"/>
+                                                <!--End #76156 By Pratik-->
+                                            </ContentView>
+                                            <ContentView Grid.Row="2" Grid.Column="0">
+                                                <Label Text="{Binding Roles[0].RoleName}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,0,10,0" />
+                                            </ContentView>
+                                        </Grid>
+                                    </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ContentView>
+            </Grid>
+
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

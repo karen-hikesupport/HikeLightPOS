@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.AutoLockPage" 
+		xmlns:local="clr-namespace:HikePOS" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:AutoLockViewModel"
+        x:DataType="vm:AutoLockViewModel"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers" BackgroundColor="{StaticResource PopupBG}">
+	
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button x:Name="btnCancelButton" Clicked="CancelAuthenticationHandle_Clicked"  Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    <Button x:Name="btnChangeUser" Text="Switch User" Clicked="ChangeUserHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                      <Button x:Name="btnCancelButtonPhone" Text="Close" Clicked="CancelAuthenticationHandle_Clicked"  Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                      <Button x:Name="btnChangeUserPhone" Text="Switch User" Clicked="ChangeUserHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>            
+            <ScrollView x:Name="scrollview" Grid.Row="0" Grid.Column="1" BackgroundColor="White" >
+                  <StackLayout x:Name="stkview" BackgroundColor="White" Spacing="0">
+                    <Label Text="{Localize:Translate AutoLock_4DigitPasscodeText}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="40,40,40,20" />
+                    <Border StrokeShape="RoundRectangle 55,55,55,55" HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="110" MinimumHeightRequest="110" WidthRequest="110" Padding="0" Margin="10,8,10,5" Stroke="{x:Static resources:AppColors.LightBordersColor}" >
+                        <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                            <Label Text="{Binding CurrentUser.Name, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="60" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                            <Image 
+                                Aspect="Fill" 
+                                VerticalOptions="FillAndExpand" 
+                                HorizontalOptions="FillAndExpand"
+                                >
+                                <Image.Source>
+                                    <UriImageSource Uri="{Binding CurrentUser.ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                        CacheValidity="30" 
+                                        CachingEnabled="true"/>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </Border>
+                    <Label Text="{Binding CurrentUser.DisplayName}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="10,5,10,2" />
+                    <Label Text="{Binding CurrentUser.Roles[0].RoleName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryLightTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="10,2,10,5" />
+                    <Label x:Name="Email" Scale="0" Text="{Binding CurrentUser.EmailAddress}" IsVisible="False"/>
+                    <!--<Button x:Name="ChangeLogoutbtn" BorderRadius="3" BackgroundColor="{x:Static resources:AppColors.HikeColor}" Text="{Localize:Translate Logout_ButtonText}" Clicked="ChangeLogoutHandle_Clicked" TextColor="White" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" WidthRequest="160" HorizontalOptions="Center" Margin="10,5,10,60" />-->
+                    <ContentView BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand">
+                    <Grid VerticalOptions="Start" HorizontalOptions="Center" RowSpacing="10" ColumnSpacing="10" Margin="0,15,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="65" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <!--<ColumnDefinition Width="*" />-->
+                        </Grid.ColumnDefinitions>
+                        <StackLayout x:Name="PinDotsLayout" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" Orientation="Horizontal" Spacing="5" >
+                            <Label x:Name="FirstDot" Text="•" FontSize="45" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.BordersColor}" />
+                            <Label x:Name="SecondDot" Text="•" FontSize="45" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.BordersColor}" />
+                            <Label x:Name="ThirdDot" Text="•" FontSize="45" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.BordersColor}" />
+                            <Label x:Name="FourthDot" Text="•" FontSize="45" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.BordersColor}" />
+                        </StackLayout>
+
+                        <Button x:Name="OneButton" Clicked="Button_Clicked" Grid.Row="1" Grid.Column="0" Text="1" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="TwoButton" Clicked="Button_Clicked" Grid.Row="1" Grid.Column="1" Text="2" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="ThreeButton" Clicked="Button_Clicked" Grid.Row="1" Grid.Column="2" Text="3" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="FourButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="0" Text="4" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="FiveButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="1" Text="5" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="SixButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="2" Text="6" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="SevenButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="0" Text="7" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="EightButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="1" Text="8" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="NineButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="2" Text="9" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+                        <Button x:Name="ZeroButton" Clicked="Button_Clicked" Grid.Row="4" Grid.Column="1" Text="0" Style="{x:Static resources:Styles.AutoLockButtonStyle}"/>
+
+                        <Button x:Name="BackspaceButton" Clicked="Button_Clicked" Grid.Row="4" Grid.Column="2"  HorizontalOptions="Center" WidthRequest="58"
+                            Text="{Localize:Translate ClearBtnText}" Style="{x:Static resources:Styles.ClearButtonStyle}" />
+
+                    </Grid>
+                    </ContentView>
+                    <!--</StackLayout>-->
+                </StackLayout>
+            </ScrollView>
+          
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

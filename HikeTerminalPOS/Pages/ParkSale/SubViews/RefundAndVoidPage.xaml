@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:RefundAndVoidViewModel"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:RefundAndVoidViewModel"
+        xmlns:behaviors="clr-namespace:HikePOS.Behaviors"  
+        x:Class="HikePOS.RefundAndVoidPage" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+             <OnIdiom.Tablet>
+              <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                <Button Command="{Binding CloseHandleClickedCommand}"  Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" HorizontalOptions="End" />
+              </StackLayout>
+             </OnIdiom.Tablet>
+             <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                    <Button Text="Close" Command="{Binding CloseHandleClickedCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+             </OnIdiom.Phone>
+            </OnIdiom>           
+            <Grid RowDefinitions="Auto,Auto,Auto,*" x:Name="rootview" Grid.Row="0" Grid.Column="1" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Grid.Row="0" Text="{Localize:Translate RefundAndVoidText}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <StackLayout Grid.Row="1" Spacing="10" Margin="60,0,60,0" >
+                    <Label TextColor="DarkGray"  Text="{Binding RefundAmountText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                    <Label Text="{Localize:Translate AmountTenderedText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                    <!--Start Ticket #73190 iOS FR :Automatic Surcharge For Card Payment ONLY By: Pratik-->
+                    <userControls:CustomEntry Text="{Binding TenderAmount}" IsEnabled="True" Style="{x:Static resources:Styles.PaymentTenderedAmountEntryStyle}" Unfocused="TenderAmount_Unfocused"/>
+                    <!--End Ticket #73190 By: Pratik-->
+                </StackLayout>
+                <BoxView Grid.Row="2" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="0.5" VerticalOptions="Start" Margin="20" />
+
+               <!--Ticket start#19440 iOS - 'Refund & Void' option not working correctly.by rupesh-->
+                <CollectionView Grid.Row="3" x:Name="lstViewPaymentList" 
+                                VerticalOptions="FillAndExpand"                               
+                                ItemsSource="{Binding PaymentOptionList}" Margin="20,0,20,0">
+                    <CollectionView.ItemsLayout>
+                           <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="5" HorizontalItemSpacing="5"/> 
+                    </CollectionView.ItemsLayout>
+                <!--Ticket end#19440 iOS - 'Refund & Void' option not working correctly.by rupesh-->
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:PaymentOptionDto">
+                            <ContentView HeightRequest="80" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}">
+                                <ContentView.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RefundAndVoidViewModel}}, Path=SelectPaymentHandleClickedCommand, x:DataType=vm:RefundAndVoidViewModel}" CommandParameter="{Binding .}"/>
+                                </ContentView.GestureRecognizers>
+                                <ContentView.Triggers>
+                                    <DataTrigger TargetType="ContentView" Binding="{Binding DisplayName}" Value="[MOTO]">
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </DataTrigger>
+                                </ContentView.Triggers>
+                                <StackLayout VerticalOptions="Center" Spacing="2" Padding="5,0">
+                                    <Label Text="{Binding DisplayName}"
+                                            TextColor="White" 
+                                            x:Name="PaymentButton" IsEnabled="{Binding IsEnable}" Style="{x:Static resources:Styles.PaymentTypeLblStyle}"
+                                            HorizontalOptions="FillAndExpand">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding DisplayName}" Value="[MOTO]">
+                                                <Setter Property="TextColor" Value="Blue" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Label Text="{Binding DisplaySubName}" IsVisible="{Binding DisplaySubName,Converter={Helpers:NullValueBoolConverter}}"
+                                            TextColor="White" IsEnabled="{Binding IsEnable}"
+                                            Style="{x:Static resources:Styles.PaymentTypeLblStyle}"
+                                            FontSize="16" HorizontalOptions="FillAndExpand" />
+                                </StackLayout>
+                            </ContentView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView> 
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

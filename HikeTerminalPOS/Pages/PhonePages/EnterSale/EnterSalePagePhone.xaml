@@ -1,0 +1,2015 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.EnterSalePagePhone"
+    xmlns:local="clr-namespace:HikePOS"
+    xmlns:resources="clr-namespace:HikePOS.Resources"
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:TypeArguments="vm:EnterSaleViewModel"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:DataType="vm:EnterSaleViewModel"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    NavigationPage.HasNavigationBar="False"
+    x:Name="entersalepage"
+    Title="{Localize:Translate EnterSale_TitleText}">
+    <!--<ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="ic_search" Command="{Binding SearchProductCommand}" AutomationId="searchButton" />
+    </ContentPage.ToolbarItems>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EnterSaleItemTemplateSelector x:Key="ItemTemplateSelector"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid VerticalOptions="FillAndExpand"
+                  RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                    <RowDefinition Height="2"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- Start ticket #60456 Pratik -->
+                <ContentView x:Name="PrintReceiptSummaryView"
+                             Scale="0"
+                             Grid.RowSpan="3"
+                             Grid.Row="0"
+                             HorizontalOptions="Start"
+                             IsVisible="True"/>
+                <!-- End ticket #60456 Pratik -->
+                <Grid Grid.Row="0"
+                      VerticalOptions="FillAndExpand"
+                      ColumnDefinitions="70,*,150">
+                    <ImageButton Source="ic_hamburger"
+                                 Grid.Column="0"
+                                 Grid.Row="0"
+                                 MinimumHeightRequest="32"
+                                 MinimumWidthRequest="32"
+                                 WidthRequest="32"
+                                 HeightRequest="32"
+                                 Command="{Binding SliderMenuHandleClickedCommand}"
+                                 BackgroundColor="Transparent"
+                                 HorizontalOptions="Start"
+                                 Margin="20,0,0,0"/>
+                    <Label Text="{Localize:Translate EnterSale_TitleText}"
+                           Grid.Column="1"
+                           Grid.Row="0"
+                           Style="{x:Static resources:Styles.PageTitleLabelStyle}"
+                           VerticalOptions="Center"
+                           HorizontalTextAlignment="Start"
+                           Margin="0,0,0,0"/>
+                    <HorizontalStackLayout Spacing="10"
+                                           Grid.Column="2"
+                                           Grid.Row="0"
+                                           HorizontalOptions="End">
+                        <ImageButton Source="ic_search"
+                                     MinimumHeightRequest="32"
+                                     MinimumWidthRequest="32"
+                                     WidthRequest="32"
+                                     HeightRequest="32"
+                                     Command="{Binding SearchProductCommand}"
+                                     BackgroundColor="Transparent"
+                                     HorizontalOptions="End"
+                                     Padding="3,3,0,3"/>
+                        <ImageButton Source="scanicon"
+                                     MinimumHeightRequest="32"
+                                     MinimumWidthRequest="32"
+                                     WidthRequest="32"
+                                     HeightRequest="32"
+                                     HorizontalOptions="End"
+                                     BackgroundColor="Transparent"
+                                     Command="{Binding BarcodeScanSelectedCommand}"
+                                     Padding="3,3,0,3"
+                                     Margin="0,0,0,0"/>
+                        <ImageButton 
+                                Source="icon_setting"
+                                     Padding="10,8"
+                                     Margin="0,0,5,0"
+                                     IsEnabled="{Binding IsHavingSortingEnabled}"
+                                     Command="{Binding SortingFilterMenuOpenCommand}"
+                                    WidthRequest="32"
+                                    HeightRequest="32"
+                                    HorizontalOptions="End"></ImageButton>
+                    </HorizontalStackLayout>
+                </Grid>
+                <BoxView Grid.Row="1"
+                         VerticalOptions="FillAndExpand"
+                         HorizontalOptions="FillAndExpand"
+                         Color="{x:Static resources:AppColors.HeaderSepratorColor}"/>
+                <Grid x:Name="MainGrid"
+                      Grid.Row="2"
+                      VerticalOptions="FillAndExpand"
+                      BackgroundColor="{Binding MainGridBackgroundColor}"
+                      RowSpacing="0"
+                      ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="101"/>
+                        <RowDefinition Height="0.7"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0"
+                          Grid.Column="0"
+                          Grid.RowSpan="3"
+                          RowSpacing="0"
+                          VerticalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <!-- Ticket start:#94565 FR:Restaurant POS Support in Tablet and Phone.by rupesh -->
+                        <Grid IsVisible="{Binding IsPhoneGridVisible}" ColumnDefinitions="*,150,30"
+                               >
+                            <HorizontalStackLayout VerticalOptions="Center"
+                                                   Margin="20,0,0,0"
+                                                   Spacing="6"
+                                                   IsVisible="{Binding invoicemodel.IsTableSelect}">
+                                <Image Source="table"
+                                       HeightRequest="24"
+                                       WidthRequest="24"/>
+                                <Label Grid.Column="1"
+                                       FontSize="Small" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                                       VerticalTextAlignment="Center" TextColor="Black"
+                                       Text="{Binding invoicemodel.Table.Name}"/>
+                            </HorizontalStackLayout>
+                            <Grid Grid.Column="1" IsVisible="{Binding invoicemodel.IsTabelVisible}"
+                                    VerticalOptions="Center"
+                                    HorizontalOptions="End"
+                                    WidthRequest="66" HeightRequest="45"
+                                    Margin="20,2,8,2">
+                                <Image Source="table_layout"
+                                       HeightRequest="35"
+                                       WidthRequest="45" VerticalOptions="Center">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"  Binding="{Binding invoicemodel.IsRestaurantPOS}" Value="False">
+                                            <Setter Property="Source" Value="table_layout_disable"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Border StrokeShape="RoundRectangle 13" VerticalOptions="Start"
+                                            BackgroundColor="#26394b"
+                                            Grid.Column="0" Grid.Row="0"
+                                            HeightRequest="26"
+                                            WidthRequest="26" HorizontalOptions="End">
+                                        <Label Text="{Binding OccupiedTable}" FontFamily="HikeDefaultFont"                                        
+                                            VerticalTextAlignment="Center"
+                                            HorizontalOptions="Center" FontSize="12"
+                                            TextColor="White"/>
+                                        <Border.Triggers>
+                                            <DataTrigger TargetType="Border"
+                                                            Binding="{Binding OccupiedTable}"
+                                                            Value="0">
+                                                <Setter Property="IsVisible"
+                                                        Value="False"/>
+                                            </DataTrigger>
+                                        </Border.Triggers>
+                                    </Border>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding FloorCommand}"/>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                          
+                        </Grid>
+                        <!-- Ticket end:#94565 .by rupesh -->
+                        <!-- Ticket start:#92764 iOS:FR Need to manage display product stock.by rupesh -->
+                        <!--Ticket start:#22406 Quote sale.by rupesh-->
+                        <Grid Grid.Row="1"
+                              RowSpacing="0"
+                              ColumnSpacing="0"
+                              BackgroundColor="White"
+                              IsVisible="{Binding IsQuoteOrBackorderDisplay}">
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid"
+                                             Binding="{Binding IsQuoteDisplay}"
+                                             Value="False">
+                                    <Setter Property="Grid.ColumnDefinitions"
+                                            Value="*,0,0,0.5,*"/>
+                                </DataTrigger>
+                                <DataTrigger TargetType="Grid"
+                                             Binding="{Binding IsBackorderDisplay}"
+                                             Value="False">
+                                    <Setter Property="Grid.ColumnDefinitions"
+                                            Value="*,0.5,*,0,0"/>
+                                </DataTrigger>
+                            </Grid.Triggers>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="0.5"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.5"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.5"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="ProcessSaleBtn"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="5"
+                                    BorderWidth="0"
+                                    Text="{Localize:Translate EnterSale_TitleText}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                                    Command="{Binding ProcessSaleSelectedCommand}"
+                                    CommandParameter="{Binding .}"/>
+
+                            <BoxView Grid.Row="0"
+                                     Grid.Column="0"
+                                     HorizontalOptions="FillAndExpand"
+                                     HeightRequest="2"
+                                     Color="{Binding ProcessSaleColor}"
+                                     VerticalOptions="End"/>
+                            <!--Start ticket #76209 iOS:FR: User Permission : Add a permission for allowing 'Issue a Quote' By Pratik-->
+                            <BoxView IsVisible="{Binding IsQuoteDisplay}"
+                                     Grid.Row="0"
+                                     Grid.Column="1"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"/>
+                            <!--Ticket start:#84289 IOS-Feature:-Ability to re-open Backorders and apply partial payments at any time. by rupesh-->
+                            <Button IsVisible="{Binding IsQuoteDisplay}"
+                                    x:Name="QuoteBtn"
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="5"
+                                    Text="Quote"
+                                    IsEnabled="True"
+                                    Command="{Binding QuoteSelectedCommand}"
+                                    CommandParameter="{Binding .}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding invoicemodel.Invoice.Status}"
+                                                 Value="6">
+                                        <Setter Property="IsEnabled"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <!--Ticket end:#84289. by rupesh-->
+                            <BoxView IsVisible="{Binding IsQuoteDisplay}"
+                                     Grid.Row="0"
+                                     Grid.Column="2"
+                                     HorizontalOptions="FillAndExpand"
+                                     HeightRequest="2"
+                                     Color="{Binding QuoteBtnColor}"
+                                     VerticalOptions="End"/>
+
+                            <BoxView IsVisible="{Binding IsBackorderDisplay}"
+                                     Grid.Row="0"
+                                     Grid.Column="3"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"/>
+                            <Button IsVisible="{Binding IsBackorderDisplay}"
+                                    x:Name="BackorderBtn"
+                                    Grid.Row="0"
+                                    Grid.Column="4"
+                                    Margin="5"
+                                    Text="Backorder"
+                                    IsEnabled="True"
+                                    Command="{Binding BackorderSelectedCommand}"
+                                    CommandParameter="{Binding .}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding invoicemodel.Invoice.Status}"
+                                                 Value="6">
+                                        <Setter Property="IsEnabled"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
+                            <BoxView IsVisible="{Binding IsBackorderDisplay}"
+                                     Grid.Row="0"
+                                     Grid.Column="4"
+                                     HorizontalOptions="FillAndExpand"
+                                     HeightRequest="2"
+                                     Color="{Binding BackorderBtnColor}"
+                                     VerticalOptions="End"/>
+                            <!--End ticket #76209 By Pratik-->
+                            <BoxView Grid.Row="1"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="6"
+                                     HeightRequest="0.5"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"/>
+                        </Grid>
+                        <!--Ticket end:#22406 Quote sale.by rupesh-->
+                        <!-- Ticket end:#92764.by rupesh -->
+                        <Grid x:Name="LineItemGrid"
+                              Grid.Row="2"
+                              RowSpacing="1"
+                              BackgroundColor="White"
+                              VerticalOptions="FillAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="0.5"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="0.5"/>
+                                <RowDefinition Height="{Binding invoicemodel.Invoice.StatusHeight}"/>
+                                <RowDefinition Height="{Binding ExpandHeight}"/>
+                                <RowDefinition Height="0.5"/>
+                                <RowDefinition Height="55"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="0"
+                                    IsVisible="{Binding IsPhoneGridVisible,Converter={Helpers:InverseBoolConverter}}"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  RowSpacing="0"
+                                  ColumnSpacing="0"
+                                  BackgroundColor="White">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="0.5"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid 
+                                      Grid.Row="0"
+                                      Grid.Column="0"
+                                      RowSpacing="0"
+                                      ColumnSpacing="0"
+                                      Margin="5,0,0,0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="50"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout 
+                                                 Orientation="Horizontal"
+                                                 VerticalOptions="FillAndExpand"
+                                                 HorizontalOptions="Start"
+                                                 Margin="20,0,0,0">
+                                        <Label Text="{Localize:Translate BackIconUnicode}"
+                                               VerticalOptions="Center"
+                                               Margin="0,0,0,2"
+                                               TextColor="Black"
+                                               FontSize="35"
+                                               Style="{x:Static resources:Styles.PageBackLabelStyle}"/>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BackToPhoneGridCommand}"/>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                    <Image Source="customer.png"
+                                           Grid.Row="0"
+                                           Grid.Column="1"
+                                           HeightRequest="25"
+                                           WidthRequest="25"
+                                           Aspect="AspectFit"
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="Center"/>
+                                    <StackLayout Grid.Row="0"
+                                                 Grid.Column="2"
+                                                 Spacing="0"
+                                                 VerticalOptions="CenterAndExpand">
+                                        <Grid Style="{x:Static resources:Styles.CustomerNameGridStyle}">
+                                            <Label x:Name="selectCustomelbl"
+                                                   Text="{Localize:Translate SelectCustomerText}"
+                                                   VerticalTextAlignment="Center"
+                                                   Style="{x:Static resources:Styles.CustomerNameLabelStyle}"
+                                                   HeightRequest="50">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding invoicemodel.Invoice.CustomerName, Converter={Helpers:NullValueBoolConverter}}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible"
+                                                                Value="False"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <VerticalStackLayout VerticalOptions="Center">
+                                                <VerticalStackLayout.Triggers>
+                                                    <DataTrigger TargetType="VerticalStackLayout"
+                                                                 Binding="{Binding Source={x:Reference selectCustomelbl}, Path=IsVisible}"
+                                                                 Value="True">
+                                                        <Setter Property="IsVisible"
+                                                                Value="False"/>
+                                                    </DataTrigger>
+                                                </VerticalStackLayout.Triggers>
+                                                <Label x:Name="customernamelbl"
+                                                       Text="{Binding invoicemodel.Invoice.CustomerName}"
+                                                       Style="{x:Static resources:Styles.CustomerNameLabelStyle}"
+                                                       BackgroundColor="White"/>
+                                                <Label IsVisible="{Binding invoicemodel.Invoice.CustomerGroupDiscountNote,Converter={Helpers:NullValueBoolConverter}}"
+                                                       Text="{Binding invoicemodel.Invoice.CustomerGroupDiscountNote}"
+                                                       Style="{x:Static resources:Styles.CustomerGroupNameLabelStyle}"
+                                                       VerticalOptions="End"/>
+                                            </VerticalStackLayout>
+                                        </Grid>
+                                    </StackLayout>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding invoicemodel.CustomerModel.OpenSearchCustomerCommand}"
+                                                              CommandParameter="{Binding invoicemodel.Invoice.CustomerDetail}"/>
+                                    </Grid.GestureRecognizers>
+                                </Grid>
+                                <!--//Ticket start:#26664 IOS - New feature :: Customer delivery address.by rupesh-->
+                                <Button x:Name="btnDeliveryCustomer"
+                                        IsVisible="{Binding DeliveryCustomerVisible}"
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        WidthRequest="30"
+                                        HeightRequest="30"
+                                        TextColor="Black"
+                                        VerticalOptions="CenterAndExpand"
+                                        Text="{Localize:Translate TruckIconUnicode}"
+                                        Style="{x:Static resources:Styles.EntersaleSearchCustomerButtonStyle}"
+                                        BackgroundColor="Transparent"
+                                        Command="{Binding invoicemodel.CustomerModel.DeliveryCustomerCommand}"
+                                        CommandParameter="{Binding invoicemodel.Invoice.CustomerDetail}">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button"
+                                                     Binding="{Binding invoicemodel.Invoice.DeliveryAddressId, Converter={Helpers:NullValueBoolConverter}}"
+                                                     Value="True">
+                                            <Setter Property="TextColor"
+                                                    Value="{x:Static resources:AppColors.HikeColor}"/>
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <!--//Ticket end:#26664 .by rupesh-->
+                                <Button x:Name="btnEditCustomer"
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        IsVisible="{Binding EditCustomerVisible}"
+                                        WidthRequest="30"
+                                        HeightRequest="30"
+                                        TextColor="Black"
+                                        VerticalOptions="CenterAndExpand"
+                                        Text="{Localize:Translate EditIconUnicode}"
+                                        Style="{x:Static resources:Styles.EntersaleSearchCustomerButtonStyle}"
+                                        BackgroundColor="Transparent"
+                                        Command="{Binding invoicemodel.CustomerModel.EditCustomerCommand}"
+                                        CommandParameter="{Binding invoicemodel.Invoice.CustomerDetail}"/>
+                                <Button x:Name="btnRemoveCustomer"
+                                        Grid.Row="0"
+                                        Grid.Column="3"
+                                        IsVisible="{Binding RemoveCustomerVisible}"
+                                        WidthRequest="30"
+                                        TextColor="Black"
+                                        VerticalOptions="CenterAndExpand"
+                                        Text="{Localize:Translate CloseIconUnicode}"
+                                        Style="{x:Static resources:Styles.EntersaleSearchCustomerButtonStyle}"
+                                        BackgroundColor="Transparent"
+                                        Command="{Binding invoicemodel.CustomerModel.RemoveCustomerCommand}"
+                                        CommandParameter="{Binding invoicemodel.Invoice.CustomerDetail}"/>
+                                <BoxView Color="{x:Static resources:AppColors.LightBordersColor}"
+                                         Grid.Row="0"
+                                         Grid.Column="4"
+                                         WidthRequest="0.5"/>
+                                <Button Text="••••"
+                                        Grid.Row="0"
+                                        Grid.Column="5"
+                                        HeightRequest="50"
+                                        WidthRequest="50"
+                                        TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}"
+                                        Command="{Binding MoreOptionCommand}"
+                                        BackgroundColor="Transparent"/>
+                            </Grid>
+                            <BoxView  Grid.Row="1"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.5"/>
+
+                            <Grid IsVisible="{Binding IsPhoneGridVisible,Converter={Helpers:InverseBoolConverter}}"
+                                  Grid.Row="2"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2">
+                                <OnPlatform x:TypeArguments="View">
+                                    <On Platform="iOS">
+                                        <ListView x:Name="InvoiceItemList1"
+                                                  HasUnevenRows="True"
+                                                  VerticalOptions="FillAndExpand"
+                                                  ItemsSource="{Binding invoicemodel.Invoice.GroupInvoiceLineItems, Mode=TwoWay}"
+                                                  SeparatorVisibility="None"
+                                                  BackgroundColor="Transparent"
+                                                  SelectedItem="{Binding SelectedInvoiceItem, Mode=TwoWay}"
+                                                  IsGroupingEnabled="{Binding ShopGeneralRule.ShowGroupProductsByCategory}"
+                                                  CachingStrategy="RetainElement">
+                                            <ListView.GroupHeaderTemplate>
+                                                <DataTemplate x:DataType="Helpers:InvoiceLineiItemGroup">
+                                                    <ViewCell Height="25">
+                                                        <StackLayout VerticalOptions="CenterAndExpand"
+                                                                     Padding="7"
+                                                                     BackgroundColor="#cffffe">
+                                                            <Label Text="{Binding Title}"
+                                                                   Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}"
+                                                                   FontSize="11"
+                                                                   VerticalOptions="Center"/>
+                                                        </StackLayout>
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.GroupHeaderTemplate>
+                                            <!--Ticket end:#45367.by rupesh-->
+                                            <ListView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:InvoiceLineItemDto">
+                                                    <ViewCell BindingContextChanged="OnBindingContextChanged">
+                                                        <ViewCell.ContextActions>
+                                                            <MenuItem Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=invoicemodel.RemoveInvoiceItemCommand, x:DataType=vm:EnterSaleViewModel}"
+                                                                      CommandParameter="{Binding .}"
+                                                                      Text="{OnPlatform Android='Click here to delete selected item', iOS={Localize:Translate CloseIconUnicode}}"
+                                                                      IsDestructive="{Binding isEnable}"/>
+                                                        </ViewCell.ContextActions>
+                                                        <StackLayout Margin="12,0,20,0"
+                                                                     Spacing="0"
+                                                                     VerticalOptions="FillAndExpand">
+                                                            <!--<BoxView Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Start" IsVisible="{Binding SeperatorVisible}"  />-->
+                                                            <Grid RowSpacing="0"
+                                                                  ColumnSpacing="0"
+                                                                  Margin="0,12,0,12">
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Height="Auto"/>
+                                                                </Grid.RowDefinitions>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="40"/>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="90"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <ContentView Grid.Row="0"
+                                                                             Grid.Column="0"
+                                                                             HeightRequest="40"
+                                                                             WidthRequest="40"
+                                                                             IsVisible="false">
+                                                                    <Grid VerticalOptions="Start">
+                                                                        <Border StrokeShape="RoundRectangle 20"
+                                                                                HorizontalOptions="Center"
+                                                                                HeightRequest="40"
+                                                                                WidthRequest="40"
+                                                                                Padding="0"
+                                                                                Stroke="{x:Static resources:AppColors.LightBordersColor}">
+                                                                            <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                                                                                <Label Text="{Binding Title, Converter={Helpers:StringToAvtarNameConverter}}"
+                                                                                       Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}"
+                                                                                       VerticalOptions="FillAndExpand"
+                                                                                       HorizontalOptions="FillAndExpand"/>
+
+                                                                                <Image
+                                                                                    Aspect="Fill"
+                                                                                    VerticalOptions="FillAndExpand"
+                                                                                    HorizontalOptions="FillAndExpand">
+                                                                                    <Image.Source>
+                                                                                        <UriImageSource Uri="{Binding InvoiceItemImage, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium_Entersale}"
+                                                                                                        CacheValidity="30"
+                                                                                                        CachingEnabled="true"/>
+                                                                                    </Image.Source>
+                                                                                    <Image.Triggers>
+                                                                                        <DataTrigger TargetType="Image"
+                                                                                                     Binding="{Binding InvoiceItemType}"
+                                                                                                     Value="5">
+                                                                                            <Setter Property="IsVisible"
+                                                                                                    Value="False"/>
+                                                                                        </DataTrigger>
+                                                                                    </Image.Triggers>
+                                                                                </Image>
+
+                                                                            </Grid>
+                                                                        </Border>
+                                                                        <!--Ticket start:#15546 iOS - Quantity not appearing correctly in cart.by rupesh-->
+                                                                        <Border StrokeShape="RoundRectangle 10"
+                                                                                HorizontalOptions="End"
+                                                                                HeightRequest="20"
+                                                                                TranslationX="5"
+                                                                                TranslationY="-5"
+                                                                                Padding="0"
+                                                                                Stroke="{x:Static resources:AppColors.LightBordersColor}"
+                                                                                VerticalOptions="Start"
+                                                                                BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}">
+                                                                            <Label Margin="7,0,7,0"
+                                                                                   HorizontalTextAlignment="Center"
+                                                                                   Text="{Binding RoundedQuantity}"
+                                                                                   Style="{x:Static resources:Styles.InvoiceItemQuantityLabelStyle}"/>
+                                                                        </Border>
+                                                                        <!--Ticket end:#15546.by rupesh-->
+                                                                    </Grid>
+                                                                    <ContentView.Triggers>
+                                                                        <DataTrigger TargetType="ContentView"
+                                                                                     Binding="{Binding SeperatorVisible}"
+                                                                                     Value="True">
+                                                                            <Setter Property="IsVisible"
+                                                                                    Value="true"/>
+                                                                        </DataTrigger>
+                                                                    </ContentView.Triggers>
+                                                                </ContentView>
+                                                                <StackLayout Grid.Row="0"
+                                                                             Grid.Column="1"
+                                                                             VerticalOptions="Start"
+                                                                             Padding="10,0,0,0"
+                                                                             Spacing="2">
+                                                                    <Label Text="{Binding Title}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}"
+                                                                           LineBreakMode="WordWrap"
+                                                                           VerticalOptions="Start">
+                                                                        <!--<Label.Triggers>
+                                                                        <MultiTrigger TargetType="Label">
+                                                                            <MultiTrigger.Conditions>
+                                                                                <BindingCondition Binding="{Binding Description, Converter={Helpers:NullValueBoolConverter}}" Value="False" />
+                                                                                <BindingCondition Binding="{Binding OffersNote, Converter={Helpers:NullValueBoolConverter}}" Value="False" />
+                                                                            </MultiTrigger.Conditions>
+                                                                            <Setter Property="LineBreakMode" Value="WordWrap" />
+                                                                        </MultiTrigger>
+                                                                    </Label.Triggers>-->
+                                                                    </Label>
+                                                                    <StackLayout Orientation="Horizontal"
+                                                                                 HorizontalOptions="Start"
+                                                                                 Spacing="10">
+                                                                        <Label Text="{Binding RoundedQuantity}"
+                                                                               Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}"
+                                                                               VerticalOptions="Start"
+                                                                               IsVisible="false">
+                                                                            <Label.Triggers>
+                                                                                <DataTrigger TargetType="Label"
+                                                                                             Binding="{Binding SeperatorVisible}"
+                                                                                             Value="False">
+                                                                                    <Setter Property="IsVisible"
+                                                                                            Value="True"/>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                        <Label Text="{Binding SoldPrice, StringFormat='@{0:c}'}"
+                                                                               IsVisible="{Binding isEnable}"
+                                                                               Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}">
+                                                                            <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                                                            <Label.Triggers>
+                                                                                <DataTrigger TargetType="Label"
+                                                                                             Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                             Value="True">
+                                                                                    <Setter Property="Text"
+                                                                                            Value="{Binding SoldPrice, StringFormat='{}{0:c2}'}"/>
+                                                                                </DataTrigger>
+                                                                            </Label.Triggers>
+                                                                        </Label>
+                                                                        <!--#Ticket #7760 End:By Nikhil.-->
+                                                                    </StackLayout>
+
+                                                                    <Label Text="{Binding Description}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductDescriptionLabelStyle}"
+                                                                           VerticalOptions="Start"
+                                                                           IsVisible="{Binding Description, Converter={Helpers:NullValueBoolConverter}}"/>
+                                                                    <!--Ticket start#15516 iOS - Offer incorrectly applied.by rupesh-->
+                                                                    <Label Text=""
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductOfferNoteLabelStyle}"
+                                                                           VerticalOptions="Start"
+                                                                           IsVisible="{Binding OffersNote, Converter={Helpers:NullValueBoolConverter}}"/>
+                                                                    <!--Ticket end#15516 iOS - Offer incorrectly applied.by rupesh-->
+                                                                    <!-- Start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik -->
+                                                                    <Label Style="{x:Static resources:Styles.InvoiceItemProductDescriptionLabelStyle}"
+                                                                           VerticalOptions="Start"
+                                                                           IsVisible="{Binding ServedByName,Converter={Helpers:NullValueBoolConverter}}"
+                                                                           TextColor="Black">
+                                                                        <Label.FormattedText>
+                                                                            <FormattedString>
+                                                                                <Span Text="Served By: "
+                                                                                      FontFamily="OpenSansSemibold"/>
+                                                                                <Span Text="{Binding ServedByName}"/>
+                                                                            </FormattedString>
+                                                                        </Label.FormattedText>
+                                                                    </Label>
+                                                                    <!-- End #84287 By Pratik -->
+                                                                    <StackLayout
+                                                                        IsVisible="{Binding  EnableSerialNumber, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSEnableSerialNumberTrackingFeature}">
+                                                                        <Border StrokeShape="RoundRectangle 5"
+                                                                                HorizontalOptions="StartAndExpand"
+                                                                                WidthRequest="150"
+                                                                                HeightRequest="30"
+                                                                                Margin="0,0,0,5"
+                                                                                BackgroundColor="White"
+                                                                                Stroke="Gray"
+                                                                                Padding="3"
+                                                                                IsVisible="False">
+                                                                            <Border.Triggers>
+                                                                                <DataTrigger TargetType="Border"
+                                                                                             Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                             Value="True">
+                                                                                    <Setter Property="IsVisible"
+                                                                                            Value="True"/>
+                                                                                </DataTrigger>
+                                                                            </Border.Triggers>
+                                                                            <userControls:CustomEntry Placeholder="Serial Number"
+                                                                                                      Text="{Binding SerialNumber,Mode=TwoWay}"
+                                                                                                      Unfocused="CustomEntry_Unfocused"
+                                                                                                      Completed="CustomEntry_Completed"
+                                                                                                      BindingContext="{Binding .}">
+                                                                                <!--Start #90946 by Pratik-->
+                                                                                <!--#35116 iPad: serial number can't be editable-->
+                                                                                <userControls:CustomEntry.Triggers>
+                                                                                    <!--<DataTrigger TargetType="userControls:CustomEntry" Binding="{Binding IsReopenFromSaleHistory}" Value="True">
+                                                                                    <Setter Property="IsEnabled" Value="False" />
+                                                                                </DataTrigger>-->
+                                                                                    <!--#35112 iPad: Can't Add S/N to Orders from WooCommerce-->
+                                                                                    <DataTrigger TargetType="userControls:CustomEntry"
+                                                                                                 Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                                 Value="True">
+                                                                                        <Setter Property="IsEnabled"
+                                                                                                Value="True"/>
+                                                                                    </DataTrigger>
+                                                                                    <!--#35112 iPad: Can't Add S/N to Orders from WooCommerce-->
+                                                                                </userControls:CustomEntry.Triggers>
+                                                                                <!--#35116 iPad: serial number can't be editable-->
+                                                                            </userControls:CustomEntry>
+                                                                        </Border>
+                                                                        <Label Text="{Binding SerialNumber,StringFormat='SN: {0}'}"
+                                                                               Style="{x:Static resources:Styles.InvoiceItemProductOfferNoteLabelStyle}"
+                                                                               IsVisible="True">
+                                                                            <Label.Triggers>
+                                                                                <DataTrigger TargetType="Label"
+                                                                                             Binding="{Binding ActionType}"
+                                                                                             Value="1">
+                                                                                    <Setter Property="IsVisible"
+                                                                                            Value="False"/>
+                                                                                </DataTrigger>
+                                                                                <DataTrigger TargetType="Label"
+                                                                                             Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                             Value="False">
+                                                                                    <Setter Property="IsVisible"
+                                                                                            Value="True"/>
+                                                                                </DataTrigger>
+
+                                                                            </Label.Triggers>
+
+
+                                                                        </Label>
+
+                                                                    </StackLayout>
+                                                                </StackLayout>
+                                                                <StackLayout Grid.Row="0"
+                                                                             Grid.Column="2"
+                                                                             VerticalOptions="Start"
+                                                                             Spacing="2">
+                                                                    <Label Text="{Binding TotalAmount, StringFormat='{}{0:c}'}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductTotalAmountLabelStyle}">
+                                                                        <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                                                        <Label.Triggers>
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                         Value="True">
+                                                                                <Setter Property="Text"
+                                                                                        Value="{Binding TotalAmount, StringFormat='{}{0:c2}'}"/>
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                    <!--#Ticket #7760 End:By Nikhil.-->
+
+                                                                    <Label Text="{Binding TotalReatilAmount, StringFormat='{}{0:c}'}"
+                                                                           IsVisible="false"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductTotalRetailAmountLabelStyle}"
+                                                                           TextDecorations="Strikethrough">
+                                                                        <!--<Label.Effects>
+                                                                        <Helpers:LineThroughEffect />
+                                                                    </Label.Effects>-->
+                                                                        <Label.Triggers>
+                                                                            <MultiTrigger TargetType="Label">
+                                                                                <MultiTrigger.Conditions>
+                                                                                    <BindingCondition Binding="{Binding IsTotalReatilAmountVisible}"
+                                                                                                      Value="True"/>
+                                                                                    <BindingCondition Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=ShopGeneralRule.DisplayLineItemDiscountOnReceipt, x:DataType=vm:EnterSaleViewModel}"
+                                                                                                      Value="True"/>
+                                                                                </MultiTrigger.Conditions>
+                                                                                <Setter Property="IsVisible"
+                                                                                        Value="True"/>
+                                                                            </MultiTrigger>
+                                                                            <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                         Value="True">
+                                                                                <Setter Property="Text"
+                                                                                        Value="{Binding TotalReatilAmount, StringFormat='{}{0:c2}'}"/>
+                                                                            </DataTrigger>
+                                                                            <!--#Ticket #7760 End:By Nikhil.-->
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                </StackLayout>
+                                                            </Grid>
+                                                        </StackLayout>
+                                                    </ViewCell>
+                                                </DataTemplate>
+                                            </ListView.ItemTemplate>
+                                        </ListView>
+                                    </On>
+                                    <On Platform="Android">
+                                        <CollectionView x:Name="InvoiceItemList"
+                                                        VerticalOptions="FillAndExpand"
+                                                        ItemsSource="{Binding invoicemodel.Invoice.GroupInvoiceLineItems}"
+                                                        BackgroundColor="Transparent"
+                                                        SelectionMode="Single"
+                                                        SelectedItem="{Binding SelectedInvoiceItem, Mode=TwoWay}"
+                                                        IsGrouped="{Binding ShopGeneralRule.ShowGroupProductsByCategory}">
+                                            <CollectionView.GroupHeaderTemplate>
+                                                <DataTemplate x:DataType="Helpers:InvoiceLineiItemGroup">
+                                                    <StackLayout HeightRequest="25"
+                                                                 VerticalOptions="CenterAndExpand"
+                                                                 Padding="7"
+                                                                 BackgroundColor="#cffffe">
+                                                        <Label Text="{Binding Title}"
+                                                               Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}"
+                                                               FontSize="11"
+                                                               VerticalOptions="Center"/>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.GroupHeaderTemplate>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:InvoiceLineItemDto">
+                                                    <StackLayout Margin="12,0,12,0"
+                                                                 Spacing="0"
+                                                                 VerticalOptions="FillAndExpand">
+                                                        <Grid RowSpacing="0"
+                                                              ColumnSpacing="0"
+                                                              Margin="0,12,0,12">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="40"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="90"/>
+                                                                <ColumnDefinition Width="27"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <ContentView Grid.Row="0"
+                                                                         Grid.Column="0"
+                                                                         HeightRequest="40"
+                                                                         WidthRequest="40"
+                                                                         IsVisible="false">
+                                                                <Grid VerticalOptions="Start">
+                                                                    <Border StrokeShape="RoundRectangle 20"
+                                                                            HorizontalOptions="Center"
+                                                                            HeightRequest="40"
+                                                                            WidthRequest="40"
+                                                                            Padding="0"
+                                                                            Stroke="{x:Static resources:AppColors.LightBordersColor}">
+                                                                        <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                                                                            <Label Text="{Binding Title, Converter={Helpers:StringToAvtarNameConverter}}"
+                                                                                   Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}"
+                                                                                   VerticalOptions="FillAndExpand"
+                                                                                   HorizontalOptions="FillAndExpand"/>
+
+                                                                            <Image
+                                                                                Aspect="Fill"
+                                                                                VerticalOptions="FillAndExpand"
+                                                                                HorizontalOptions="FillAndExpand">
+                                                                                <Image.Source>
+                                                                                    <UriImageSource Uri="{Binding InvoiceItemImage, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium_Entersale}"
+                                                                                                    CacheValidity="30"
+                                                                                                    CachingEnabled="true"/>
+                                                                                </Image.Source>
+                                                                                <Image.Triggers>
+                                                                                    <DataTrigger TargetType="Image"
+                                                                                                 Binding="{Binding InvoiceItemType}"
+                                                                                                 Value="5">
+                                                                                        <Setter Property="IsVisible"
+                                                                                                Value="False"/>
+                                                                                    </DataTrigger>
+                                                                                </Image.Triggers>
+                                                                            </Image>
+
+                                                                        </Grid>
+                                                                    </Border>
+                                                                    <Border StrokeShape="RoundRectangle 10"
+                                                                            HorizontalOptions="End"
+                                                                            HeightRequest="20"
+                                                                            TranslationX="5"
+                                                                            TranslationY="-5"
+                                                                            Padding="0"
+                                                                            Stroke="{x:Static resources:AppColors.LightBordersColor}"
+                                                                            VerticalOptions="Start"
+                                                                            BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}">
+                                                                        <Label Margin="7,0,7,0"
+                                                                               HorizontalTextAlignment="Center"
+                                                                               Text="{Binding RoundedQuantity}"
+                                                                               Style="{x:Static resources:Styles.InvoiceItemQuantityLabelStyle}"/>
+                                                                    </Border>
+                                                                </Grid>
+                                                                <ContentView.Triggers>
+                                                                    <DataTrigger TargetType="ContentView"
+                                                                                 Binding="{Binding SeperatorVisible}"
+                                                                                 Value="True">
+                                                                        <Setter Property="IsVisible"
+                                                                                Value="true"/>
+                                                                    </DataTrigger>
+                                                                </ContentView.Triggers>
+                                                            </ContentView>
+                                                            <StackLayout Grid.Row="0"
+                                                                         Grid.Column="1"
+                                                                         VerticalOptions="Start"
+                                                                         Padding="10,0,0,0"
+                                                                         Spacing="2">
+                                                                <Label Text="{Binding Title}"
+                                                                       Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}"
+                                                                       LineBreakMode="WordWrap"
+                                                                       VerticalOptions="Start">
+                                                                </Label>
+                                                                <StackLayout Orientation="Horizontal"
+                                                                             HorizontalOptions="Start"
+                                                                             Spacing="10">
+                                                                    <Label Text="{Binding RoundedQuantity}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}"
+                                                                           VerticalOptions="Start"
+                                                                           IsVisible="false">
+                                                                        <Label.Triggers>
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding SeperatorVisible}"
+                                                                                         Value="False">
+                                                                                <Setter Property="IsVisible"
+                                                                                        Value="True"/>
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                    <Label Text="{Binding SoldPrice, StringFormat='@{0:c}'}"
+                                                                           IsVisible="{Binding isEnable}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}">
+                                                                        <Label.Triggers>
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                         Value="True">
+                                                                                <Setter Property="Text"
+                                                                                        Value="{Binding SoldPrice, StringFormat='{}{0:c2}'}"/>
+                                                                            </DataTrigger>
+                                                                        </Label.Triggers>
+                                                                    </Label>
+                                                                </StackLayout>
+
+                                                                <Label Text="{Binding Description}"
+                                                                       Style="{x:Static resources:Styles.InvoiceItemProductDescriptionLabelStyle}"
+                                                                       VerticalOptions="Start"
+                                                                       IsVisible="{Binding Description, Converter={Helpers:NullValueBoolConverter}}"/>
+                                                                <Label Text=""
+                                                                       Style="{x:Static resources:Styles.InvoiceItemProductOfferNoteLabelStyle}"
+                                                                       VerticalOptions="Start"
+                                                                       IsVisible="{Binding OffersNote, Converter={Helpers:NullValueBoolConverter}}"/>
+                                                                <!-- Start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik -->
+                                                                <Label Style="{x:Static resources:Styles.InvoiceItemProductDescriptionLabelStyle}"
+                                                                       VerticalOptions="Start"
+                                                                       IsVisible="{Binding ServedByName,Converter={Helpers:NullValueBoolConverter}}"
+                                                                       TextColor="Black">
+                                                                    <Label.FormattedText>
+                                                                        <FormattedString>
+                                                                            <Span Text="Served By: "
+                                                                                  FontFamily="OpenSansSemibold"/>
+                                                                            <Span Text="{Binding ServedByName}"/>
+                                                                        </FormattedString>
+                                                                    </Label.FormattedText>
+                                                                </Label>
+                                                                <!-- End #84287 By Pratik -->
+                                                                <StackLayout
+                                                                    IsVisible="{Binding  EnableSerialNumber, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSEnableSerialNumberTrackingFeature}">
+                                                                    <Border StrokeShape="RoundRectangle 5"
+                                                                            HorizontalOptions="StartAndExpand"
+                                                                            WidthRequest="150"
+                                                                            HeightRequest="30"
+                                                                            Margin="0,0,0,5"
+                                                                            BackgroundColor="White"
+                                                                            Stroke="Gray"
+                                                                            Padding="3"
+                                                                            IsVisible="False">
+                                                                        <Border.Triggers>
+                                                                            <DataTrigger TargetType="Border"
+                                                                                         Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                         Value="True">
+                                                                                <Setter Property="IsVisible"
+                                                                                        Value="True"/>
+                                                                            </DataTrigger>
+                                                                        </Border.Triggers>
+                                                                        <userControls:CustomEntry Placeholder="Serial Number"
+                                                                                                  Text="{Binding SerialNumber,Mode=TwoWay}"
+                                                                                                  Unfocused="CustomEntry_Unfocused"
+                                                                                                  Completed="CustomEntry_Completed"
+                                                                                                  BindingContext="{Binding .}">
+                                                                            <!--Start #90946 by Pratik-->
+                                                                            <userControls:CustomEntry.Triggers>
+                                                                                <DataTrigger TargetType="userControls:CustomEntry"
+                                                                                             Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                             Value="True">
+                                                                                    <Setter Property="IsEnabled"
+                                                                                            Value="True"/>
+                                                                                </DataTrigger>
+                                                                            </userControls:CustomEntry.Triggers>
+                                                                        </userControls:CustomEntry>
+                                                                    </Border>
+                                                                    <Label Text="{Binding SerialNumber,StringFormat='SN: {0}'}"
+                                                                           Style="{x:Static resources:Styles.InvoiceItemProductOfferNoteLabelStyle}"
+                                                                           IsVisible="True">
+                                                                        <Label.Triggers>
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding ActionType}"
+                                                                                         Value="1">
+                                                                                <Setter Property="IsVisible"
+                                                                                        Value="False"/>
+                                                                            </DataTrigger>
+                                                                            <DataTrigger TargetType="Label"
+                                                                                         Binding="{Binding IsSerialNumberEditableFromEntersale}"
+                                                                                         Value="False">
+                                                                                <Setter Property="IsVisible"
+                                                                                        Value="True"/>
+                                                                            </DataTrigger>
+
+                                                                        </Label.Triggers>
+
+
+                                                                    </Label>
+
+                                                                </StackLayout>
+                                                            </StackLayout>
+                                                            <StackLayout Grid.Row="0"
+                                                                         Grid.Column="2"
+                                                                         Padding="5,5,0,5"
+                                                                         VerticalOptions="Start"
+                                                                         Spacing="1">
+                                                                <Label Text="{Binding TotalAmount, StringFormat='{}{0:c}'}"
+                                                                       Style="{x:Static resources:Styles.InvoiceItemProductTotalAmountLabelStyle}">
+                                                                    <Label.Triggers>
+                                                                        <DataTrigger TargetType="Label"
+                                                                                     Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                     Value="True">
+                                                                            <Setter Property="Text"
+                                                                                    Value="{Binding TotalAmount, StringFormat='{}{0:c2}'}"/>
+                                                                        </DataTrigger>
+                                                                    </Label.Triggers>
+                                                                </Label>
+                                                                <Label Text="{Binding TotalReatilAmount, StringFormat='{}{0:c}'}"
+                                                                       IsVisible="false"
+                                                                       Style="{x:Static resources:Styles.InvoiceItemProductTotalRetailAmountLabelStyle}"
+                                                                       TextDecorations="Strikethrough">
+
+                                                                    <Label.Triggers>
+                                                                        <MultiTrigger TargetType="Label">
+                                                                            <MultiTrigger.Conditions>
+                                                                                <BindingCondition Binding="{Binding IsTotalReatilAmountVisible}"
+                                                                                                  Value="True"/>
+                                                                                <BindingCondition Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=ShopGeneralRule.DisplayLineItemDiscountOnReceipt, x:DataType=vm:EnterSaleViewModel}"
+                                                                                                  Value="True"/>
+                                                                            </MultiTrigger.Conditions>
+                                                                            <Setter Property="IsVisible"
+                                                                                    Value="True"/>
+                                                                        </MultiTrigger>
+                                                                        <DataTrigger TargetType="Label"
+                                                                                     Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=IsArabicCulture, x:DataType=vm:EnterSaleViewModel}"
+                                                                                     Value="True">
+                                                                            <Setter Property="Text"
+                                                                                    Value="{Binding TotalReatilAmount, StringFormat='{}{0:c2}'}"/>
+                                                                        </DataTrigger>
+                                                                    </Label.Triggers>
+                                                                </Label>
+                                                            </StackLayout>
+                                                            <Grid Grid.Row="0"
+                                                                  Grid.Column="3"
+                                                                  HeightRequest="40"
+                                                                  WidthRequest="27"
+                                                                  VerticalOptions="Start"
+                                                                  Padding="0,5,0,0">
+                                                                <Label Grid.Column="3"
+                                                                       Text="{Localize:Translate CloseIconUnicode}"
+                                                                       FontSize="15"
+                                                                       IsVisible="{Binding isEnable}"
+                                                                       VerticalOptions="Start"
+                                                                       HorizontalOptions="End"
+                                                                       WidthRequest="27"
+                                                                       HorizontalTextAlignment="End"
+                                                                       TextColor="Black">
+                                                                </Label>
+                                                                <Grid.GestureRecognizers>
+                                                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=invoicemodel.RemoveInvoiceItemCommand, x:DataType=vm:EnterSaleViewModel}"
+                                                                                          CommandParameter="{Binding .}"/>
+                                                                </Grid.GestureRecognizers>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </StackLayout>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </On>
+                                </OnPlatform>
+                            </Grid>
+
+                            <BoxView IsVisible="false"
+                                     Grid.Row="3"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.5"
+                                     VerticalOptions="Start">
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView"
+                                                 Binding="{Binding invoicemodel.Invoice.Status}"
+                                                 Value="3">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+
+                            <StackLayout Grid.Row="4"
+                                         Grid.Column="0"
+                                         Grid.ColumnSpan="2"
+                                         HeightRequest="40"
+                                         IsVisible="false"
+                                         VerticalOptions="CenterAndExpand"
+                                         BackgroundColor="White"
+                                         Orientation="Horizontal"
+                                         Spacing="10">
+                                <StackLayout.Triggers>
+                                    <DataTrigger TargetType="StackLayout"
+                                                 Binding="{Binding invoicemodel.Invoice.Status}"
+                                                 Value="3">
+                                        <Setter Property="IsVisible"
+                                                Value="true"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="StackLayout"
+                                                 Binding="{Binding invoicemodel.Invoice.Status}"
+                                                 Value="8">
+                                        <Setter Property="IsVisible"
+                                                Value="true"/>
+                                    </DataTrigger>
+                                </StackLayout.Triggers>
+                                <Image Source="{x:Static resources:AppImages.FalseRadioIcon}"
+                                       HeightRequest="20"
+                                       WidthRequest="20"
+                                       Aspect="AspectFit"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Start"
+                                       Margin="20,0,0,0">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding invoicemodel.Invoice.IsReStockWhenRefund}"
+                                                     Value="True">
+                                            <Setter Property="Source"
+                                                    Value="{x:Static resources:AppImages.TrueRadioIcon}"/>
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding invoicemodel.Invoice.IsReStockWhenRefund}"
+                                                     Value="False">
+                                            <Setter Property="Source"
+                                                    Value="{x:Static resources:AppImages.FalseRadioIcon}"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding RestockHandleCommand}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                                <Label Text="{Localize:Translate IsReStockWhenRefundText}"
+                                       Style="{x:Static resources:Styles.InvoiceRestockCheckBoxLabelStyle}"
+                                       Margin="20,0,0,0"/>
+                            </StackLayout>
+                            <VerticalStackLayout Grid.Row="5"
+                                                 Grid.Column="0"
+                                                 Grid.ColumnSpan="2">
+                                <userControls:ExpandCollapseView
+                                    Command="{Binding NotesCommand}"
+                                    Title="{Localize:Translate Notes}"
+                                    IsActive="{Binding IsNotes}"
+                                    Padding="20,0">
+                                    <userControls:ExpandCollapseView.ContainerContent>
+                                        <userControls:BorderLessEntry x:Name="invoiceNote"
+                                                                      Text="{Binding invoicemodel.Invoice.Note}"
+                                                                      PlaceholderColor="Gray"
+                                                                      Placeholder="{Localize:Translate AddNotePlaceholder}"
+                                                                      Style="{x:Static resources:Styles.InvoiceNoteEntryStyle}"/>
+                                    </userControls:ExpandCollapseView.ContainerContent>
+                                </userControls:ExpandCollapseView>
+                                <userControls:ExpandCollapseView
+                                    Command="{Binding PaymentSummaryCommand}"
+                                    Title="{Localize:Translate Payment_Summary}"
+                                    IsActive="{Binding IsPaymentSummary}"
+                                    Padding="20,0">
+                                    <userControls:ExpandCollapseView.ContainerContent>
+                                        <Grid RowSpacing="0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="0.5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="0.5"/>
+                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="0.5"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="0.5"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="0.5"/>
+                                                <RowDefinition Height="40"/>
+                                            </Grid.RowDefinitions>
+                                            <Label Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   Text="{Localize:Translate SubtotalText}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding ShopGeneralRule.TaxInclusive}"
+                                                                 Value="True">
+                                                        <Setter Property="Grid.Row"
+                                                                Value="2"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Text="{Binding invoicemodel.Invoice.SubTotal, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding ShopGeneralRule.TaxInclusive}"
+                                                                 Value="True">
+                                                        <Setter Property="Grid.Row"
+                                                                Value="2"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.SubTotal, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+
+                                            <BoxView Grid.Row="1"
+                                                     Grid.Column="0"
+                                                     Grid.ColumnSpan="2"
+                                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                                     HeightRequest="0.5"
+                                                     VerticalOptions="Start"
+                                                     Margin="-20,0"/>
+
+                                            <Label x:Name="btnDiscount"
+                                                   Grid.Row="2"
+                                                   Grid.Column="0"
+                                                   Text="{Localize:Translate DiscountText}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"
+                                                   TextColor="{x:Static resources:AppColors.HikeColor}"
+                                                   IsEnabled="{Binding DiscountEnabled}">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding OpenDiscountCommand}"/>
+                                                </Label.GestureRecognizers>
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding ShopGeneralRule.TaxInclusive}"
+                                                                 Value="True">
+                                                        <Setter Property="Grid.Row"
+                                                                Value="0"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding DiscountEnabled}"
+                                                                 Value="True">
+                                                        <Setter Property="TextColor"
+                                                                Value="{x:Static resources:AppColors.HikeColor}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding DiscountEnabled}"
+                                                                 Value="False">
+                                                        <Setter Property="TextColor"
+                                                                Value="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label x:Name="lblDiscount"
+                                                   Grid.Row="2"
+                                                   Grid.Column="1"
+                                                   Text="{Binding invoicemodel.Invoice.TotalDiscount, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding ShopGeneralRule.TaxInclusive}"
+                                                                 Value="True">
+                                                        <Setter Property="Grid.Row"
+                                                                Value="0"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.TotalDiscount, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+
+                                            <BoxView x:Name="boxDiscount"
+                                                     Grid.Row="3"
+                                                     Grid.Column="0"
+                                                     HeightRequest="0.5"
+                                                     Grid.ColumnSpan="2"
+                                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                                     VerticalOptions="Start"
+                                                     Margin="-20,0"/>
+
+                                            <Label x:Name="btnTax"
+                                                   Grid.Row="4"
+                                                   Grid.Column="0"
+                                                   Text="{Localize:Translate TaxText}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"
+                                                   TextColor="{x:Static resources:AppColors.HikeColor}">
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding OpenTaxCommand}"/>
+                                                </Label.GestureRecognizers>
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding TaxEnabled}"
+                                                                 Value="True">
+                                                        <Setter Property="TextColor"
+                                                                Value="{x:Static resources:AppColors.HikeColor}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding TaxEnabled}"
+                                                                 Value="False">
+                                                        <Setter Property="TextColor"
+                                                                Value="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                            <Label x:Name="lblTax"
+                                                   Grid.Row="4"
+                                                   Grid.Column="1"
+                                                   Text="{Binding invoicemodel.Invoice.Tax, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.Tax, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+
+                                            <BoxView Grid.Row="5"
+                                                     Grid.Column="0"
+                                                     Grid.ColumnSpan="2"
+                                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                                     HeightRequest="0.5"
+                                                     VerticalOptions="Start"
+                                                     Margin="-20,0"/>
+
+                                            <Label x:Name="btnTip"
+                                                   Grid.Row="6"
+                                                   Grid.Column="0"
+                                                   IsVisible="{Binding TipVisible}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"
+                                                   TextColor="{x:Static resources:AppColors.HikeColor}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Localize:Translate TipText}"/>
+                                                        <Span  Text="{Binding invoicemodel.Invoice.TipTaxAmount, StringFormat='{}{0:c}'}"/>
+                                                        <Span Text=")"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding OpenTipCommand}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <Label x:Name="lblTip"
+                                                   Grid.Row="6"
+                                                   Grid.Column="1"
+                                                   IsVisible="{Binding TipVisible}"
+                                                   Text="{Binding invoicemodel.Invoice.TotalTip, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.TotalTip, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+
+                                            <BoxView x:Name="boxTip"
+                                                     Grid.Row="7"
+                                                     Grid.Column="0"
+                                                     Grid.ColumnSpan="2"
+                                                     IsVisible="{Binding TipVisible}"
+                                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                                     HeightRequest="0.5"
+                                                     VerticalOptions="Start"
+                                                     Margin="-20,0"/>
+
+                                            <Label x:Name="btnShipping"
+                                                   Grid.Row="8"
+                                                   Grid.Column="0"
+                                                   Text="{Localize:Translate ShippingTax}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"
+                                                   TextColor="{x:Static resources:AppColors.HikeColor}"
+                                                   IsVisible="{Binding ShippingVisible}">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="{Localize:Translate ShippingTax}"/>
+                                                        <Span  Text="{Binding invoicemodel.Invoice.ShippingTaxAmount, StringFormat='{}{0:c}'}"/>
+                                                        <Span Text=")"/>
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                                <Label.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding AddShippingChargeCommand}"/>
+                                                </Label.GestureRecognizers>
+                                            </Label>
+                                            <Label x:Name="lblShipping"
+                                                   Grid.Row="8"
+                                                   Grid.Column="1"
+                                                   IsVisible="{Binding ShippingVisible}"
+                                                   Text="{Binding invoicemodel.Invoice.TotalShippingCost, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.TotalTip, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                    <!--Ticket #7760 End:By Nikhil.-->
+                                                </Label.Triggers>
+                                            </Label>
+
+                                            <BoxView Grid.Row="9"
+                                                     x:Name="boxShipping"
+                                                     IsVisible="{Binding ShippingVisible}"
+                                                     Grid.Column="0"
+                                                     Grid.ColumnSpan="2"
+                                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                                     HeightRequest="0.5"
+                                                     VerticalOptions="Start"
+                                                     Margin="-20,0"/>
+
+                                            <HorizontalStackLayout Grid.Row="10"
+                                                                   Grid.Column="0"
+                                                                   Spacing="6">
+                                                <Label Text="{Localize:Translate TotalText}"
+                                                       Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"/>
+                                                <Label IsVisible="{Binding  IsItemCountVisible}"
+                                                       Text="{Binding invoicemodel.Invoice.InvoiceLineItemsCnt,StringFormat='({0} items)'}"
+                                                       TextColor="{x:Static resources:AppColors.HikeColor}"
+                                                       Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}"/>
+                                            </HorizontalStackLayout>
+                                            <Label Grid.Row="10"
+                                                   Grid.Column="1"
+                                                   Text="{Binding invoicemodel.Invoice.NetAmount, StringFormat='{}{0:c}'}"
+                                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                                                 Binding="{Binding IsArabicCulture}"
+                                                                 Value="True">
+                                                        <Setter Property="Text"
+                                                                Value="{Binding invoicemodel.Invoice.NetAmount, StringFormat='{}{0:c2}'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Grid>
+                                    </userControls:ExpandCollapseView.ContainerContent>
+                                </userControls:ExpandCollapseView>
+                            </VerticalStackLayout>
+
+                            <BoxView Grid.Row="6"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.5"
+                                     VerticalOptions="Start"/>
+                            <!--#94565-->
+                            <StackLayout Grid.Row="7"
+                                         Grid.Column="0"
+                                         Grid.ColumnSpan="2"
+                                         HeightRequest="55"
+                                         IsVisible="{Binding invoicemodel.IsRestaurantPOS,Converter={Helpers:InverseBoolConverter}}"
+                                         Orientation="Horizontal"
+                                         BackgroundColor="{x:Static resources:AppColors.HikeColor}">
+                                <Label x:Name="lblPay"
+                                       Text="{Binding LblPayText}"
+                                       VerticalTextAlignment="Center"
+                                       Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                       HeightRequest="55"
+                                       Margin="20,0,0,0"/>
+                                <Label x:Name="lblTotalPay"
+                                       IsVisible="{Binding invoicemodel.IsLoad,Converter={Helpers:InverseBoolConverter}}"
+                                       Text="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c}'}"
+                                       Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}"
+                                       HeightRequest="55"
+                                       VerticalTextAlignment="Center"
+                                       Margin="0,0,20,0">
+                                    <Label.Triggers>
+                                        <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                        <DataTrigger TargetType="Label"
+                                                     Binding="{Binding IsArabicCulture}"
+                                                     Value="True">
+                                            <Setter Property="Text"
+                                                    Value="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c2}'}"/>
+                                        </DataTrigger>
+                                        <!--Ticket #7760 End:By Nikhil.-->
+                                    </Label.Triggers>
+                                </Label>
+                                <ActivityIndicator Scale="1"
+                                                   Color="White"
+                                                   IsVisible="{Binding invoicemodel.IsLoad}"
+                                                   IsRunning="{Binding invoicemodel.IsLoad}"
+                                                   HorizontalOptions="EndAndExpand"
+                                                   VerticalOptions="Center"
+                                                   HeightRequest="30"
+                                                   WidthRequest="30"
+                                                   Margin="0,0,20,0"/>
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                            <Grid Grid.Row="7"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2"
+                                  HeightRequest="55"
+                                  IsVisible="{Binding invoicemodel.IsRestaurantPOS}"
+                                  BackgroundColor="White"
+                                  ColumnDefinitions="1*,1,1*"
+                                  ColumnSpacing="1">
+                                 <Grid Grid.Column="0" IsEnabled="{Binding invoicemodel.IsOrdered}"
+                                             HeightRequest="55"
+                                             BackgroundColor="#26394b">
+                                    <Label  Text="Order" HorizontalOptions="Center"
+                                            VerticalTextAlignment="Center"
+                                            Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                            HeightRequest="55"/>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding OrderedCommand}"/>
+                                    </Grid.GestureRecognizers>
+                                </Grid>
+                                <StackLayout Grid.Column="2" IsVisible="{Binding invoicemodel.IsOrdered, Converter={Helpers:InverseBoolConverter}}"
+                                             HeightRequest="55"
+                                             Orientation="Horizontal"
+                                             BackgroundColor="{x:Static resources:AppColors.HikeColor}">
+                                    <Label Text="{Binding LblPayText}"
+                                           VerticalTextAlignment="Center"
+                                           Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                           HeightRequest="55"
+                                           Margin="20,0,0,0"/>
+                                    <Label IsVisible="{Binding invoicemodel.IsLoad,Converter={Helpers:InverseBoolConverter}}"
+                                           Text="{Binding invoicemodel.ZeroPrice, StringFormat='{}{0:c}'}"
+                                           FontSize="18"
+                                           Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}"
+                                           HeightRequest="55"
+                                           VerticalTextAlignment="Center"
+                                           Margin="0,0,20,0">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding IsArabicCulture}"
+                                                         Value="True">
+                                                <Setter Property="Text"
+                                                        Value="{Binding invoicemodel.ZeroPrice, StringFormat='{}{0:c2}'}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Grid.Column="2" IsVisible="{Binding invoicemodel.IsOrdered}"
+                                             HeightRequest="55"
+                                             Orientation="Horizontal"
+                                             BackgroundColor="{x:Static resources:AppColors.HikeColor}">
+                                    <Label Text="{Binding LblPayText}"
+                                           VerticalTextAlignment="Center"
+                                           Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                           HeightRequest="55"
+                                           Margin="20,0,0,0"/>
+                                    <Label IsVisible="{Binding invoicemodel.IsLoad,Converter={Helpers:InverseBoolConverter}}"
+                                           Text="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c}'}"
+                                           FontSize="18"
+                                           Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}"
+                                           HeightRequest="55"
+                                           VerticalTextAlignment="Center"
+                                           Margin="0,0,20,0">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding IsArabicCulture}"
+                                                         Value="True">
+                                                <Setter Property="Text"
+                                                        Value="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c2}'}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <ActivityIndicator Scale="1"
+                                                       Color="White"
+                                                       IsVisible="{Binding invoicemodel.IsLoad}"
+                                                       IsRunning="{Binding invoicemodel.IsLoad}"
+                                                       HorizontalOptions="EndAndExpand"
+                                                       VerticalOptions="Center"
+                                                       HeightRequest="30"
+                                                       WidthRequest="30"
+                                                       Margin="0,0,20,0"/>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Grid>
+                            <!--#94565-->
+                            <Button Grid.Row="7"
+                                    IsVisible="false"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    Text="{Localize:Translate OpenRegisterText}"
+                                    Style="{x:Static resources:Styles.InvoiceOpenRegisterButtonStyle}"
+                                    Command="{Binding ShowOpenRegisterCommand}">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsOpenRegister}"
+                                                 Value="False">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                    <!--Ticket start:#74634 iOS FR: Pin Restriction.by rupesh-->
+                                    <DataTrigger TargetType="Button"
+                                                 Binding="{Binding IsOpenRegisterPermission}"
+                                                 Value="False">
+                                        <Setter Property="TextColor"
+                                                Value="{x:Static resources:AppColors.PrimaryLightTextColor}"/>
+                                    </DataTrigger>
+                                    <!--Ticket end:#74634.by rupesh-->
+                                </Button.Triggers>
+                            </Button>
+                            <BoxView Grid.Row="0"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     IsVisible="false"
+                                     Grid.RowSpan="7"
+                                     Color="{x:Static resources:AppColors.BackgroundOverlayColor}">
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView"
+                                                 Binding="{Binding IsOpenRegister}"
+                                                 Value="False">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+
+                        </Grid>
+                        <Grid IsVisible="{Binding IsPhoneGridVisible}"
+                              Grid.Row="2"
+                              Grid.ColumnSpan="2"
+                              RowSpacing="0"
+                              BackgroundColor="{Binding MainGridBackgroundColor}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="0.7"/>
+                                <RowDefinition Height="*"/>
+                                <!-- <RowDefinition Height="0.7"/> -->
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="20"/>
+                                <!-- <RowDefinition Height="0.7"/>
+                                <RowDefinition Height="55"/> -->
+                            </Grid.RowDefinitions>
+                            <Grid HeightRequest="40"
+                                  Grid.Row="0"
+                                  Grid.Column="0"
+                                  Grid.ColumnSpan="2">
+                                <BoxView VerticalOptions ="Start"
+                                         Color="{x:Static resources:AppColors.LightBordersColor}"
+                                         HeightRequest="0.7"/>
+                                <CollectionView x:Name="BottomMenuListView"
+                                                HeightRequest="40"
+                                                Margin="20,0,0,0"
+                                                SelectionMode="None"
+                                                VerticalOptions="FillAndExpand"
+                                                ItemSizingStrategy="MeasureAllItems"
+                                                ItemsSource="{Binding Categories}">
+                                    <!-- Ticket start:#92957 Couldn't scroll product type on POS page.by rupesh -->
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Horizontal"
+                                                           ItemSpacing="0"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:CategoryDto">
+                                            <Grid Margin="0,0,30,0">
+                                                <Label Text="{Binding Name}"
+                                                       Style="{x:Static resources:Styles.CategoryTitleLabelStyle}"
+                                                       TextColor="{Binding IsSelected, Converter={Helpers:ActiveDeactiveColorConverter}}"
+                                                       LineBreakMode="NoWrap"
+                                                       HeightRequest="50"
+                                                       VerticalTextAlignment="Center"
+                                                       Padding="0,1,0,0"
+                                                       HorizontalOptions="Start">
+                                                    <Label.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EnterSaleViewModel}}, Path=CategoryTappedCommand, x:DataType=vm:EnterSaleViewModel}"
+                                                                              CommandParameter="{Binding .}"/>
+                                                    </Label.GestureRecognizers>
+                                                </Label>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                    <!-- Ticket end:#92957.by rupesh -->
+                                </CollectionView>
+                            </Grid>
+                            <BoxView x:Name="lineview"
+                                     Grid.Row="1"
+                                     Grid.Column="0"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.7"/>
+                            <Grid  Grid.Row="2"
+                                   Margin="17,25,17,25">
+                                <Grid.Triggers>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding DisplayFolder}"
+                                                 Value="True">
+                                        <Setter Property="BackgroundColor"
+                                                Value="{Binding LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='bg'}"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Grid"
+                                                 Binding="{Binding DisplayFolder}"
+                                                 Value="False">
+                                        <Setter Property="BackgroundColor"
+                                                Value="Transparent "/>
+                                    </DataTrigger>
+                                </Grid.Triggers>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Border IsVisible="{Binding DisplayFolder}"
+                                        BackgroundColor="{Binding LayoutColor, Converter={Helpers:ColorTypeToColorConverter}}"
+                                        HeightRequest="60">
+                                    <Grid>
+                                        <Label Text="{Binding SelectedCategoryName}"
+                                               FontSize="20"
+                                               TextColor="{Binding LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='text'}"
+                                               FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                                               Margin="20,0,40,0"
+                                               VerticalTextAlignment="Center"/>
+                                        <ImageButton Source="close"
+                                                     HorizontalOptions="End"
+                                                     MinimumHeightRequest="30"
+                                                     MinimumWidthRequest="30"
+                                                     WidthRequest="30"
+                                                     Padding="{OnPlatform Default='10,3,0,3', Android='2,3,0,3'}"
+                                                     HeightRequest="30"
+                                                     Command="{Binding CloseCategoryTappedCommand}"
+                                                     BackgroundColor="Transparent"
+                                                     Margin="0,0,20,0"
+                                                     VerticalOptions="Center"/>
+                                    </Grid>
+                                </Border>
+                                <CollectionView x:Name="lstViewProductList"
+                                                Grid.Row="1"
+                                                SelectionMode="None"
+                                                VerticalOptions="FillAndExpand"
+                                                ItemSizingStrategy="MeasureFirstItem"
+                                                RemainingItemsThreshold="1"
+                                                RemainingItemsThresholdReachedCommand="{Binding RemainingProductCommand}"
+                                                ItemTemplate="{StaticResource ItemTemplateSelector}"
+                                                ItemsSource="{Binding EnterSaleItems}">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Vertical"
+                                                         Span="3"
+                                                         VerticalItemSpacing="0"
+                                                         HorizontalItemSpacing="0"/>
+                                    </CollectionView.ItemsLayout>
+                                </CollectionView>
+                            </Grid>
+                            <!-- <BoxView Grid.Row="3"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.5"
+                                     VerticalOptions="Start"/> -->
+                            <!-- <HorizontalStackLayout Grid.Row="4"
+                                                   Grid.Column="0"
+                                                   Spacing="6"
+                                                   Margin="20,0,0,0">
+                                <Label Text="{Localize:Translate TotalText}"
+                                       Style="{x:Static resources:Styles.InvoiceSummaryTitleLabelStyle}"/>
+                                <Label
+                                    Text="{Binding invoicemodel.Invoice.InvoiceLineItemsCnt,StringFormat='({0} items)'}"
+                                    TextColor="{x:Static resources:AppColors.HikeColor}"
+                                    Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}"/>
+                            </HorizontalStackLayout>
+                            <Label Grid.Row="4"
+                                   Grid.Column="1"
+                                   Text="{Binding invoicemodel.Invoice.NetAmount, StringFormat='{}{0:c}'}"
+                                   Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}"
+                                   Margin="0,0,20,0">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding IsArabicCulture}"
+                                                 Value="True">
+                                        <Setter Property="Text"
+                                                Value="{Binding invoicemodel.Invoice.NetAmount, StringFormat='{}{0:c2}'}"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label> -->
+                            <!-- <BoxView Grid.Row="3"
+                                     Grid.Column="0"
+                                     Grid.ColumnSpan="2"
+                                     Color="{x:Static resources:AppColors.LightBordersColor}"
+                                     HeightRequest="0.5"
+                                     VerticalOptions="Start"/> -->
+                            <Border
+                                Margin="20"
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="50"
+                                StrokeThickness="0"  
+                                BackgroundColor="{x:Static resources:AppColors.HikeColor}" IsVisible="False">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
+                                <StackLayout
+                                    Orientation="Horizontal"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="0">
+                                    <Label Text="View Sale"
+                                           VerticalTextAlignment="Center"
+                                           Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                           HorizontalOptions="Center"/>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoToCartCommand}"/>
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border"
+                                                 Binding="{Binding invoicemodel.Invoice.GroupInvoiceLineItems.Count}"
+                                                 Value="0">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger TargetType="Border"
+                                                 Binding="{Binding invoicemodel.Invoice.GroupInvoiceLineItems.Count}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="IsVisible"
+                                                Value="True"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+                            </Border>
+                            <Border
+                                Margin="20"
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HeightRequest="50"
+                                StrokeThickness="0"
+                                BackgroundColor="{x:Static resources:AppColors.HikeColor}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10"/>
+                                </Border.StrokeShape>
+                                <StackLayout
+                                    Orientation="Horizontal"
+                                    HorizontalOptions="CenterAndExpand"
+                                    VerticalOptions="FillAndExpand"
+                                    Padding="0">
+                                    <Image Source="cart_white"
+                                           HeightRequest="24"
+                                           WidthRequest="24"/>
+                                    <Label
+                                        Text="{Binding invoicemodel.Invoice.InvoiceLineItemsCnt,StringFormat='{0} Items -'}"
+                                        VerticalTextAlignment="Center"
+                                        Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                            HorizontalOptions="Center"/>
+
+                                    <Label
+                                        Text="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c}'}"
+                                        Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}"
+                                        HeightRequest="50"
+                                        VerticalTextAlignment="Center"
+                                            HorizontalOptions="Center">
+
+                                        <Label.Triggers>
+                                            <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding IsArabicCulture}"
+                                                         Value="True">
+                                                <Setter Property="Text"
+                                                        Value="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c2}'}"/>
+                                            </DataTrigger>
+                                            <!--Ticket #7760 End:By Nikhil.-->
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoToCartCommand}"/>
+                                    </StackLayout.GestureRecognizers>
+
+                                </StackLayout>
+                                <Border.Triggers>
+                                    <DataTrigger TargetType="Border"
+                                                 Binding="{Binding invoicemodel.Invoice.GroupInvoiceLineItems.Count}"
+                                                 Value="0">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+
+                                    <DataTrigger TargetType="Border"
+                                                 Binding="{Binding invoicemodel.Invoice.GroupInvoiceLineItems.Count}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="IsVisible"
+                                                Value="False"/>
+                                    </DataTrigger>
+                                </Border.Triggers>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                    <BoxView Grid.Row="0"
+                             Grid.Column="0"
+                             Grid.ColumnSpan="2"
+                             Grid.RowSpan="8"
+                             Color="{x:Static resources:AppColors.BackgroundOverlayColor}"
+                             Scale="{Binding IsOpenBackground}"
+                             IsVisible="{OnPlatform Android={Binding IsOpenBackground,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BackgroundHandleCommand}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+                    <StackLayout Grid.Row="0"
+                                 Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="8"
+                                 Margin="10,60,10,0"
+                                 VerticalOptions="Start"
+                                 BindingContext="{Binding invoicemodel.CustomerModel}"
+                                 x:DataType="local:CustomerViewModel"
+                                 Scale="{Binding IsOpenSearchCustomerPopUp}"
+                                 IsVisible="{OnPlatform Android={Binding IsOpenSearchCustomerPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <local:SearchCustomerView x:Name="CustomerPopup"
+                                                  IsActive="{Binding IsActive}"/>
+                    </StackLayout>
+
+                    <StackLayout x:Name="DiscountTipPopup"
+                                 Grid.Row="0"
+                                 Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="6"
+                                 Margin="10,0,10,0"
+                                 VerticalOptions="Center"
+                                 BindingContext="{Binding invoicemodel}"
+                                 x:DataType="vm:InvoiceViewModel"
+                                 Scale="{Binding IsOpenDiscountPopUp}"
+                                 IsVisible="{OnPlatform Android={Binding IsOpenDiscountPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <local:DiscountTipView PopupTitle="{Binding PopupTitle}"/>
+                    </StackLayout>
+
+                    <StackLayout x:Name="TaxViewPopup"
+                                 Grid.Row="0"
+                                 Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="6"
+                                 Margin="10,0,10,0"
+                                 VerticalOptions="Center"
+                                 BindingContext="{Binding invoicemodel}"
+                                 x:DataType="vm:InvoiceViewModel"
+                                 Scale="{Binding IsOpenTaxViewPopUp}"
+                                 IsVisible="{OnPlatform Android={Binding IsOpenTaxViewPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <local:TaxView/>
+                    </StackLayout>
+
+                    <StackLayout x:Name="MoreOptionMenu"
+                                 Grid.Row="0"
+                                 Grid.ColumnSpan="2"
+                                 Grid.Column="0"
+                                 Grid.RowSpan="6"
+                                 Margin="10,60,10,0"
+                                 HorizontalOptions="End"
+                                 VerticalOptions="Start"
+                                 BindingContext="{Binding invoicemodel}"
+                                 x:DataType="vm:InvoiceViewModel"
+                                 Scale="{Binding IsOpenOptionPopUp}"
+                                 IsVisible="{OnPlatform Android={Binding IsOpenOptionPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <local:EnterSaleMoreOptionMenuView/>
+                    </StackLayout>
+
+                    <!--Ticket start #37205 iOS - Sorting Products on Process Sale Page.by rupesh-->
+                    <BoxView Grid.Row="0" Grid.RowSpan="3"
+                             Grid.Column="0"
+                             Color="{x:Static resources:AppColors.BackgroundOverlayColor}"
+                             Scale="{Binding IsOpenSortingFilterPopUp}"
+                             IsVisible="{OnPlatform Android={Binding IsOpenSortingFilterPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <BoxView.GestureRecognizers>
+                            <TapGestureRecognizer  Command="{Binding BackgroundHandleCommand}"/>
+                        </BoxView.GestureRecognizers>
+                    </BoxView>
+                    <StackLayout Grid.Row="0"
+                            Grid.RowSpan="3"
+                                 Grid.Column="0"
+                                 TranslationX="-5"
+                                 TranslationY="5"
+                                 VerticalOptions="Start"
+                                 HorizontalOptions="End"
+                                 Scale="{Binding IsOpenSortingFilterPopUp}"
+                                 IsVisible="{OnPlatform Android={Binding IsOpenSortingFilterPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                        <local:ProductSortMenuView>
+                        </local:ProductSortMenuView>
+                    </StackLayout>
+                    <!--Ticket end #37205 .by rupesh-->
+
+                </Grid>
+                <Grid IsVisible="{Binding invoicemodel.IsLoad}"
+                      BackgroundColor="Transparent"
+                      Grid.Row="0"
+                      Grid.RowSpan="3"
+                      HorizontalOptions="FillAndExpand"
+                      VerticalOptions="FillAndExpand"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:BaseContentPage>

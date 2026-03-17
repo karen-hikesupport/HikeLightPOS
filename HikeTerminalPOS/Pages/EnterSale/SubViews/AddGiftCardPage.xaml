@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+x:Class="HikePOS.AddGiftCardPage" xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources"
+ xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+ xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+ xmlns:vm="clr-namespace:HikePOS.ViewModels"
+x:TypeArguments="vm:AddGiftCardViewModel" 
+x:DataType="vm:AddGiftCardViewModel"  
+Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+   <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>   
+            <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                   <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                   <!--<Button Text="Save" IsVisible="{Binding IsProductInfoActive, Converter={Helpers:InverseBoolConverter}}}" Clicked="SaveHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />-->
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="30,0,30,0">
+                      <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+                </OnIdiom>
+             <Grid x:Name="rootview" RowDefinitions="Auto,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                 <userControls:FixedScrollView  Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <StackLayout>
+                        <Label Text="{Localize:Translate AddGiftCardNumber}" FontSize="20" FontFamily="{x:Static resources:Fonts.HikeLightFont}" 
+                            TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+                        <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="0"  Margin="30,5,30,5"  VerticalOptions="Start" >
+                            <userControls:CustomEntry Text="{Binding GiftCardNumber}" Keyboard="Numeric" FontFamily="{x:Static resources:Fonts.HikeLightFont}" HeightRequest="50" TextChanged="CustomEntry_TextChanged"/>
+                        </Border>  
+                        <!--Start #90944 iOS:FR Gift cards expiry date by Pratik-->
+                        <Label Text="{Binding GiftCardExpireMsg}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" 
+                            TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Center" />
+                        <!--End #90944 by Pratik-->
+                        <Button 
+                            x:Name="VerifyButton"
+                            HeightRequest="60" 
+                            WidthRequest="180"
+                            BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" 
+                            FontSize="22" 
+                            FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                            CornerRadius="5"
+                            TextColor="White"  
+                            VerticalOptions="Start" 
+                            HorizontalOptions="Center" 
+                            Margin="40"
+                            Text="{Localize:Translate Verify_ButtonText}"
+                            Command="{Binding VerifyGiftCardCommand}"
+                            IsEnabled="{Binding IsVerified, Converter={Helpers:InverseBoolConverter}}" 
+                            IsVisible ="{Binding IsVerified, Converter={Helpers:InverseBoolConverter}}" />
+
+                        <Label Text="{Localize:Translate AddGiftCardBalance}" IsVisible="{Binding IsGiftCardBalance}" Margin="0,30,0,0" FontSize="20" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+
+                         <Border  Stroke="Gray" IsEnabled="{Binding IsGiftCardBalance}"
+                                 IsVisible="{Binding IsGiftCardBalance}" Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+                                 HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="0" Margin="30,20,30,5"  VerticalOptions="Start"
+                                 BackgroundColor="Transparent" >
+                            <Label VerticalOptions="Center" VerticalTextAlignment="Center" Text="{Binding GiftCardBalance, StringFormat='{}{0:c}'}" FontFamily="{x:Static resources:Fonts.HikeLightFont}" FontSize="25"  HorizontalOptions="Center"  HeightRequest="50"/>
+                        </Border>
+                        <Label Text="{Localize:Translate TopupGiftcard}" Margin="0,40,0,0" IsVisible="{Binding IsGiftCardBalance}" FontSize="30" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" />
+
+
+                        <Border IsEnabled="{Binding IsVerified}"    IsVisible="{Binding IsVerified}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="5,0,0,0" Margin="30,20,30,5" VerticalOptions="Start" >
+                            <userControls:BorderLessEntry Placeholder="{Localize:Translate AddGiftCardEnterAmount}"  Text="{Binding GiftCardAmount}" Keyboard="Numeric" FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="50"/>
+                        </Border>
+
+                       <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Margin="0,20,0,0" >
+                            <Border  IsVisible="{Binding IsGiftFirstTime}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="5,0,0,0" Margin="30,5,10,5" VerticalOptions="Start" >
+                            <userControls:BorderLessEntry Placeholder="From name"  Text="{Binding GiftFromName}" HorizontalOptions="FillAndExpand"  FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="50"/>
+                        </Border>
+                            <Border IsVisible="{Binding IsGiftFirstTime}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="5,0,0,0" Margin="20,5,30,5" VerticalOptions="Start" >
+                            <userControls:BorderLessEntry Placeholder="From email"  Text="{Binding GiftFromEmail}"  Keyboard="Email" FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="50"/>
+                        </Border>
+                        </StackLayout>
+
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand"  Margin="0,20,0,0" >
+                            <Border  IsVisible="{Binding IsGiftFirstTime}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="5,0,0,0" Margin="30,5,10,5" VerticalOptions="Start" >
+                            <userControls:BorderLessEntry Placeholder="Recipient name"  Text="{Binding GiftReceiptName}" HorizontalOptions="FillAndExpand" FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="50"/>
+                        </Border>
+                            <Border  IsVisible="{Binding IsGiftFirstTime}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50" Padding="5,0,0,0" Margin="20,5,30,5" VerticalOptions="Start" >
+                            <userControls:BorderLessEntry Placeholder="Recipient email"  Text="{Binding GiftReceiptEmail}"  Keyboard="Email"  FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="50"/>
+                        </Border>
+                        </StackLayout>
+                        <Border  Margin="30,20,30,0"   IsVisible="{Binding IsGiftFirstTime}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="120" Padding="0" VerticalOptions="Start" >
+                            <Editor Placeholder="Recipient detail"  Text="{Binding GiftReceiptMessage}" FontFamily="{x:Static resources:Fonts.HikeLightFont}"  HeightRequest="120"/>
+                        </Border>
+
+                         <Button 
+                            x:Name="AddToCart" 
+                            IsVisible="{Binding IsVerified}" HeightRequest="60" 
+                            BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" 
+                            FontSize="22"
+                            FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                            CornerRadius="5"
+                            TextColor="White"  
+                            VerticalOptions="Start" 
+                            HorizontalOptions="FillAndExpand" 
+                            Margin="30,40,30,0" 
+                            IsEnabled="{Binding IsVerified}" 
+                            Command="{Binding AddToCartCommand}">
+                             <Button.Triggers>
+                                 <DataTrigger TargetType="Button" Binding="{Binding IsGiftCardBalance}" Value="False">
+                                       <Setter Property="Text" Value="{Localize:Translate AddToCart_ButtonText}" />
+                                  </DataTrigger>
+
+                                  <DataTrigger TargetType="Button" Binding="{Binding IsGiftCardBalance}" Value="True">
+                                       <Setter Property="Text" Value="{Localize:Translate UpdateCard_ButtonText}" />
+                                  </DataTrigger>
+                             </Button.Triggers>
+
+                             </Button>
+               
+                        <Button 
+                            x:Name="Back"
+                            IsVisible="false" 
+                            HeightRequest="60" 
+                            WidthRequest="180"
+                            BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" 
+                            FontSize="22"
+                            FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                            CornerRadius="5"
+                            TextColor="White"  
+                            VerticalOptions="Start" 
+                            HorizontalOptions="Center" 
+                            Margin="40"
+                            IsEnabled="{Binding IsGiftCardBalance}" 
+                            Text="{Localize:Translate Back_ButtonText}"
+                            Command="{Binding BackToGiftCardCommand}"/>
+                    </StackLayout>
+                </userControls:FixedScrollView>
+
+                <Label Text="{Localize:Translate AddGiftCard_Title}" Margin="0" Padding="40" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="Start"  />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

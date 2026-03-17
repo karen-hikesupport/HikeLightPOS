@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.CategoryViewCell" xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" HeightRequest="140">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="Transparent"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <ContentView Margin="5" BackgroundColor="{Binding Category.LayoutColor, Converter={Helpers:ColorTypeToColorConverter}}">
+        <Grid>
+            <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <Label x:Name="lblname" TextColor="{x:Static resources:AppColors.HikeColor}" Margin="5,0" 
+                    Text="{Binding Category.ShortName}" Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}"
+                    VerticalOptions="Fill" HorizontalOptions="Fill" MaxLines="3" LineBreakMode="TailTruncation"/>     
+                    <Image  x:Name="CategoryImage" Grid.Row="0" Grid.Column="0"
+                        Aspect="AspectFit" HeightRequest="95"
+                        VerticalOptions="FillAndExpand" 
+                        HorizontalOptions="FillAndExpand">
+                        <Image.Source>
+                            <UriImageSource Uri="{Binding Category.CategoryImageId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Category_Medium}" 
+                                CacheValidity="30" 
+                                CachingEnabled="true"/>
+                        </Image.Source>
+                    </Image>
+                </Grid>
+                <Label Grid.Row="1" Grid.Column="0"  x:Name="ItemName" HeightRequest="35" BackgroundColor="White"
+                    Text="{Binding Category.Name}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Padding="10,0,10,0"/>
+                <Border x:Name="ItemName1" Grid.Row="1" Grid.Column="0" Margin="0,-16,0,0"
+                    StrokeShape="RoundRectangle 12" Padding="0" BackgroundColor="Transparent" 
+                    Stroke="Silver" HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Center">
+                    <Grid ColumnSpacing="0" RowSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="24" />
+                        </Grid.RowDefinitions>
+                        <BoxView Grid.Row="0" BackgroundColor="White" HeightRequest="24" WidthRequest="35" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                        <Label Grid.Row="0" Text="{Binding Category.ProductsCount}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" HeightRequest="24" WidthRequest="35" HorizontalOptions="Center" />
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </ContentView>
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+</Grid>

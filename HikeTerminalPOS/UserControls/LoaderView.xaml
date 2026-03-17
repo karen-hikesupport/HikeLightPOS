@@ -1,0 +1,30 @@
+﻿<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:local="clr-namespace:HikePOS"
+        x:Class="HikePOS.LoaderView"
+        IsVisible="{Binding IsBusy}" BackgroundColor="Transparent" 
+        VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+    <Border BackgroundColor="{OnPlatform iOS='#626262', Android='#000000'}" Opacity="{OnPlatform iOS=1, Android=0.92}"
+         StrokeThickness="0" Padding="{OnPlatform iOS='13,17,13,15', Android='13,15'}" HorizontalOptions="Center"  VerticalOptions="Center">
+        <Border.StrokeShape>
+            <RoundRectangle CornerRadius="16"/>
+        </Border.StrokeShape>
+        <VerticalStackLayout Spacing="{OnPlatform iOS=6, Android=8}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+
+            <ActivityIndicator
+                IsRunning="{Binding IsBusy}"
+                Color="{OnPlatform iOS='#FFFFFF', Android='#32bdb9'}"
+                WidthRequest="{OnPlatform iOS=36, Android=40}"
+                HeightRequest="{OnPlatform iOS=36, Android=40}" Scale="{OnPlatform iOS=1.7, Android=1}"/>
+
+            <Label Text="{Localize:Translate Progress0_Text}"
+                TextColor="White"
+                FontSize="16" FontAttributes="Bold"
+                HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
+    </Border>
+</Grid>

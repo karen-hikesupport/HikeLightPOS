@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.RestaurantFloorPlanPage"
+    xmlns:local="clr-namespace:HikePOS"
+    xmlns:resources="clr-namespace:HikePOS.Resources"
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:TypeArguments="vm:RestaurantFloorPlanViewModel"
+    x:DataType="vm:RestaurantFloorPlanViewModel"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    NavigationPage.HasNavigationBar="False">
+    <Grid BackgroundColor="White"
+          Margin="{OnPlatform iOS='0,0,0,0', Default='0'}"
+          VerticalOptions="Fill"
+          RowSpacing="0" 
+          ColumnSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+            <RowDefinition Height="2"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ContentView BackgroundColor="White"
+                     Grid.Row="0"/>
+        <Grid Grid.Row="0"
+              ColumnSpacing="12"
+              ColumnDefinitions="Auto,*"
+              HeightRequest="{OnPlatform iOS='44', Android='50'}">
+            <StackLayout Grid.Column="0"
+                         Orientation="Horizontal"
+                         Spacing="0"
+                         VerticalOptions="Fill"
+                         HorizontalOptions="Start"
+                         Margin="20,0,0,0">
+                <Label Text="{Localize:Translate BackIconUnicode}"
+                       VerticalOptions="Center"
+                       Margin="0,0,0,2"
+                       TextColor="Black"
+                       FontSize="35"
+                       Style="{x:Static resources:Styles.PageBackLabelStyle}"/>
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer  Command="{Binding BackPageCommand}"/>
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <CollectionView x:Name="BottomMenuListView"
+                            Grid.Column="1"
+                            HeightRequest="{OnPlatform iOS='44', Android='50'}"
+                            Margin="4,0,0,0"
+                            SelectionMode="None"
+                            ItemSizingStrategy="MeasureAllItems"
+                            ItemsSource="{Binding FloorList}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"
+                                       ItemSpacing="0"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:FloorDto">
+                        <Grid Margin="0,0,30,0">
+                            <Label Text="{Binding Name}"
+                                   Style="{x:Static resources:Styles.CategoryTitleLabelStyle}"
+                                   FontSize="18"
+                                   TextColor="{Binding IsSelected, Converter={Helpers:ActiveDeactiveColorConverter}}"
+                                   LineBreakMode="NoWrap"
+                                   HeightRequest="{OnPlatform iOS='44', Android='50'}"
+                                   FontFamily="HikeBoldFont"
+                                   VerticalTextAlignment="Center"
+                                   HorizontalOptions="Start">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RestaurantFloorPlanViewModel}}, Path=FloorTappedCommand, x:DataType=vm:RestaurantFloorPlanViewModel}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+        <ContentView BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Grid.Row="2" IsVisible="{Binding IsFloorVisible,Converter={Helpers:InverseBoolConverter}}"
+            Padding="40">
+                 <Label Grid.Row="2" FontSize="24" Text="Table layout is not set up yet. Please add a floor with tables in the layout to continue with the sale."
+            HorizontalTextAlignment="Center"  VerticalTextAlignment="Center" FontFamily="HikeDefaultFont" TextColor="Black"/>
+        </ContentView>
+        <ContentView IsVisible="{Binding IsFloorVisible}" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Grid.Row="2" Padding="{OnIdiom Phone='10', Tablet='24'}"
+                    Content="{Binding TableCanvas}"/>
+
+    </Grid>
+</local:BaseContentPage>

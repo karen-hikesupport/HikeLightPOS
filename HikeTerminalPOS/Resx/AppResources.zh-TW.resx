@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+        <resheader name="version"><value>2.0</value></resheader>
+        <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+        <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+        <!-- Start Icons  //IconUnicodeText  -->
+        <data name="HumbergerMenuIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="BackIconUnicode" xml:space="preserve"><value> </value></data>
+        <data name="CloseIconUnicode" xml:space="preserve"><value>✕</value></data>
+        <data name="StarBorderIconUnicode" xml:space="preserve"><value>☆</value></data>
+        <data name="StarIconUnicode" xml:space="preserve"><value>★</value></data>
+        <data name="CheckBoxIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="UnCheckBoxIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="BookmarkIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="GiftIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="TrashIconUnicode" xml:space="preserve"><value></value></data>
+        <!--<data name="FolderIconUnicode" xml:space="preserve"><value></value></data>-->
+        <data name="EditIconUnicode" xml:space="preserve"><value></value></data> 
+        <data name="FolderIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="FilterIconUnicode" xml:space="preserve"><value></value></data>
+
+
+
+        <!-- End -->
+
+		<data name="StoreName_Placeholder" xml:space="preserve"><value>請輸入用於測試的商店名稱</value></data>
+        <data name="StoreName_InValidMessage" xml:space="preserve"><value>請輸入有效的商店名稱</value></data>
+        <data name="StoreName_EmptyMessage" xml:space="preserve"><value>請輸入您的商店名稱</value></data>
+        <data name="StoreName_LabelText" xml:space="preserve"><value>.hikeup.com</value></data>
+        <data name="Email_Placeholder" xml:space="preserve"><value>電子郵件</value></data>
+        <data name="Email_InValidMessage" xml:space="preserve"><value>請輸入有效電子郵件</value></data>
+        <data name="Email_EmptyMessage" xml:space="preserve"><value>請輸入電子郵件地址</value></data>
+        <data name="Password_Placeholder" xml:space="preserve"><value> 密碼</value></data>
+        <data name="Password_InValidMessage" xml:space="preserve"><value>請輸入有效密碼</value></data>
+        <data name="Password_EmptyMessage" xml:space="preserve"><value>請輸入您的密碼</value></data>
+		<data name="Login_ButtonText" xml:space="preserve"><value> 登錄</value></data>
+        <data name="Signup_LabelText" xml:space="preserve"><value>新用戶？</value></data>
+        <data name="Register_ButtonText" xml:space="preserve"><value>注冊</value></data>
+        <data name="Forgot_ButtonText" xml:space="preserve"><value>忘記密碼</value></data>
+        <data name="DiscountPopupTitle" xml:space="preserve"><value>折扣</value></data>
+        <data name="TipPopupTitle" xml:space="preserve"><value>小費</value></data>
+        <data name="StoreNameAlreadyExistsMessage" xml:space="preserve"><value>已存在具有該名稱的商店</value></data>
+
+        <data name="Signup_ButtonText" xml:space="preserve"><value>創建我的商店</value></data>
+        <data name="Already_LabelText" xml:space="preserve"><value>已有帳號</value></data>
+        <data name="Forgot_TitleText"  xml:space="preserve"><value>密碼</value></data>
+        <data name="Submit_ButtonText" xml:space="preserve"><value>發送</value></data>
+        <data name="Remember_LabelText" xml:space="preserve"><value>保持登錄狀態</value></data>
+
+        <data name="SendResetPasswordSuccessMessage" xml:space="preserve"><value>密碼重置鏈接已發送到您的電子郵件地址。請檢查您的電子郵件</value></data>
+    
+        <data name="Logout_ButtonText" xml:space="preserve"><value>登出</value></data>
+        <data name="ChangeUser_ButtonText" xml:space="preserve"><value>切換用戶</value></data>
+        <data name="CloseRegister_ButtonText" xml:space="preserve"><value>關閉收銀處</value></data>
+        <data name="ChangePassword_ButtonText" xml:space="preserve"><value>更改密碼</value></data>
+        <data name="ClockInOut_ButtonText" xml:space="preserve"><value>時鐘輸出</value></data>
+    
+        <data name="EnterSale_TitleText" xml:space="preserve"><value>進入銷售</value></data>
+        <data name="SaleHistory_TitleText" xml:space="preserve"><value>銷售歷史紀錄</value></data>
+        <data name="CashRegister_TitileText" xml:space="preserve"><value>收銀機</value></data>
+        <data name="Settings_TitleText" xml:space="preserve"><value>設置</value></data>
+        <data name="Admin_TitleText" xml:space="preserve"><value>管理員</value></data>
+        <data name="Payment_TitleText" xml:space="preserve"><value>付款</value></data>
+        <data name="CustomSale_TitleText" xml:space="preserve"><value>定制銷售</value></data>
+    
+        <data name="Intercom_TitleText" xml:space="preserve"><value>需要幫助？</value></data>
+        
+    
+        <data name="Online_Text" xml:space="preserve"><value> 線上 </value></data>
+        <data name="Offline_Text" xml:space="preserve"><value>離線</value></data>
+        <data name="Connected_Text" xml:space="preserve"><value>已連接</value></data>
+        <data name="NotFound_Text" xml:space="preserve"><value>未找到</value></data>
+
+        <data name="SelectRegister_TitleText" xml:space="preserve"><value>選擇收銀處</value></data>
+        <data name="Progress0_Text" xml:space="preserve"><value>請耐心等待</value></data>
+        <data name="Progress1_Text" xml:space="preserve"><value>設置產品列表</value></data>
+        <data name="Progress2_Text" xml:space="preserve"><value>加載您的商店</value></data>
+        <data name="Progress3_Text" xml:space="preserve"><value>加載員工帳戶</value></data>
+        <data name="Progress4_Text" xml:space="preserve"><value>加載用戶</value></data>
+        <data name="Progress5_Text" xml:space="preserve"><value>加載產品類型</value></data>
+        <data name="Progress6_Text" xml:space="preserve"><value>加載產品</value></data>
+        <data name="Progress7_Text" xml:space="preserve"><value>加載客戶資料</value></data>
+        <data name="Progress8_Text" xml:space="preserve"><value>加載折扣優惠</value></data>
+        <data name="Progress9_Text" xml:space="preserve"><value>加載付款配置</value></data>
+        <data name="Progress10_Text" xml:space="preserve"><value>加載銷售歷史記錄</value></data>
+
+
+    
+        <data name="SearchProduct_PlaceHolder" xml:space="preserve"><value>搜索產品</value></data>
+        <data name="PayButtonText" xml:space="preserve"><value>付款</value></data>
+        <data name="OfferTitle" xml:space="preserve"><value>折扣優惠</value></data>
+        <data name="Price_Placeholder" xml:space="preserve"><value>價格</value></data>
+        <data name="Discount_Placeholder" xml:space="preserve"><value>折扣優惠</value></data>
+        <data name="CustomSale_Placeholder" xml:space="preserve"><value>在此輸入自定義銷售名稱</value></data>
+        <data name="Save_ButtonText" xml:space="preserve"><value> 保存</value></data>
+        <data name="Info_ButtonText" xml:space="preserve"><value>信息</value></data>
+		<data name="Back_ButtonText" xml:space="preserve"><value>返回</value></data>
+        <data name="Verify_ButtonText" xml:space="preserve"><value>校驗</value></data>
+        <data name="AddToCart_ButtonText" xml:space="preserve"><value>添加到購物車</value></data>
+        <data name="GiftCard_Placeholder" xml:space="preserve"><value>禮物卡</value></data>
+        <data name="GiftCardAmount_Placeholder" xml:space="preserve"><value>金額</value></data>
+
+        <data name="ProductDetailHeader" xml:space="preserve"><value>產品詳情</value></data>
+        <data name="IncreaseRefundProductQuantityValidationMessage" xml:space="preserve"><value>請輸入有效數量 - 應小於0</value></data>
+        <data name="DecreaseSaleProductQuantityValidationMessage" xml:space="preserve"><value>請輸入有效數量 - 應大於0</value></data>
+		<data name="AddToPurchaseButtonText" xml:space="preserve"><value> 加入購買</value></data>
+        <data name="PaypalEVMTransactionHeader" xml:space="preserve"><value>芯片 ＋ 密碼支付</value></data>
+        <data name="ChargeButtonText" xml:space="preserve"><value>收款</value></data>
+        <data name="UpdateReaderButtonText" xml:space="preserve"><value>更新讀卡器</value></data>
+        <data name="ReadyToPayHeaderText" xml:space="preserve"><value>準備付款</value></data>
+        <data name="NoReaderFoundMessage" xml:space="preserve"><value>沒有檢測到讀卡器</value></data>
+        <data name="TyroPurchaseTransactionHeader" xml:space="preserve"><value>Tyro付款</value></data>
+        <data name="iZettlePurchaseTransactionHeader" xml:space="preserve"><value>PaypalZettle付款</value></data>
+        <data name="MintTransactionHeader" xml:space="preserve"><value>Mint付款</value></data>
+
+        <data name="TyroTerminalConfigurationRequired" xml:space="preserve"><value>Tyro終端沒有配置！請從付款設置配置tyro終端</value></data>
+        <data name="MintConfigurationRequired" xml:space="preserve"><value>Mint未配置！請從付款設置配置</value></data>
+        <data name="MintConfigurations" xml:space="preserve"><value>Mint配置</value></data>
+        <data name="AmountValidationForIntegratedPaymentTypeMessage" xml:space="preserve"><value>輸入的金額超過支付金額</value></data>
+
+        <data name="VantivConfigurations" xml:space="preserve"><value>Vantiv配置</value></data>
+        <data name="AssemblyPaymentConfigurations" xml:space="preserve"><value>Westpac配置</value></data>
+        <data name="Configure_ButtonText" xml:space="preserve"><value>Configure</value></data>
+
+        <data name="Please_Select_LabelText" xml:space="preserve"><value> 請選擇</value></data>
+        <data name="CustomerAddButtonText" xml:space="preserve"><value>+添加新的</value></data> 
+        <data name="SearchCustomerPlaceholderText" xml:space="preserve"><value>按姓名，電子郵件或電話</value></data>    
+        <data name="FirstName" xml:space="preserve"><value> 名字</value></data>
+        <data name="LastName" xml:space="preserve"><value>姓</value></data>
+        <data name="Gender" xml:space="preserve"><value>性別</value></data>
+        <data name="Birthdate" xml:space="preserve"><value>生日</value></data>
+        <data name="CompanyName" xml:space="preserve"><value>公司名</value></data>
+        <data name="CustomerGroup" xml:space="preserve"><value>客戶群</value></data>
+        <data name="Email" xml:space="preserve"><value>電子郵件</value></data>
+        <data name="Phone" xml:space="preserve"><value>電話</value></data>
+        <data name="City" xml:space="preserve"><value>市</value></data>
+        <data name="StreetAddress" xml:space="preserve"><value>街道地址</value></data>
+        <data name="State" xml:space="preserve"><value>州</value></data>
+        <data name="Zip" xml:space="preserve"><value>郵政/郵編</value></data>
+        <data name="Country" xml:space="preserve"><value> 國家</value></data>
+        <data name="CustomerCode" xml:space="preserve"><value>客戶代碼</value></data>
+        <data name="CreditLimit" xml:space="preserve"><value>信用額度</value></data>
+        <data name="HowDidYouHearAboutUs" xml:space="preserve"><value>您是怎麼知道我們的</value></data>
+        <data name="Notes" xml:space="preserve"><value>備註</value></data>
+        <data name="CustomerSince" xml:space="preserve"><value>何時加入</value></data>
+    
+    
+        <data name="ValidAmount" xml:space="preserve"><value>請輸入有效金額</value></data>
+        <data name="ValidTenderAmount" xml:space="preserve"><value>請輸入有效金額</value></data>
+		<data name="PRINTER_TYPE_POWA_POS" xml:space="preserve"><value>PRINTER_TYPE_POWA_POS_</value></data>
+        <data name="Error_Title" xml:space="preserve"><value> 錯誤</value></data>
+        <data name="Warning_Title" xml:space="preserve"><value> 警告</value></data>
+        <data name="Authentication_Error_Title" xml:space="preserve"><value>授權錯誤</value></data>
+
+
+
+        <data name="AddGiftCard_Title" xml:space="preserve"><value>出售或檢查禮品卡餘額</value></data>
+        <data name="AddGiftCardNumber" xml:space="preserve"><value>禮品卡號碼</value></data>
+        <data name="AddGiftCardEnterAmount" xml:space="preserve"><value>金額</value></data>
+        <data name="AddGiftCardBalance" xml:space="preserve"><value>餘額</value></data>
+
+
+        
+        <data name="AddCustomer_Title" xml:space="preserve"><value>客戶資料</value></data>
+        <data name="Server_Error_Title" xml:space="preserve"><value> 錯誤</value></data>
+        <data name="SomethingWrong" xml:space="preserve"><value>抱歉，出了一些問題</value></data>
+        <data name="NoInternetMessage" xml:space="preserve"><value>互聯網不可用！請檢查您的設備設置</value></data>
+        <data name="FirstNameRequiredValidationMessage" xml:space="preserve"><value>請輸入名字</value></data>
+        <data name="GiftCardAmountValidationMessage" xml:space="preserve"><value>請輸入有效的禮品卡金額 - 僅限數字，不含貨幣符號。</value></data>
+        <data name="GiftCardNotAvailableValidationMessage" xml:space="preserve"><value>對不起，我們沒找到禮品卡。</value></data>
+        <data name="GiftCardNumberValidationMessage" xml:space="preserve"><value>請輸入有效的禮品卡號碼（最多30位數和2位小數)</value></data>
+        <data name="GiftCardNumberMinimumValidationMessage" xml:space="preserve"><value>禮品卡號碼必須至少為4個字符。</value></data>
+        <data name="BalanceLabelText" xml:space="preserve"><value>餘額</value></data>
+        <data name="GiftCardBalanceValidationMessage" xml:space="preserve"><value>輸入的金額超過可用的禮品卡餘額</value></data>
+        <data name="PrinterValidationMessage" xml:space="preserve"><value>請選擇一台打印機</value></data>
+        <data name="PrinterSelectionValidationMessage" xml:space="preserve"><value>請選擇一台打印機</value></data>
+        <data name="CustomSaleNameValidationMessage" xml:space="preserve"><value>請輸入此自定義產品名稱</value></data>
+        <data name="CustomSaleQuantityValidationMessage" xml:space="preserve"><value>請輸入數量</value></data>
+        <data name="NoItemBarcodeMessage" xml:space="preserve"><value>找不到與此條形碼匹配的產品</value></data>
+        <data name="NoInvoiceItemBarcodeMessage" xml:space="preserve"><value>找不到符合此條形碼的銷售紀錄</value></data>
+        <data name="ExtraProductSelectionValidationMessage" xml:space="preserve"><value>沒有從列表中選擇。如果您不想繼續選擇，請點擊“關閉”圖標</value></data>
+        <data name="OutofStockMessage" xml:space="preserve"><value>此產品缺貨</value></data>
+        <data name="CompositeOutofStockMessage" xml:space="preserve"><value>用於創建此復合產品的一個或多個項目缺貨。請重新進貨以下商品以繼續銷售此復合產品。</value></data>
+        <data name="DiscountValidationMessage" xml:space="preserve"><value>請輸入有效折扣</value></data>
+        <data name="TipValidationMessage" xml:space="preserve"><value>請輸入有效的小費金額</value></data>
+        <data name="BackOrderCutomerValidation" xml:space="preserve"><value>請指定客戶創建延期交貨</value></data>
+        <data name="PayButtonCutomerValidation" xml:space="preserve"><value>请添加客戶</value></data>
+        <data name="NoItemInStockMessage" xml:space="preserve"><value>没有足够的库存来完成这个延期交货</value></data>
+        <data name="RefundInternetValidationMessage" xml:space="preserve"><value>请连接到互联网以完成退款交易</value></data>
+        <data name="RefundSyncValidationMessage" xml:space="preserve"><value> 请连接到互联网以完成退款交易</value></data>
+        <data name="RemovePaymentInCloseRegisterAlertMessage" xml:space="preserve"><value>请打开收銀處以取消付款</value></data>
+        <data name="EnterSaleNoPermissionMessage" xml:space="preserve"><value>抱歉，您没有所需的访问权限</value></data>
+        <data name="CreditBalanceValidationMessage" xml:space="preserve"><value>金额超过可用的信用額度</value></data>
+        <data name="CreditLimitValidationMessage" xml:space="preserve"><value>无法完成这个賒購销售。它超过了此客户帐户设置的总賒購余额限额</value></data>
+        <data name="LoyaltyLimitValidationMessage" xml:space="preserve"><value>付款金额超过可用的會員積分余额</value></data>
+        <data name="iZettleRefundMessage" xml:space="preserve"><value>无法使用PaypalZettle处理此退款</value></data>
+        <data name="PaypalLoginMessage" xml:space="preserve"><value>请登录PayPal并重试！</value></data>
+        <data name="PaypalRefundMessage" xml:space="preserve"><value>无法使用PayPal处理此退款</value></data>
+        <data name="MintRefundMessage" xml:space="preserve"><value>无法使用Mint处理此退款</value></data>
+        <data name="NumberValidationMessage" xml:space="preserve"><value>請輸入有效的號碼</value></data>
+        <data name="SettingUpdateMessage" xml:space="preserve"><value>設置已成功更新！</value></data>
+        <data name="UpdateDataProccessMessage" xml:space="preserve"><value>更新數據</value></data>
+		<data name="NoFoundVariantProduct" xml:space="preserve"><value>對不起，無法找到多樣化產品</value></data>
+        <data name="RemoveCreditPaymentMessage" xml:space="preserve"><value>對不起，您無法取消信用額度支付</value></data>
+        <data name="CloseRegisterSuccessMessage" xml:space="preserve"><value>收銀處已成功關閉</value></data>
+        <data name="CloseRegisterLoadDataErrorMessage" xml:space="preserve"><value>收銀處已經關閉。請同步數據，然後重試。</value></data>
+        <data name="AlreadyOpenRegisterErrorMessage" xml:space="preserve"><value>收銀處已經打開</value></data>
+        <data name="EmailSendWaiting" xml:space="preserve"><value>電子郵件已準備發送.</value></data>
+        <data name="EmailSuccess" xml:space="preserve"><value>電子郵件已發送</value></data>
+        <data name="EmailFailed" xml:space="preserve"><value>電子郵件發送失敗。請檢查電子郵件ID，然後重試.</value></data>
+        <data name="DataSyncSuccess" xml:space="preserve"><value>數據已成功與您的商店云同步</value></data>
+        <data name="ExpireMessage" xml:space="preserve"><value>抱歉，您的訂閱已過期</value></data>
+
+        <data name="SubscriptionExntendedMessage" xml:space="preserve"><value>您的帳號訂閱續訂失敗。請更新信用卡詳細信息以避免中斷</value></data>
+        <data name="SubscriptionIsOnHoldMessage" xml:space="preserve"><value>你目前暫停了你的Hike訂閱</value></data>
+
+        <data name="DataSyncContinueMessage" xml:space="preserve"><value>您的商店中有一些不同步的數據。你想繼續同步嗎？</value></data>
+        <data name="RemovePaymentAleartMessage" xml:space="preserve"><value>您確定要刪除此付款嗎？</value></data>
+        <data name="ResetAleartMessage" xml:space="preserve"><value>您確定要刪除此付款嗎？</value></data>
+
+    
+        <data name="EnableInvoicePrintReceiptText" xml:space="preserve"><value>發票收據</value></data>
+        <data name="EnableDocketPrintReceiptText" xml:space="preserve"><value>後廚收據</value></data>
+        <data name="EnableCustomerPrintReceiptText" xml:space="preserve"><value>客戶收據</value></data>
+
+
+        <data name="LoadUpdateDataHeaderText" xml:space="preserve"><value>與您的商店云同步</value></data>
+        <data name="LoadUpdateDataText" xml:space="preserve"><value>點擊手動同步與您的商店雲同步</value></data>
+
+    <data name="Migration" xml:space="preserve"><value>數據遷移</value></data>
+    <data name="Import" xml:space="preserve"><value>導入</value></data>
+    <data name="HikeEcommers" xml:space="preserve"><value>Hike電子商務</value></data>
+    <data name="iPad" xml:space="preserve"><value>店內</value></data>
+    <data name="QB" xml:space="preserve"><value>QuickBooks</value></data>
+    <data name="Web" xml:space="preserve"><value>店內</value></data>
+    <data name="Woo" xml:space="preserve"><value>WooCommerce</value></data>
+    <data name="BigCommerce" xml:space="preserve"><value>BigCommerce</value></data>
+    <data name="Shopify" xml:space="preserve"><value>Shopify</value></data>
+    <data name="Xero" xml:space="preserve"><value></value>Xero</data>
+    <data name="Magento" xml:space="preserve"><value>Magento</value></data>
+    <data name="ePages" xml:space="preserve"><value>ePages</value></data>
+
+
+    <!--setting page start-->
+
+    
+    <data name="GeneralButtonText" xml:space="preserve"><value>常規設置</value></data>
+    <data name="PrinterButtonText" xml:space="preserve"><value>硬件設置</value></data>
+    <data name="PaymentButtonText" xml:space="preserve"><value>付款方式</value></data>
+
+    <data name="MarkPaidOrderOptionLabelText" xml:space="preserve"><value>將已付款訂單標記為已履行</value></data>
+    <data name="MarkPaidOrderOptionDescriptionText" xml:space="preserve"><value>如果您在收到付款後需要停止履行訂單，然後手動將狀態更改為已履行，則取消激活此選項。</value></data>
+
+    <data name="AutoLockOptionLabelText" xml:space="preserve"><value>自動鎖定屏幕</value></data>
+    <data name="AutoLockOptionDescriptionText" xml:space="preserve"><value>如果在此處設置的持續時間內空閒，POS屏幕將自動鎖定。使用4位數的個人密碼解鎖。</value></data>
+
+    <data name="SyncDataOptionLabelText" xml:space="preserve"><value>將您的店鋪本地數據同步至雲端</value></data>
+    <data name="SyncDataOptionDescriptionText" xml:space="preserve"><value>如果您的銷售屏幕上尚未顯示最近的編輯/更新（例如：產品更改），請使用手動同步。</value></data>
+    <data name="SyncDataButtonText" xml:space="preserve"><value>數據同步</value></data>
+
+    <data name="ClearSyncDataOptionLabelText" xml:space="preserve"><value>重置/刷新此設備上的POS庫存</value></data>
+    <data name="ClearSyncDataOptionDescriptionText" xml:space="preserve"><value>從商店的雲端中提取數據以刷新此設備上的數據。</value></data>
+    <data name="ClearSyncDataButtonText" xml:space="preserve"><value>重置數據</value></data>
+
+    <data name="PrimaryReceiptPrinterLabelText" xml:space="preserve"><value>主收據打印機</value></data>
+    <data name="UseInHikeLabelText" xml:space="preserve"><value>是否使用？</value></data>
+    <data name="DocketPrinterLabelText" xml:space="preserve"><value>包裝單/廚房打印機</value></data>
+    <data name="PrimaryDocketDescriptionText" xml:space="preserve"><value>指定此打印機的任務：僅打印客戶收據，後台辦公室文件打印機或兩者都使用它？</value></data>
+    
+    <data name="NoOfCopiesLabelText" xml:space="preserve"><value>打印份數</value></data>
+    <data name="AutoPrintLabelText" xml:space="preserve"><value>完成銷售後自動打印</value></data>
+    <data name="EnableAutoOpenCashDrawerLabelText" xml:space="preserve"><value>自動開啟收銀處</value></data>
+    <data name="EnableAutoOpenCashDrawerOnlyCashSalesLabelText" xml:space="preserve"><value>僅在現金銷售時自動開啟收銀處</value></data>
+
+    <data name="AllCloudReceiptLabelText" xml:space="preserve"><value>所有收據 - 雲收據</value></data>
+    <data name="AllCloudReceiptDescriptionText" xml:space="preserve"><value>所有收據都是數字收據解決方案。允許您的客戶在雲端聲明並存儲收據。</value></data>
+    <data name="AllCloudReceiptDescriptionLinkButtonText" xml:space="preserve"><value> &#10;點擊這裡了解更多詳情&#10;</value></data>
+
+    
+    <data name="AllCloudReceiptQRCodeLabelText" xml:space="preserve"><value>二維碼</value></data>
+    <data name="AllCloudReceiptInfoLabelText" xml:space="preserve"><value>詳情</value></data>
+
+    <data name="PaymentOptionDescriptionLabelText" xml:space="preserve"><value>現金，外部非整合＆amp;自定義付款類型</value></data>
+    <data name="IntegratedPaymentOptionDescriptionLabelText" xml:space="preserve"><value>Hike集成卡支付終端</value></data>
+    <data name="IntegratedPaymentOptionDescriptionLinkButtonText" xml:space="preserve"><value>單擊此處獲取有關集成支付硬件兼容性和設置的幫助</value></data>
+
+    <data name="Vantiv_Device_ISNot_Connected_Message" xml:space="preserve"><value>您的Vantiv設備未連接</value></data>
+    <data name="Vantiv_Device_IS_Connected_Message" xml:space="preserve"><value>您的Vantiv設備已連接</value></data>
+    <data name="VantivPurchaseTransactionHeader" xml:space="preserve"><value>Vantiv支付</value></data>
+    <data name="VantivConfigurationMessage" xml:space="preserve"><value>請配置Vantiv設備並重試！</value></data>
+
+
+    <data name="AssemblyPayment_Device_ISNot_Connected_Message" xml:space="preserve"><value>您的Westpac設備未連接</value></data>
+    <data name="AssemblyPayment_Device_IS_Connected_Message" xml:space="preserve"><value>您的Westpac設備已連接</value></data>
+    <data name="AssemblyPaymentPurchaseTransactionHeader" xml:space="preserve"><value>Simple Payments Integration支付</value></data>
+    <data name="AssemblyPaymentConfigurationMessage" xml:space="preserve"><value>請配置Simple Payments Integration設備並重試！</value></data>
+    
+    
+    <!--Autolock Page-->
+    <data name="AutoLock_EmptyPinText" xml:space="preserve"><value>請輸入您的個人密碼</value></data>
+    <data name="AutoLock_4DigitPasscodeText" xml:space="preserve"><value>請輸入您的4位個人密碼</value></data>   
+    <data name="ClearBtnText" xml:space="preserve"><value>刪除</value></data>  
+    <data name="AutolockPageTitle" xml:space="preserve"><value>自動鎖定屏幕</value></data>  
+
+    <data name="ActivePrinterLabelText" xml:space="preserve"><value>使用打印機</value></data>
+    <data name="ActivePrinterDescriptionLabelText" xml:space="preserve"><value>已與您的設備配對的藍牙打印機將顯示在列表中。對於WiFi /網絡打印機，請確保它已連接到與iPad相同的網絡。</value></data>
+    <data name="ActivePrinterDescriptionLinkButtonText" xml:space="preserve"><value>查看Hike iPad app兼容打印機</value></data>
+
+    
+    <data name="PrinterCustomerQueueDocketLabelText" xml:space="preserve"><value>打印客戶隊列文件</value></data>
+    <data name="DocketNumberRangeLabelText" xml:space="preserve"><value>文件號範圍</value></data>
+    <data name="CustomerDocketDescriptionLabelText" xml:space="preserve"><value>您是否要求客戶在準備訂單時等待？激活它以打印隊列文檔編號，以便客戶知道他們在隊列中的位置。</value></data>
+
+    <data name="ConfigurationRequiredLabelText" xml:space="preserve"><value>請配置</value></data>
+    <data name="ReadyToUseLabelText" xml:space="preserve"><value>可使用</value></data>
+
+
+    <!--Change password Page-->
+    <data name="ChangePassword_TitleText" xml:space="preserve"><value>更改密碼</value></data>
+    <data name="CurrentPasswordText" xml:space="preserve"><value>當前密碼</value></data>
+    <data name="NewPasswordText" xml:space="preserve"><value>新密碼</value></data>
+    <data name="RepeatNewPasswordText" xml:space="preserve"><value>新密碼（重複）</value></data>
+    <data name="AllValidationMessage" xml:space="preserve"><value>請填寫所有信息。</value></data>
+
+    <data name="UserCurrentPassword_EmptyMessage" xml:space="preserve"><value>請輸入您當前的密碼</value></data>
+    <data name="UserNewPassword_EmptyMessage" xml:space="preserve"><value>請輸入您的新密碼</value></data>
+    <data name="UserRepeatNewPassword_EmptyMessage" xml:space="preserve"><value>請再次輸入您的新密碼</value></data>
+    
+    <data name="UserPassword_InValidMessage" xml:space="preserve"><value>密碼必須至少包含1個數字，最少6個字符。</value></data>
+
+    <data name="NewPasswordAndRepeatDidntMatchValidationMessage" xml:space="preserve"><value>新密碼和重複不匹配。</value></data>
+    <data name="ChangePasswordSuccessMessage" xml:space="preserve"><value>成功更改密碼</value></data>
+
+    <data name="ProductIsCurrentlyLockedMessage" xml:space="preserve"><value>此產品目前已鎖定庫存（庫存盤點）。一旦庫存完成，它將能夠再次出售。</value></data>
+    
+
+
+<!--Change user Page-->
+    <data name="SignOutBtnText" xml:space="preserve"><value>登出 </value></data> 
+    <data name="ChangeUserPageTitle" xml:space="preserve"><value>更改用戶頁面</value></data> 
+
+    <!--Forgot Password / Login / Signup page-->
+    <data name="ForgotPasswordTitleText" xml:space="preserve"><value>忘記密碼？</value></data>
+    <data name="SignUpPageTitleText" xml:space="preserve"><value>註冊頁面</value></data>
+    <data name="StartHike_Title" xml:space="preserve"><value>開始使用</value></data>
+    <data name="SignupAndAgreementText1" xml:space="preserve"><value>如果通過註冊,表示你同意Hike的</value></data>
+    <data name="SignupAndAgreementText2" xml:space="preserve"><value>條款和條件</value></data>
+    <data name="SignupAndAgreementText3" xml:space="preserve"><value>與</value></data>
+    <data name="SignupAndAgreementText4" xml:space="preserve"><value>隱私政策</value></data>
+    <data name="AddSomeDemoProductsText" xml:space="preserve"><value>添加一些演示產品</value></data>
+
+
+
+
+    <!--Cash Register Page-->
+    <data name="SummaryText" xml:space="preserve"><value>小結</value></data>
+    <data name="PrintText" xml:space="preserve"><value>打印</value></data>
+     <!--Ticket Start #62713 In print receipt Closed By not show after closing cash register  by: Pratik-->
+    <data name="PrinPreviousText" xml:space="preserve"><value>Print Previous</value></data>
+    <!--Ticket End #62713 by: Pratik-->
+    <data name="AddRemoveCashText" xml:space="preserve"><value>添加/移除現金</value></data>
+    <data name="CloseRegisterText" xml:space="preserve"><value>關閉收銀處</value></data>
+    <data name="ResetDataText" xml:space="preserve"><value>重置數據</value></data>
+    <data name="ChangeRegisterOutletText" xml:space="preserve"><value>更換店鋪/收銀機</value></data>
+    <data name="PaymentsText" xml:space="preserve"><value>付款（餘額）</value></data>
+    <data name="TransactionsText" xml:space="preserve"><value>交易</value></data>
+    <data name="SalesText" xml:space="preserve"><value>銷售</value></data>
+    <data name="PaymentsReceivedText" xml:space="preserve"><value>已付款</value></data>
+    <data name="TaxCollectedText" xml:space="preserve"><value>徵稅</value></data>
+    <data name="DiscountsGivenText" xml:space="preserve"><value>折扣</value></data>
+    <data name="TipsSurchargeText" xml:space="preserve"><value>小費/手續費</value></data>
+    <data name="RefundsText" xml:space="preserve"><value>退款</value></data>
+    <data name="CashAddedRemovedText" xml:space="preserve"><value>現金添加/移除</value></data>
+
+    <data name="ThisSaleAlreadyRefunded" xml:space="preserve"><value>此次銷售已經全額退款。</value></data>
+    <data name="NoFoundSales" xml:space="preserve"><value>對不起，我們沒有在當地找到此銷售。</value></data>
+        
+
+    <!--Add Cash in Out page-->
+    <data name="AddOrRemoveCashText" xml:space="preserve"><value>添加/移除現金</value></data>
+    <data name="AmountText" xml:space="preserve"><value>金額</value></data>
+    <data name="NoteText" xml:space="preserve"><value>備註</value></data>
+    <data name="RemoveCashText" xml:space="preserve"><value>移除現金</value></data>
+    <data name="AddCashText" xml:space="preserve"><value>添加現金</value></data>
+    <data name="AddCashInOutPageTitle" xml:space="preserve"><value>現金進/出頁面</value></data>
+
+    <!--Close register tally page-->
+    <data name="VerifyBalanceAndCloseRegisterText" xml:space="preserve"><value>驗證餘額並關閉收銀處</value></data>
+    <data name="PaymentTypeText" xml:space="preserve"><value>支付方式</value></data>
+    <data name="CountedText" xml:space="preserve"><value>實際金額</value></data>
+    <data name="ExpectedText" xml:space="preserve"><value>應付款</value></data>
+    <data name="DifferenceText" xml:space="preserve"><value>差額</value></data>
+
+    <!--Open Register Page-->
+    <data name="OpenRegisterText" xml:space="preserve"><value>打開收銀處</value></data>
+    <data name="FloatingAmountText" xml:space="preserve"><value>浮動金額统计</value></data>
+
+
+
+    <!--Parked sale page-->
+    <data name="FilterByStatusText" xml:space="preserve"><value>按狀態過濾</value></data>
+    <data name="SalesHistoryText" xml:space="preserve"><value>銷售記錄</value></data>
+    <data name="SaleText" xml:space="preserve"><value>銷售編號</value></data>
+    <data name="DateText" xml:space="preserve"><value>日期</value></data>
+    <data name="CustomerText" xml:space="preserve"><value>顧客</value></data>
+    <data name="SourceText" xml:space="preserve"><value>銷售來源</value></data>
+    <data name="SaleTotalText" xml:space="preserve"><value>銷售總計</value></data>
+    <data name="StatusText" xml:space="preserve"><value>狀態s</value></data>
+
+    <data name="FulfillmentStatusText" xml:space="preserve"><value>履行狀態</value></data>
+    <data name="PaymentStatusText" xml:space="preserve"><value>支付狀態</value></data>
+    <data name="FilterByOutletsText" xml:space="preserve"><value>Filter by outlet</value></data>
+
+    <!--Parked sale filter option menu-->
+    <data name="AllText" xml:space="preserve"><value>所有</value></data>
+    <data name="LayByText" xml:space="preserve"><value>延期支付</value></data>
+    <data name="ParkedText" xml:space="preserve"><value>暫停</value></data>
+    <data name="VoidedText" xml:space="preserve"><value>作廢</value></data>
+    <data name="BackOrderText" xml:space="preserve"><value>延期交貨</value></data>
+    <data name="OnAccountText" xml:space="preserve"><value>賒購销售</value></data>
+    <data name="RefundedText" xml:space="preserve"><value>退款</value></data>
+    <data name="CompletedText" xml:space="preserve"><value>已完成</value></data>
+    <data name="UnsyncText" xml:space="preserve"><value>離線</value></data>
+
+    <!--Parked sale detail page-->
+    <data name="EmailText" xml:space="preserve"><value>電子郵箱</value></data>
+    <data name="GiftReceiptPrintText" xml:space="preserve"><value>禮品收據打印</value></data>
+    <data name="RefundText" xml:space="preserve"><value>退款</value></data>
+    <data name="ReopenText" xml:space="preserve"><value>重開</value></data>
+    <data name="MarkAsCompleteText" xml:space="preserve"><value>標記為已完成</value></data>
+    <data name="SubtotalText" xml:space="preserve"><value>小計</value></data>
+    <data name="DiscountText" xml:space="preserve"><value>折扣</value></data>
+    <data name="TipText" xml:space="preserve"><value>小費</value></data>
+    <data name="TotalText" xml:space="preserve"><value>總計</value></data>
+    <data name="PaidText" xml:space="preserve"><value>已支付</value></data>
+    <data name="OutstandingText" xml:space="preserve"><value>未付</value></data>
+
+
+    <!--Payment Page-->
+    <data name="SelectCustomerText" xml:space="preserve"><value>選擇客戶</value></data>
+    <data name="TaxText" xml:space="preserve"><value>稅</value></data>
+    <data name="ToPayText" xml:space="preserve"><value>應付</value></data>
+    <data name="AmountTenderedText" xml:space="preserve"><value>付款金額</value></data>
+    <data name="GiftCardText" xml:space="preserve"><value>禮物卡</value></data>
+    <data name="ChargeText" xml:space="preserve"><value>收費</value></data>
+    <data name="SavePartialyPaidText" xml:space="preserve"><value>保存部分付款</value></data>
+    <data name="IssueChangeText" xml:space="preserve"><value>找零</value></data>
+    <data name="SellLaybyAlertTitle" xml:space="preserve"><value>將這筆交易保存為延期支付</value></data>
+    <data name="SellLaybyAlertBody" xml:space="preserve"><value>銷售將被保存為具有未付金額的延期支付 </value></data>
+    <data name="SellAccountAlertTitle" xml:space="preserve"><value>進行賒購销售？</value></data>
+    <data name="SellAccountAlertBody" xml:space="preserve"><value>銷售將未分配的{0}金額分配給客戶帳戶並完成？</value></data>
+    <data name="ParkedAlertTitle" xml:space="preserve"><value>暫停這個銷售？</value></data>
+    <data name="ParkedAlertBody" xml:space="preserve"><value>點擊“確定”來暫停這個銷售</value></data>
+    <!--Ticket start:#60456 iPad FR: Need to add "Save & print" button in park sale pop-up box in iPad.by Pratik-->
+    <data name="SaveAndPrintButtonText" xml:space="preserve"><value>保存 &amp; 打印</value></data>
+    <!--Ticket end:#60456.by Pratik-->
+    <data name="HasOrderFulfilled" xml:space="preserve"><value>訂單已經完成了嗎？</value></data>
+
+    <!--IndustryType Enum-->
+    <data name="FashionClothing" xml:space="preserve"><value>時尚服裝</value></data>
+    <data name="HomewareGift" xml:space="preserve"><value>家居用品禮品</value></data>
+    <data name="CafeRestaurant" xml:space="preserve"><value>餐飲</value></data>
+    <data name="HairSalons" xml:space="preserve"><value>美髮沙龍</value></data>
+    <data name="FoodTruck" xml:space="preserve"><value>食物餐車</value></data>
+    <data name="ToysHobbies" xml:space="preserve"><value>玩具/愛好</value></data>
+    <data name="ToolsHardware" xml:space="preserve"><value>工具/硬件</value></data>
+    <data name="Other" xml:space="preserve"><value>其他</value></data>
+
+    <!--SellerBy Enum-->
+    
+    <data name="StartingNewBusiness" xml:space="preserve"><value>開始新的業務</value></data>
+    <data name="ExistingBusinessNewToCloudPOSSoftware" xml:space="preserve"><value>已有業務，尝试雲端POS軟件</value></data>
+    <data name="LookingToSwitchPlatforms" xml:space="preserve"><value>期待切換平台</value></data>
+    <data name="ResearchingForMyClient" xml:space="preserve"><value>為客戶調研</value></data>
+    <data name="ImJustPlayingAround" xml:space="preserve"><value>隨便看看</value></data>
+    <data name="HikePartnerSettingItUpForClient" xml:space="preserve"><value>Hike合作夥伴，為客戶設置</value></data>
+    <data name="ExistingCustomer" xml:space="preserve"><value>現有客戶</value></data>
+    <data name="CustomerEmailAlreadyExist" xml:space="preserve"><value>電子郵件已存在，請嘗試其他選項</value></data>
+    
+    <data name="LastNameRequiredValidationMessage" xml:space="preserve"><value>請輸入姓氏</value></data>
+    <data name="CityRequiredValidationMessage" xml:space="preserve"><value>請輸入城市</value></data>
+    <data name="ZipRequiredValidationMessage" xml:space="preserve"><value>請輸入郵政編碼</value></data>
+    <data name="PhoneRequiredValidationMessage" xml:space="preserve"><value>請輸入電話號碼</value></data>
+
+    <data name="Today" xml:space="preserve"><value>今天</value></data>
+    <data name="Yesterday" xml:space="preserve"><value>昨日</value></data>
+    <data name="Last7Days" xml:space="preserve"><value>過去7天</value></data>
+    <data name="Last30Days" xml:space="preserve"><value>過去30天</value></data>
+    <data name="ThisMonth" xml:space="preserve"><value>本月</value></data>
+    <data name="LastMonth" xml:space="preserve"><value>上個月</value></data>
+
+
+    <data name="CustomerNotFound" xml:space="preserve"><value>對不起，我們無法找到此客戶</value></data>
+
+    <data name="CancelButtonText" xml:space="preserve"><value>退出</value></data>
+    <data name="SaveButtonText" xml:space="preserve"><value>保存</value></data>
+    <data name="YesButtonText" xml:space="preserve"><value>確認</value></data>
+        <data name="InputBoxPlaceholder" xml:space="preserve"><value>請在此處插入文字</value></data>
+    <data name="AddNotePlaceholder" xml:space="preserve"><value>請在此處插入註釋</value></data>
+    
+    <data name="UsernameLabel" xml:space="preserve"><value>用戶名</value></data>
+    <data name="UserpinLabel" xml:space="preserve"><value>用戶PIN碼</value></data>
+    <data name="StatusLabel" xml:space="preserve"><value>狀態</value></data>
+    <data name="UserNamePlaceholder" xml:space="preserve"><value>請填入用戶名</value></data>
+    <data name="UserPINPlaceholder" xml:space="preserve"><value>請填入用戶PIN碼</value></data>
+
+
+    <data name="AcceptorIdLabel" xml:space="preserve"><value>Acceptor Id</value></data>
+    <data name="AcceptorIdPlaceholder" xml:space="preserve"><value>Acceptor Id</value></data>
+    <data name="AccountIdLabel" xml:space="preserve"><value>Account Id</value></data>
+    <data name="AccountIdPlaceholder" xml:space="preserve"><value>Account Id</value></data>
+    <data name="AccountTokenLabel" xml:space="preserve"><value>Account Token</value></data>
+    <data name="AccountTokenPlaceholder" xml:space="preserve"><value>Account Token</value></data>
+    <data name="TerminalIdLabel" xml:space="preserve"><value>Terminal Id</value></data>
+    <data name="TerminalIdPlaceholder" xml:space="preserve"><value>Terminal Id</value></data>
+    <data name="ArePartialApprovalsAllowedLabel" xml:space="preserve"><value>您允許部分支付嗎</value></data>
+    <data name="AreDuplicateTransactionsAllowedLabel" xml:space="preserve"><value>您允許重複交易嗎</value></data>
+    <data name="IsCashbackAllowedLabel" xml:space="preserve"><value>您允許返現嗎</value></data>
+    <data name="CashbackAmountLabel" xml:space="preserve"><value>返現金額</value></data>
+    <data name="CashbackAmountPlaceHolder" xml:space="preserve"><value>返現金額</value></data>
+    <data name="IsDebitAllowedLabel" xml:space="preserve"><value>您允許借记嗎</value></data>
+    <data name="IsEmvAllowedLabel" xml:space="preserve"><value>您接受EMV卡嗎</value></data>
+
+     <data name="POSIdLabel" xml:space="preserve"><value>POS Id</value></data>
+    <data name="POSIdPlaceholder" xml:space="preserve"><value>POS Id</value></data>
+    <data name="EftposAddressLabel" xml:space="preserve"><value>EFTPOS地址</value></data>
+    <data name="EftposAddressPlaceholder" xml:space="preserve"><value>EFTPOS地址</value></data>
+    <data name="IsAllowPrintOnEFTPOSLabel" xml:space="preserve"><value>您想在EFTPOS上打印商家和客戶收據嗎？</value></data>
+    <data name="EncKeyLabel" xml:space="preserve"><value>Enc Key</value></data>
+    <data name="EncKeyPlaceholder" xml:space="preserve"><value>Enc Key</value></data>
+    <data name="HmacKeyLabel" xml:space="preserve"><value>Hmac Key</value></data>
+    <data name="HmacKeyPlaceholder" xml:space="preserve"><value>Hmac Key</value></data>
+    
+<!--Create PO Slider-->
+    <data name="POSummaryText" xml:space="preserve"><value>此延期交貨訂單中有{0}項與{1}主要供應商相關。因此，Hike可以為您創建以下{2}採購訂單：</value></data>
+    <data name="CreateDraftPOButtonText" xml:space="preserve"><value>創建預採購訂單</value></data>
+    <data name="OrderItemTitleText" xml:space="preserve"><value>訂單詳情</value></data>
+    <data name="SuppliersTitleText" xml:space="preserve"><value>供應商</value></data>
+    <data name="CreatePOText" xml:space="preserve"><value>創建採購訂單</value></data>
+    <data name="POCreatedText" xml:space="preserve"><value>採購訂單已創建</value></data>
+
+
+<!--Customer Detail Slider-->
+    <data name="DOB" xml:space="preserve"><value>出生日期</value></data>
+    <data name="LoyaltyPoints" xml:space="preserve"><value>店內積分</value></data>
+    <data name="CreditBalance" xml:space="preserve"><value>店內信用積分</value></data>
+    <data name="AvgPurchase" xml:space="preserve"><value>平均消費額度</value></data>
+    <data name="TotalPurchase" xml:space="preserve"><value>總計消費額度</value></data>
+    <data name="VisitThisMonth" xml:space="preserve"><value>本月已瀏覽</value></data>
+    <data name="AvgMonthlyVisits" xml:space="preserve"><value>平均每月瀏覽</value></data>
+
+    <data name="StockOfflineText" xml:space="preserve"><value>您目前處於離線狀態。請連接到網路以查看其他店鋪的當前庫存</value></data>
+
+    <data name="PrintValidation" xml:space="preserve"><value>您無法在銷售時進行打印</value></data>
+
+
+    <data name="MintResetPin" xml:space="preserve"><value>重置個人PIN碼</value></data>
+    <data name="MintResetPinSuccessMessage" xml:space="preserve"><value>個人PIN密碼已重置！請檢查您的電子郵件</value></data>
+    <data name="ForgotPin_ButtonText" xml:space="preserve"><value>遺失個人PIN密碼</value></data>
+    
+    <data name="AddGiftCardText" xml:space="preserve"><value>添加禮品卡</value></data>
+    <data name="ParkThisSaleText" xml:space="preserve"><value>保留交易</value></data>
+    <data name="OpenCashDrawerText" xml:space="preserve"><value>打開現金抽屜</value></data>
+    <data name="DiscardText" xml:space="preserve"><value>取消交易</value></data>  
+    
+    <data name="AverageSaleValueText" xml:space="preserve"><value>Average sale value</value></data>
+    <data name="NumberOfTransactionsText" xml:space="preserve"><value>Number of transactions</value></data>
+    <data name="NewCustomersText" xml:space="preserve"><value>New customers</value></data>
+
+     <!--Ticket Start #61832 iPad:Create text file for invoice log by: Pratik-->
+    <data name="ExportLogLabelText" xml:space="preserve"><value>Export Device Logs</value></data>
+    <data name="ExportLogButtonText" xml:space="preserve"><value>Export</value></data>
+    <data name="ExportLogDescriptionText" xml:space="preserve"><value>Send device log to hike support team</value></data>
+
+    <data name="ShareLogLabelText" xml:space="preserve"><value>Share Invoice Log</value></data>
+    <data name="ShareLogButtonText" xml:space="preserve"><value>Share</value></data>
+    <data name="ShareLogDescriptionText" xml:space="preserve"><value>Share invoice log files to other app</value></data>
+    <!--Ticket End #61832 Pratik -->
+
+     <!--New Add Cash Register Page-->
+    <data name="Payment_Summary" xml:space="preserve"><value>營業明細</value></data>
+    <data name="Sales_Summary" xml:space="preserve"><value>銷售明細</value></data>
+    <data name="Tax_Summary" xml:space="preserve"><value>Tax Summary</value></data>
+    <data name="Cash_In_Out" xml:space="preserve"><value>現金存入/提取</value></data>
+    <data name="In_Out_Cash" xml:space="preserve"><value>In/Out Cash</value></data>
+    <data name="Payment_Tally" xml:space="preserve"><value>收款明細</value></data>
+    <data name="Net_Receipts" xml:space="preserve"><value>淨額</value></data>
+    <data name="On_Account_Sales" xml:space="preserve"><value>On account sales</value></data>
+    <data name="Item_Discounts" xml:space="preserve"><value>商品折扣</value></data>
+    <data name="Order_Discounts" xml:space="preserve"><value>折扣優惠</value></data>
+    <data name="Surcharge" xml:space="preserve"><value>附加費</value></data>
+    <data name="Tax_Rate" xml:space="preserve"><value>稅率</value></data>
+    <data name="ApplyText" xml:space="preserve"><value>申請</value></data>
+    <data name="Tax_Codes" xml:space="preserve"><value>稅例代碼</value></data>
+    <!--End New Add Cash Register Page-->
+
+    
+
+    <data name="ShippingTax" xml:space="preserve"><value>運送 (Inc. Tax </value></data>
+    <data name="ShippingLabel" xml:space="preserve"><value>運送</value></data>
+    <data name="ShippingCharge" xml:space="preserve"><value>運送</value></data>
+
+   
+</root>

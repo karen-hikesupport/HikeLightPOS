@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.BackItemViewCell" 
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="model:EnterSaleItemDto"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="Transparent"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <!--Start #90945 iOS:FR Hot keys: POS Process Sale Window By Pratik-->
+    <ContentView Margin="5" BackgroundColor="White">
+        <Grid>
+            <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="backcategory" HeightRequest="45" Aspect="AspectFit" Grid.Row="0" Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Rotation="180"/>
+                <VerticalStackLayout x:Name="ItemName" Grid.Row="1" Grid.Column="0" BackgroundColor="White" Spacing="7" Margin="10,0,10,12">
+                    <Label Text="Back to" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}"  HorizontalTextAlignment="Center"/>
+                    <Label Text="{Binding Category.Name}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" 
+                        FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+    </ContentView>
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+</Grid>

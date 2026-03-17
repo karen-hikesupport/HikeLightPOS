@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HikePOS.SettingsPagePhone"
+             xmlns:local="clr-namespace:HikePOS"
+             xmlns:resources="clr-namespace:HikePOS.Resources"
+             xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+             xmlns:userControls="clr-namespace:HikePOS.UserControls"
+             xmlns:vm="clr-namespace:HikePOS.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:TypeArguments="vm:SettingsViewModel"
+             xmlns:model="clr-namespace:HikePOS.Models"
+             x:DataType="vm:SettingsViewModel"
+             xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <Grid BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand"   RowSpacing="0" ColumnSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                <RowDefinition Height="2" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentView BackgroundColor="White" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" />
+            <StackLayout Grid.Row="2" Grid.Column="0"  x:Name="GeneralAutoLockTab" IsVisible="false" VerticalOptions="StartAndExpand" Padding="10,70,10,40" Spacing="0" TranslationX="-9999999999">
+                <Grid ColumnSpacing="5" RowSpacing="0" VerticalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                        <Label Text="{Localize:Translate BackIconUnicode}" Style="{x:Static resources:Styles.PageBackLabelStyle}" Padding="10,0,0,0" />
+                        <Button Text="{Localize:Translate Back_ButtonText}" Style="{x:Static resources:Styles.PageBackButtonStyle}" Clicked="BackHandle_Clicked"/>
+                    </StackLayout>
+                </Grid>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,10,0,0">
+                    <CollectionView x:Name="AutoLockListView" ItemsSource="{Binding AutoLockDurationList}" HeightRequest="420"  SelectionMode="Single" SelectionChanged="AutoLockDuration_ItemTapped">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:AutoLockDurationModel">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowDefinitions="69.5,0.5" RowSpacing="0" Padding="20,0,20,0" HeightRequest="70">
+                                    <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                        <Label Text="{Binding Title}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <Image Source="check_icon" IsVisible="{Binding IsSelected}" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="End" />
+                                    </StackLayout>
+                                    <BoxView Grid.Row="1" IsVisible="{Binding IsNotLast}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="GENERAL">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <ScrollView  Grid.Row="2" Grid.Column="0" Margin="0,0,0,30"  x:Name="GeneralTab" >
+                <StackLayout VerticalOptions="FillAndExpand" IsVisible="false" Padding="10,30,10,40" Spacing="0">
+                    <Border IsVisible="false"  Style="{x:Static resources:Styles.SettingsGeneralRoundBorderStyle}" Padding="20,0,20,0" Margin="0,42,0,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                            <Label Text="{Localize:Translate MarkPaidOrderOptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding ActiveMarkPaidOrderAsFulfilled}" >
+                                <userControls:CustomSwitch.Behaviors>
+                                    <toolkit:EventToCommandBehavior
+                                EventName="Toggled"
+                                Command="{Binding MarkAsPaidSwitchToggleCommand}" />
+                                </userControls:CustomSwitch.Behaviors>
+                            </userControls:CustomSwitch>
+                        </StackLayout>
+                    </Border>
+                    <Label IsVisible="false" Text="{Localize:Translate MarkPaidOrderOptionDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                    <Border Style="{x:Static resources:Styles.SettingsGeneralRoundBorderStyle}" Padding="20,0,20,0"  Margin="0,42,0,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10">
+                            <Label Text="{Localize:Translate AutoLockOptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="Start" />
+                            <Label Text="{Binding AutoLockDuration}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" TextColor="{x:Static resources:AppColors.PlaceholderColor}" HorizontalTextAlignment="End" />
+                            <Image Source="{x:Static resources:AppImages.RightArrowIcon}" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="End" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ShowAutoLockOptionHandle_Tapped" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </Border>
+                    <Label Text="{Localize:Translate AutoLockOptionDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                    <Border Style="{x:Static resources:Styles.SettingsGeneralRoundBorderStyle}" Padding="20,0,20,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                            <Label Text="{Localize:Translate SyncDataOptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <Button Text="{Localize:Translate SyncDataButtonText}" Command="{Binding SyncDataCommand}" Style="{x:Static resources:Styles.SettingsDataSyncButtonStyle}" />
+                            <!--<Button Text="{Localize:Translate ClearSyncDataButtonText}" Command="{Binding ClearAndSyncDataCommand}" Style="{x:Static resources:Styles.SettingsDataSyncButtonStyle}" />-->
+                        </StackLayout>
+                    </Border>
+                    <Label Text="{Localize:Translate SyncDataOptionDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                    <Border Style="{x:Static resources:Styles.SettingsGeneralRoundBorderStyle}" Padding="20,0,20,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                            <Label Text="{Localize:Translate ClearSyncDataOptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <Button Text="{Localize:Translate ClearSyncDataButtonText}" Command="{Binding ClearAndSyncDataCommand}" Style="{x:Static resources:Styles.SettingsDataSyncButtonStyle}" />
+                        </StackLayout>
+                    </Border>
+                    <Label Text="{Localize:Translate ClearSyncDataOptionDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                    <Border Style="{x:Static resources:Styles.SettingsGeneralRoundBorderStyle}" Padding="20,0,20,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                            <Label Text="{Localize:Translate ExportLogLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <Button x:Name="btnExport" Text="{Localize:Translate ExportLogButtonText}" Command="{Binding ExportLogCommand}"
+                                CommandParameter="{Binding Source={RelativeSource Self}}" Style="{x:Static resources:Styles.SettingsDataSyncButtonStyle}" />
+                        </StackLayout>
+                    </Border>
+                    <Label Text="{Localize:Translate ExportLogDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="GENERAL">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+            </ScrollView>
+            <!-- End general tab view -->
+            <!-- End general tab-->
+            <!-- Start hardware tab-->
+            <!-- Start select docket number slider view-->
+            <StackLayout Grid.Row="2" Grid.Column="0" x:Name="HardwareDocketNumberRangeTab" IsVisible="false" VerticalOptions="FillAndExpand" Padding="10,70,10,40" Spacing="0" TranslationX="-9999999999">
+                <Grid ColumnSpacing="5" RowSpacing="0" VerticalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                        <Label Text="{Localize:Translate BackIconUnicode}" Style="{x:Static resources:Styles.PageBackLabelStyle}" Padding="10,0,0,0"/>
+                        <Button Text="{Localize:Translate Back_ButtonText}" Style="{x:Static resources:Styles.PageBackButtonStyle}" Clicked="BackHandle_Clicked" />
+                    </StackLayout>
+                </Grid>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,10,0,0">
+                    <CollectionView x:Name="DocketNumberListView" ItemsSource="{Binding DocketNumberRangeList}" HeightRequest="350" SelectionMode="Single" SelectionChanged="DocketNumberListView_SelectionChanged">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:AutoLockDurationModel">
+                               <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowDefinitions="69.5,0.5" RowSpacing="0" Padding="20,0,20,0" HeightRequest="70">
+                                    <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                        <Label Text="{Binding Title}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <Image Source="check_icon" IsVisible="{Binding IsSelected}" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="End" />
+                                    </StackLayout>
+                                    <BoxView Grid.Row="1" IsVisible="{Binding IsNotLast}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <!-- End select docket number slider view-->
+            <!-- Start select no of copies slider view-->
+            <StackLayout Grid.Row="2" Grid.Column="0" x:Name="HardwarePrinterNoOfCopiesTab" IsVisible="false" VerticalOptions="FillAndExpand" Padding="10,70,10,40" Spacing="0" TranslationX="-9999999999">
+                <Grid ColumnSpacing="5" RowSpacing="0" BackgroundColor="White" VerticalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                        <Label Text="{Localize:Translate BackIconUnicode}" Style="{x:Static resources:Styles.PageBackLabelStyle}" Padding="10,0,0,0"/>
+                        <Button Text="{Localize:Translate Back_ButtonText}" Style="{x:Static resources:Styles.PageBackButtonStyle}" Clicked="BackHandle_Clicked" />
+                    </StackLayout>
+                </Grid>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,10,0,0">
+                    <CollectionView x:Name="NoOfCopiesListView" ItemsSource="{Binding NoOfCopiesList}" HeightRequest="350" SelectionChanged="NoOfCopies_ItemTapped" SelectionMode="Single">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate  x:DataType="model:AutoLockDurationModel">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowDefinitions="69.5,0.5" RowSpacing="0" Padding="20,0,20,0" HeightRequest="70">
+                                    <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+                                        <Label Text="{Binding Title}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <Image Source="check_icon" IsVisible="{Binding IsSelected}" HeightRequest="22" WidthRequest="22" VerticalOptions="Center" HorizontalOptions="End" />
+                                    </StackLayout>
+                                    <BoxView Grid.Row="1" IsVisible="{Binding IsNotLast}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <!-- End select no of copies slider view-->
+            <!-- Start printer configuration slider view-->
+            <StackLayout Grid.Row="2" Grid.Column="0"  x:Name="HardwarePrinterTab" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsVisible="false" TranslationX="-9999999999" Padding="10,70,10,0" Spacing="0">
+                <Grid ColumnSpacing="5" RowSpacing="0" VerticalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand">
+                        <Label Text="{Localize:Translate BackIconUnicode}" Style="{x:Static resources:Styles.PageBackLabelStyle}" Padding="10,0,0,0"/>
+                        <Button Text="{Localize:Translate Back_ButtonText}" Style="{x:Static resources:Styles.PageBackButtonStyle}" Clicked="BackHandle_Clicked" />
+                    </StackLayout>
+                </Grid>
+                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Padding="-40,0,0,0">
+                    <ScrollView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="40,0,0,0">
+                            <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,42,0,0">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                                        <Label Text="{Localize:Translate PrimaryReceiptPrinterLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.PrimaryReceiptPrint}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                                        <Label Text="{Localize:Translate DocketPrinterLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.ActiveDocketPrint}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Border>
+                            <Label Text="{Localize:Translate PrimaryDocketDescriptionText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+                            <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10" HeightRequest="71">
+                                        <Label Text="{Localize:Translate NoOfCopiesLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="Start" />
+                                        <Label Text="{Binding SelectedPrinter.NumberOfPrintCopy, StringFormat='{0} copy'}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" TextColor="{x:Static resources:AppColors.PlaceholderColor}" HorizontalTextAlignment="End" />
+                                        <Image Source="{x:Static resources:AppImages.RightArrowIcon}" HeightRequest="22" WidthRequest="22" VerticalOptions="Center" HorizontalOptions="End" />
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ShowNoOfCopiesOptionHandle_Tapped" />
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                    <BoxView VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70.5">
+                                        <Label Text="{Localize:Translate AutoPrintLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.IsAutoPrintReceipt}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70.5">
+                                        <Label Text="{Localize:Translate EnableAutoOpenCashDrawerLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.EnableCashDrawer}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="71">
+                                        <Label Text="{Localize:Translate EnableAutoOpenCashDrawerOnlyCashSalesLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.OnlyCashPaymentCashDrawer}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Border>
+                            <!--Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh-->
+                            <Border IsVisible="{Binding SelectedPrinter.ShowEnableUSBScanner}" Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,20,0,0">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70" Spacing="0" Padding="20,0,20,0">
+                                    <Label Text="Enable USB Barcode Scanner" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                    <userControls:CustomSwitch  HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.EnableUSBScanner}" Toggled="UpdatePrinterFromSwitchHandle_Toggled"/>
+                                </StackLayout>
+                            </Border>
+                            <!--Ticket end #70775:.by rupesh-->
+                            <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,20,0,0">
+                                <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                                        <Label Text="{Localize:Translate AllCloudReceiptLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding ActiveAllCoudReceipt}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding AllCloudReceiptCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView IsVisible="{Binding ActiveAllCoudReceipt}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout IsVisible="{Binding ActiveAllCoudReceipt}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                                        <Label Text="{Localize:Translate AllCloudReceiptQRCodeLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.CloudQRCode}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView IsVisible="{Binding ActiveAllCoudReceipt}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                    <StackLayout IsVisible="{Binding ActiveAllCoudReceipt}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                                        <Label Text="{Localize:Translate AllCloudReceiptInfoLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding SelectedPrinter.CloudInfoCode}" >
+                                            <userControls:CustomSwitch.Behaviors>
+                                                <toolkit:EventToCommandBehavior
+                                                   EventName="Toggled"
+                                                   Command="{Binding UpdatePrinterToggledCommand}" />
+                                            </userControls:CustomSwitch.Behaviors>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Border>
+                            <Label Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Localize:Translate AllCloudReceiptDescriptionText}" />
+                                        <Span Text="{Localize:Translate AllCloudReceiptDescriptionLinkButtonText}" TextColor="Blue" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AllReceiptDescriptionLinkCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </StackLayout>
+                    </ScrollView>
+                </StackLayout>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+            <!-- End printer configuration slider view-->
+            <!-- Start hardware view-->
+            <StackLayout Grid.Row="2" Grid.Column="0" x:Name="HardwareTab" IsVisible="false" VerticalOptions="FillAndExpand" Padding="10,10,10,40" Spacing="0">
+                <Grid ColumnSpacing="5" RowSpacing="0" VerticalOptions="Start">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="0" Grid.Row="0" Orientation="Horizontal" Spacing="2" VerticalOptions="FillAndExpand">
+                        <!--<Label  Text="{Localize:Translate BackIconUnicode}" Style="{x:Static resources:Styles.PageBackLabelStyle}" />
+                        <Button Text="{Localize:Translate Back_ButtonText}" Style="{x:Static resources:Styles.PageBackButtonStyle}" Clicked="BackHandle_Clicked"/>-->
+                    </StackLayout>
+                </Grid>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,10,0,0">
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                            <Label Text="{Localize:Translate ActivePrinterLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding ActivePrinter}"
+                                                       >
+                                <userControls:CustomSwitch.Behaviors>
+                                    <toolkit:EventToCommandBehavior
+                                            EventName="Toggled"
+                                            Command="{Binding ActivePrinterToggleCommand}" />
+                                </userControls:CustomSwitch.Behaviors>
+                            </userControls:CustomSwitch>
+                        </StackLayout>
+                        <ActivityIndicator IsVisible="{Binding IsLoad}" Scale="{x:OnPlatform iOS='1', Android='0.7'}" IsRunning="{Binding IsLoad}" Color="{x:Static resources:AppColors.HikeColor}" HorizontalOptions="Center"/>
+                        <StackLayout x:Name="PrinterListView" BindableLayout.ItemsSource="{Binding PrinterList}" IsVisible="{Binding ActivePrinter}" Margin="-20,0,-20,0">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:Printer">
+                                    <StackLayout VerticalOptions="FillAndExpand" HeightRequest="80"
+                                                     HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                                        <BoxView VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10">
+                                            <StackLayout Orientation="Vertical">
+                                                <Label Text="{Binding ModelName}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="Start" />
+                                                <Label Text="{Binding Port}" Margin="0,-40,0,0" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" FontSize="12" HorizontalOptions="Start" />
+                                            </StackLayout>
+                                            <Label Text="{Binding Status}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" TextColor="{x:Static resources:AppColors.PlaceholderColor}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="End" />
+                                            <Image Source="{x:Static resources:AppImages.RightArrowIcon}" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="End" />
+                                        </StackLayout>
+                                        <StackLayout.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="ShowPrinterOptionHandle_Tapped" CommandParameter="{Binding .}"/>
+                                        </StackLayout.GestureRecognizers>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+                <Label Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" HeightRequest="60">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Localize:Translate ActivePrinterDescriptionLabelText}" />
+                            <Span Text="{Localize:Translate ActivePrinterDescriptionLinkButtonText}" TextColor="Blue" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer  Command="{Binding PrinterDescriptionLinkCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0">
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70">
+                            <Label Text="{Localize:Translate PrinterCustomerQueueDocketLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding ActiveCustomerQueueDocketPrint}" >
+                                <userControls:CustomSwitch.Behaviors>
+                                    <toolkit:EventToCommandBehavior
+                                            EventName="Toggled"
+                                            Command="{Binding ActiveCustomerQueueDocketPrintCommand}" />
+                                </userControls:CustomSwitch.Behaviors>
+                            </userControls:CustomSwitch>
+                        </StackLayout>
+                        <BoxView IsVisible="{Binding ActiveCustomerQueueDocketPrint}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                        <StackLayout IsVisible="{Binding ActiveCustomerQueueDocketPrint}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10" HeightRequest="70">
+                            <Label Text="{Localize:Translate DocketNumberRangeLabelText}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="Start" />
+                            <Label Text="{Binding DocketNumberRange, StringFormat='1 to {0}'}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" TextColor="{x:Static resources:AppColors.PlaceholderColor}" HorizontalTextAlignment="End" />
+                            <Image Source="{x:Static resources:AppImages.RightArrowIcon}" HeightRequest="20" WidthRequest="20" VerticalOptions="Center" HorizontalOptions="End" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ShowDocketNumberRangeOptionHandle_Tapped" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+                <Label Text="{Localize:Translate CustomerDocketDescriptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" >
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0" >
+                        <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" HeightRequest="70" >
+                            <Label Text="Hike Customer Display" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                            <Button Text="Unpair" Command="{Binding ConfigCommand}" IsVisible="{Binding ActivecustomerDisplay}"  Style="{x:Static resources:Styles.SettingsDataSyncButtonStyle}" />
+                            <!-- <userControls:CustomSwitch x:Name="DisplayAppSwitch"  HorizontalOptions="End" VerticalOptions="Center"  IsToggled="{Binding ActivecustomerDisplay,Mode=OneWay}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ConfigCommand}" NumberOfTapsRequired="1" />
+                            </StackLayout.GestureRecognizers> -->
+                        </StackLayout>
+                        <BoxView Background="Transparent" Opacity="0" Margin="0,-50,0,0" >
+                            <!-- <BoxView.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ConfigCommand}"  NumberOfTapsRequired="1" >
+                                </TapGestureRecognizer>
+                            </BoxView.GestureRecognizers> -->
+                        </BoxView>
+                        <BoxView IsVisible="{Binding ActivecustomerDisplay}"  VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                         <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding ActivecustomerDisplay}"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnSpacing="10" HeightRequest="70">
+                            <Label Grid.Column="0" Text="Verification and sync code for Hike Customer Display app " Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="Start" />
+                            <Label Grid.Column="1" Text="{Binding CustomerAppCode}"  VerticalOptions="Fill" HorizontalOptions="Fill" HorizontalTextAlignment="End" VerticalTextAlignment="Center"  TextColor="Green" FontAttributes="Bold" FontSize="24"  />
+                        </Grid>
+                    </StackLayout>
+                </Border>
+                <Label Text="{Localize:Translate CustomerAppDescriptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" />
+
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </StackLayout.Triggers>
+
+
+
+            </StackLayout>
+            <!-- Start hardware view-->
+            <!-- End hardware tab-->
+            <!-- Start payment option tab-->
+            <Grid Grid.Row="2" Grid.Column="0"  x:Name="PaymentTab" IsVisible="false" VerticalOptions="FillAndExpand" Padding="10,30,10,10" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="PaymentOptionListFrameView" Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Margin="0,42,0,0" MinimumHeightRequest="140" Grid.Row="0">
+                    <CollectionView x:Name="PaymentOptionListView" ItemsSource="{Binding PaymentOptionList}" HeightRequest="{Binding PaymentOptionHeightRequest}"
+                              VerticalOptions="FillAndExpand" SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:PaymentOptionDto">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowDefinitions="69.5,0.5" RowSpacing="0" Padding="20,0,20,0" HeightRequest="70">
+                                    <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="10">
+                                        <Label Text="{Binding Name}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="FillAndExpand" >
+                                        </Label>
+                                        <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding IsActive}"  ToggleCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel}}, Path=PaymentActiveChangedCommand, x:DataType=vm:SettingsViewModel}" CommandParameter="{Binding .}" >
+                                            <userControls:CustomSwitch.Triggers>
+                                                <DataTrigger TargetType="userControls:CustomSwitch" Binding="{Binding PaymentOptionType}" Value="1">
+                                                    <Setter Property="IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </userControls:CustomSwitch.Triggers>
+                                        </userControls:CustomSwitch>
+                                    </StackLayout>
+                                    <BoxView Grid.Row="1" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Border>
+                <Label Text="{Localize:Translate PaymentOptionDescriptionLabelText}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" Grid.Row="1"/>
+                <Border Style="{x:Static resources:Styles.SettingsAutoHeightRoundBorderStyle}" Padding="0" Grid.Row="2" VerticalOptions="FillAndExpand">
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Spacing="0" Padding="20,0,20,0">
+                        <CollectionView x:Name="IntegratedPaymentOptionListView" ItemsSource="{Binding IntegratedPaymentOptionList}" Margin="-20,0,-20,0" SelectionMode="None" VerticalOptions="FillAndExpand"
+                            MinimumHeightRequest="150" MaximumHeightRequest="250">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:PaymentOptionDto">
+                                       <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" RowDefinitions="69.5,0.5" RowSpacing="0" Padding="20,0,20,0" HeightRequest="70">
+                                            <StackLayout Grid.Row="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Orientation="Horizontal" Spacing="20">
+                                                <Image Source="paypal" HeightRequest="20" WidthRequest="20" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center">
+                                                    <Image.Triggers>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="7">
+                                                            <Setter Property="Source" Value="tyr_original" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="8">
+                                                            <Setter Property="Source" Value="paypal_here" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="10">
+                                                            <Setter Property="Source" Value="paypal" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="12">
+                                                            <Setter Property="Source" Value="worldPay" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="13">
+                                                            <Setter Property="Source" Value="mint_payment" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="14">
+                                                            <Setter Property="Source" Value="simple_payment" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="15">
+                                                            <Setter Property="Source" Value="zip" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="16">
+                                                            <Setter Property="Source" Value="evo_payment" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="17">
+                                                            <Setter Property="Source" Value="td_bank" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="19">
+                                                            <Setter Property="Source" Value="payjunction" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="20">
+                                                            <Setter Property="Source" Value="nab_card" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="21">
+                                                            <Setter Property="Source" Value="verifone" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="22">
+                                                            <Setter Property="Source" Value="econduit_cloud" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="26">
+                                                            <Setter Property="Source" Value="elavon" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="27">
+                                                            <Setter Property="Source" Value="moneris" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="28">
+                                                            <Setter Property="Source" Value="elavon" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="29">
+                                                            <Setter Property="Source" Value="square" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="30">
+                                                            <Setter Property="Source" Value="linkly" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="31">
+                                                            <Setter Property="Source" Value="nab" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="32">
+                                                            <Setter Property="Source" Value="fiserv_logo" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="33">
+                                                            <Setter Property="Source" Value="bendigo" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="34">
+                                                            <Setter Property="Source" Value="anz" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="36">
+                                                            <Setter Property="Source" Value="clearent" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="37">
+                                                            <Setter Property="Source" Value="windcave" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="38">
+                                                            <Setter Property="Source" Value="verifone" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="44">
+                                                            <Setter Property="Source" Value="castles" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="45">
+                                                            <Setter Property="Source" Value="clover" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="46">
+                                                            <Setter Property="Source" Value="tyrotap" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="49">
+                                                            <Setter Property="Source" Value="hikepay"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Image" Binding="{Binding PaymentOptionType}" Value="50">
+                                                                <Setter Property="Source" Value="hikepay"/>
+                                                        </DataTrigger>
+                                                    </Image.Triggers>
+                                                </Image>
+                                                <Label Text="{Binding DisplayName}" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" HorizontalOptions="FillAndExpand" />
+                                                <Grid ColumnSpacing="0" RowSpacing="0" HorizontalOptions="End">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="35" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Image  Grid.Row="0" Grid.Column="0" Source="configure_icon" Margin="10" HeightRequest="20" WidthRequest="20" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center">
+                                                        <Image.Triggers>
+                                                            <DataTrigger TargetType="Image" Binding="{Binding IsConfigered}" Value="True">
+                                                                <Setter Property="Source" Value="ready_to_use" />
+                                                            </DataTrigger>
+                                                        </Image.Triggers>
+                                                    </Image>
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel}}, Path=ConfigurePaymentCommand, x:DataType=vm:SettingsViewModel}" CommandParameter="{Binding .}" />
+                                                    </Grid.GestureRecognizers>
+                                                </Grid>
+                                                <userControls:CustomSwitch HorizontalOptions="End" VerticalOptions="Center" IsToggled="{Binding IsActive}" ToggleCommand="{Binding Source={RelativeSource AncestorType={x:Type vm:SettingsViewModel}}, Path=PaymentActiveChangedCommand, x:DataType=vm:SettingsViewModel}" CommandParameter="{Binding .}" />
+                                            </StackLayout>
+                                            <BoxView Grid.Row="1" IsVisible="{Binding IsNotLast}" VerticalOptions="End" Style="{StaticResource HalfHeightBoxViewLine}" />
+                                        </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Border>
+                <Label IsVisible="{Binding IsIntegratedPaymentAvailable}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" Grid.Row="3">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Localize:Translate IntegratedPaymentOptionDescriptionLabelText}" />
+                            <Span Text="{Localize:Translate IntegratedPaymentOptionDescriptionLinkButtonText}" TextColor="Blue" />
+                        </FormattedString>
+                    </Label.FormattedText>
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PaymentDescriptionLinkCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <Grid.Triggers>
+                    <DataTrigger TargetType="Grid" Binding="{Binding SelectedMenuItem}" Value="PAYMENT OPTIONS">
+                        <Setter Property="IsVisible" Value="True" />
+                    </DataTrigger>
+                </Grid.Triggers>
+            </Grid>
+            <!-- End payment option tab-->
+            <!-- Start tab menu right view-->
+            <Grid ColumnDefinitions="*,0.5,*,0.5,*" ColumnSpacing="0" Grid.Row="2" Grid.Column="0" HeightRequest="60" VerticalOptions="Start" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" >
+                <ContentView Grid.Column="0" x:Name="GeneralBtn" VerticalOptions="Start" HeightRequest="55" BackgroundColor="White">
+                    <Label Text="{Localize:Translate GeneralButtonText}" Style="{x:Static resources:Styles.SettingsMenuButtonLabelStyle}" HorizontalTextAlignment="Center" Margin="10,5">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SelectedMenuItem}" Value="GENERAL">
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <ContentView.Triggers>
+                        <DataTrigger TargetType="ContentView" Binding="{Binding SelectedMenuItem}" Value="GENERAL">
+                            <Setter Property="BackgroundColor" Value="{x:Static resources:AppColors.HikeColor}" />
+                        </DataTrigger>
+                    </ContentView.Triggers>
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MenuItemSelectedCommand}" CommandParameter="GENERAL" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+                <BoxView Grid.Column="1" VerticalOptions="Start" Style="{StaticResource HalfHeightBoxViewLine}" />
+                <ContentView Grid.Column="2" x:Name="PrinterBtn" VerticalOptions="Start" HeightRequest="55" BackgroundColor="White" >
+                    <Label Text="{Localize:Translate PrinterButtonText}" Style="{x:Static resources:Styles.SettingsMenuButtonLabelStyle}" HorizontalTextAlignment="Center" Margin="10,5">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <ContentView.Triggers>
+                        <DataTrigger TargetType="ContentView" Binding="{Binding SelectedMenuItem}" Value="PRINTER">
+                            <Setter Property="BackgroundColor" Value="{x:Static resources:AppColors.HikeColor}" />
+                        </DataTrigger>
+                    </ContentView.Triggers>
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MenuItemSelectedCommand}" CommandParameter="PRINTER" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+                <BoxView Grid.Column="3" VerticalOptions="Start" Style="{StaticResource HalfHeightBoxViewLine}" />
+                <ContentView Grid.Column="4" x:Name="PaymentOptionBtn" IsVisible="{Binding PaymentOptionBtnVisible}" VerticalOptions="Start" HeightRequest="55" BackgroundColor="White">
+                    <Label Text="{Localize:Translate PaymentButtonText}" Style="{x:Static resources:Styles.SettingsMenuButtonLabelStyle}" HorizontalTextAlignment="Center" Margin="10,5">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SelectedMenuItem}" Value="PAYMENT OPTIONS">
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <ContentView.Triggers>
+                        <DataTrigger TargetType="ContentView" Binding="{Binding SelectedMenuItem}" Value="PAYMENT OPTIONS">
+                            <Setter Property="BackgroundColor" Value="{x:Static resources:AppColors.HikeColor}" />
+                        </DataTrigger>
+                    </ContentView.Triggers>
+                    <ContentView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding MenuItemSelectedCommand}" CommandParameter="PAYMENT OPTIONS" />
+                    </ContentView.GestureRecognizers>
+                </ContentView>
+            </Grid>
+            <!-- End tab menu right view-->
+            <!-- Start header bar -->
+            <Grid Grid.Row="0" Grid.Column="0" ColumnSpacing="10" RowSpacing="0" BackgroundColor="White">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{OnPlatform iOS='44', Android='48'}" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label Text="{Localize:Translate Settings_TitleText}" Margin="16,0" Grid.Row="0" Style="{x:Static resources:Styles.PageTitleLabelStyle}" Grid.Column="0" Grid.ColumnSpan="2" HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                <ImageButton Source="ic_hamburger" Grid.Column="0" Grid.Row="0"  MinimumHeightRequest="32" MinimumWidthRequest="32" WidthRequest="32" HeightRequest="32" Command="{Binding SliderMenuCommand}" BackgroundColor="Transparent"/>
+            </Grid>
+            <!-- End header bar -->
+            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.HeaderSepratorColor}" HeightRequest="0.5"/>
+           <Label Grid.Row="2" Text="{Binding AppVesion}" Style="{x:Static resources:Styles.SettingsOptionDescriptionLabelStyle}" HorizontalOptions="Start" VerticalTextAlignment ="End" VerticalOptions="End"/>
+        </Grid>
+    </ContentPage.Content>
+</local:BaseContentPage>

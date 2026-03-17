@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HikePOS.Pages.QuotePopupPage"
+             xmlns:local="clr-namespace:HikePOS"
+            xmlns:resources="clr-namespace:HikePOS.Resources"
+            xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+            xmlns:userControls="clr-namespace:HikePOS.UserControls"
+            xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+            xmlns:vm="clr-namespace:HikePOS.ViewModels"
+            xmlns:model="clr-namespace:HikePOS.Models"
+            x:DataType="vm:BaseViewModel"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            x:TypeArguments="vm:BaseViewModel" x:Name="PopupPage" ShowDirection="RightToLeft" BackgroundColor="{StaticResource PopupBG}">
+    <Grid ColumnSpacing="0" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <OnIdiom x:TypeArguments="View">
+            <OnIdiom.Tablet>
+                <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                </StackLayout>
+            </OnIdiom.Tablet>
+            <OnIdiom.Phone>
+                <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                    <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                </StackLayout>
+            </OnIdiom.Phone>
+        </OnIdiom>
+        <Grid x:Name="rootview" Grid.Row="0" Grid.Column="1" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout>
+                <Label Grid.Row="0" Margin="40" Text="This quote cannot be converted to a sale because there is insufficient inventory for below SKUs/products."
+                   FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+                   VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" />
+                <Border Stroke="{x:Static resources:AppColors.LightBordersColor}" Padding="5,8"  Margin="20,0,20,10" >
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="4" >
+                        <Image Source="ic_search" Grid.Column="0"  WidthRequest="28" HeightRequest="28" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <userControls:CustomEntry x:Name="SearchEntry" HorizontalOptions="FillAndExpand" TextChanged="SearchTextHandle_TextChanged" Grid.Column="1" Placeholder="Find..." />
+                    </Grid>
+                </Border>
+            </StackLayout>
+            <BoxView Grid.Row="1"  BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" />
+            <Grid Grid.Row="2" HeightRequest="50" ColumnDefinitions="*,80,80" Margin="20,0">
+                <Label Text="Item" HorizontalTextAlignment="Start" FontAttributes="Bold" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                <Label Grid.Column="1" Text="Ordered" FontAttributes="Bold" Style="{x:Static resources:Styles.TableItemLabelStyle}" HorizontalTextAlignment="End"/>
+                <Label Grid.Column="2" Text="Available" FontAttributes="Bold" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+            </Grid>
+            <BoxView Grid.Row="3"  BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" />
+            <CollectionView x:Name="lstsotck" Grid.Row="4" SelectionMode="None" Margin="20,0,20,24">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ProductQuote"> 
+                        <Grid HeightRequest="60" ColumnDefinitions="*,80,80">
+                            <StackLayout Spacing="3" Grid.Column="0" VerticalOptions="Start" Padding="0,7">
+                                <Label Text="{Binding Name}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                                <Label Text="{Binding Sku,StringFormat='SKU: {0}'}" TextColor="Gray" FontSize="12"
+                                        HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                            </StackLayout>
+                            <Label Grid.Column="1" Text="{Binding Order}" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                            <Label Grid.Column="2" Text="{Binding Stoke}" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </Grid>
+</local:PopupBasePage>

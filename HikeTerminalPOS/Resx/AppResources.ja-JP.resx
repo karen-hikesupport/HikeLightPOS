@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+        <resheader name="version"><value>2.0</value></resheader>
+        <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+        <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+        <!-- Start Icons  //IconUnicodeText  -->
+        <data name="HumbergerMenuIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="BackIconUnicode" xml:space="preserve"><value> </value></data>
+        <data name="CloseIconUnicode" xml:space="preserve"><value>✕</value></data>
+        <data name="StarBorderIconUnicode" xml:space="preserve"><value>☆</value></data>
+        <data name="StarIconUnicode" xml:space="preserve"><value>★</value></data>
+        <data name="CheckBoxIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="UnCheckBoxIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="BookmarkIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="GiftIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="TrashIconUnicode" xml:space="preserve"><value></value></data>
+        <!--<data name="FolderIconUnicode" xml:space="preserve"><value></value></data>-->
+        <data name="EditIconUnicode" xml:space="preserve"><value></value></data> 
+        <data name="FolderIconUnicode" xml:space="preserve"><value></value></data>
+        <data name="FilterIconUnicode" xml:space="preserve"><value></value></data>
+
+
+
+        <!-- End -->
+
+        <data name="StoreName_Placeholder" xml:space="preserve"><value>ストアのウェブアドレス</value></data>
+        <data name="StoreName_InValidMessage" xml:space="preserve"><value>Please enter valid store name</value></data>
+        <data name="StoreName_EmptyMessage" xml:space="preserve"><value>Please enter your store name</value></data>
+        <data name="StoreName_LabelText" xml:space="preserve"><value>.hikeup.com</value></data>
+        <data name="Email_Placeholder" xml:space="preserve"><value>メール</value></data>
+        <data name="Email_InValidMessage" xml:space="preserve"><value>Please enter a valid email</value></data>
+        <data name="Email_EmptyMessage" xml:space="preserve"><value>Please enter email address</value></data>
+        <data name="Password_Placeholder" xml:space="preserve"><value>パスワード</value></data>
+        <data name="Password_InValidMessage" xml:space="preserve"><value>Please enter valid password</value></data>
+        <data name="Password_EmptyMessage" xml:space="preserve"><value>Please enter your password</value></data>
+        <data name="Login_ButtonText" xml:space="preserve"><value>ログイン</value></data>
+        <data name="Signup_LabelText" xml:space="preserve"><value>Hikeは初めてですか? </value></data>
+        <data name="Register_ButtonText" xml:space="preserve"><value>レジ</value></data>
+        <data name="Forgot_ButtonText" xml:space="preserve"><value>お忘れですか?</value></data>
+        <data name="DiscountPopupTitle" xml:space="preserve"><value>Apply discount to this sale</value></data>
+        <data name="TipPopupTitle" xml:space="preserve"><value>Apply tip to this sale</value></data>
+        <data name="StoreNameAlreadyExistsMessage" xml:space="preserve"><value>A store with that name already exists</value></data>
+
+        <data name="Signup_ButtonText" xml:space="preserve"><value>ストアを作る</value></data>
+        <data name="Already_LabelText" xml:space="preserve"><value>Already on Hike? </value></data>
+        <data name="Forgot_TitleText"  xml:space="preserve"><value>パスワードをお忘れですか？</value></data>
+        <data name="Submit_ButtonText" xml:space="preserve"><value>送信</value></data>
+        <data name="Remember_LabelText" xml:space="preserve"><value>記憶させる </value></data>
+
+        <data name="SendResetPasswordSuccessMessage" xml:space="preserve"><value>A password reset link sent to your e-mail address. Please check your emails.</value></data>
+    
+        <data name="Logout_ButtonText" xml:space="preserve"><value>ログアウト</value></data>
+        <data name="ChangeUser_ButtonText" xml:space="preserve"><value>ユーザー変更</value></data>
+        <data name="CloseRegister_ButtonText" xml:space="preserve"><value>レジ締</value></data>
+        <data name="ChangePassword_ButtonText" xml:space="preserve"><value>パスワードを変更</value></data>
+        <data name="ClockInOut_ButtonText" xml:space="preserve"><value>クロックインアウト</value></data>
+
+        <data name="EnterSale_TitleText" xml:space="preserve"><value>売上入力</value></data>
+        <data name="SaleHistory_TitleText" xml:space="preserve"><value>売上履歴</value></data>
+        <data name="CashRegister_TitileText" xml:space="preserve"><value>レジ</value></data>
+        <data name="Settings_TitleText" xml:space="preserve"><value>設定</value></data>
+        <data name="Admin_TitleText" xml:space="preserve"><value>管理者</value></data>
+        <data name="Payment_TitleText" xml:space="preserve"><value>支払</value></data>
+        <data name="CustomSale_TitleText" xml:space="preserve"><value>カスタム売上</value></data>
+    
+        <data name="Intercom_TitleText" xml:space="preserve"><value>助けが必要?</value></data>
+        
+    
+        <data name="Online_Text" xml:space="preserve"><value>オンライン</value></data>
+        <data name="Offline_Text" xml:space="preserve"><value>Offline</value></data>
+        <data name="Connected_Text" xml:space="preserve"><value>接続済み</value></data>
+        <data name="NotFound_Text" xml:space="preserve"><value>見つかりません</value></data>
+
+        <data name="SelectRegister_TitleText" xml:space="preserve"><value>レジを選択</value></data>
+        <data name="Progress0_Text" xml:space="preserve"><value>お待ちください</value></data>
+        <data name="Progress1_Text" xml:space="preserve"><value>Setting up products list </value></data>
+        <data name="Progress2_Text" xml:space="preserve"><value>Loading your store</value></data>
+        <data name="Progress3_Text" xml:space="preserve"><value>Setting up staff accounts</value></data>
+        <data name="Progress4_Text" xml:space="preserve"><value>Loading user roles</value></data>
+        <data name="Progress5_Text" xml:space="preserve"><value>Setting up product types</value></data>
+        <data name="Progress6_Text" xml:space="preserve"><value>Loading products</value></data>
+        <data name="Progress7_Text" xml:space="preserve"><value>Loading customer profiles</value></data>
+        <data name="Progress8_Text" xml:space="preserve"><value>Loading discount offers</value></data>
+        <data name="Progress9_Text" xml:space="preserve"><value>Loading payment configurations</value></data>
+        <data name="Progress10_Text" xml:space="preserve"><value>Loading sales history</value></data>
+
+
+    
+        <data name="SearchProduct_PlaceHolder" xml:space="preserve"><value>商品検索</value></data>
+        <data name="PayButtonText" xml:space="preserve"><value>支払</value></data>
+        <data name="OfferTitle" xml:space="preserve"><value>オファー</value></data>
+        <data name="Price_Placeholder" xml:space="preserve"><value>価格</value></data>
+        <data name="Discount_Placeholder" xml:space="preserve"><value>ディスカウント</value></data>
+        <data name="CustomSale_Placeholder" xml:space="preserve"><value>Enter custom sale name here</value></data>
+        <data name="Save_ButtonText" xml:space="preserve"><value>保存</value></data>
+        <data name="Info_ButtonText" xml:space="preserve"><value>Info</value></data>
+        <data name="Back_ButtonText" xml:space="preserve"><value>戻る</value></data>
+        <data name="Verify_ButtonText" xml:space="preserve"><value>Verify</value></data>
+        <data name="AddToCart_ButtonText" xml:space="preserve"><value>カートに追加</value></data>
+        <data name="GiftCard_Placeholder" xml:space="preserve"><value>ギフトカード</value></data>
+        <data name="GiftCardAmount_Placeholder" xml:space="preserve"><value>金額</value></data>
+
+        <data name="ProductDetailHeader" xml:space="preserve"><value>Product Details</value></data>
+        <data name="IncreaseRefundProductQuantityValidationMessage" xml:space="preserve"><value>Please enter a valid quantity - It should be less then 0.</value></data>
+        <data name="DecreaseSaleProductQuantityValidationMessage" xml:space="preserve"><value>Please enter a valid quantity - It should be more then 0.</value></data>
+        <data name="AddToPurchaseButtonText" xml:space="preserve"><value>Add to &#10;purchase</value></data>
+        <data name="PaypalEVMTransactionHeader" xml:space="preserve"><value>Chip + Pin Payment</value></data>
+        <data name="ChargeButtonText" xml:space="preserve"><value>チャージ</value></data>
+        <data name="UpdateReaderButtonText" xml:space="preserve"><value>Update Reader</value></data>
+        <data name="ReadyToPayHeaderText" xml:space="preserve"><value>Ready to Pay</value></data>
+        <data name="NoReaderFoundMessage" xml:space="preserve"><value>No card reader detected.</value></data>
+        <data name="TyroPurchaseTransactionHeader" xml:space="preserve"><value>Tyro Payment</value></data>
+        <data name="iZettlePurchaseTransactionHeader" xml:space="preserve"><value>PayPal Zettle Payment</value></data>
+        <data name="MintTransactionHeader" xml:space="preserve"><value>Mint Payment</value></data>
+
+        <data name="TyroTerminalConfigurationRequired" xml:space="preserve"><value>Tyro terminal is not configured! Please configure tyro terminal from payment settings</value></data>
+        <data name="MintConfigurationRequired" xml:space="preserve"><value>Mint is not configured! Please configure mint from payment settings</value></data>
+        <data name="MintConfigurations" xml:space="preserve"><value>Mint configuration</value></data>
+        <data name="AmountValidationForIntegratedPaymentTypeMessage" xml:space="preserve"><value>The amount entered as ‘tendered’ is more than Pay amount</value></data>
+
+        <data name="VantivConfigurations" xml:space="preserve"><value>Vantiv configuration</value></data>
+        <data name="AssemblyPaymentConfigurations" xml:space="preserve"><value>Simple Payments Integration Settings</value></data>
+        <data name="Configure_ButtonText" xml:space="preserve"><value>Configure</value></data>
+
+        <data name="Please_Select_LabelText" xml:space="preserve"><value> Please select </value></data>
+        <data name="CustomerAddButtonText" xml:space="preserve"><value>+ Add new</value></data> 
+        <data name="SearchCustomerPlaceholderText" xml:space="preserve"><value>by name, email or phone</value></data>    
+        <data name="FirstName" xml:space="preserve"><value>名</value></data>
+        <data name="LastName" xml:space="preserve"><value>姓</value></data>
+        <data name="Gender" xml:space="preserve"><value>性別</value></data>
+        <data name="Birthdate" xml:space="preserve"><value>誕生日</value></data>
+        <data name="CompanyName" xml:space="preserve"><value>会社名</value></data>
+        <data name="CustomerGroup" xml:space="preserve"><value>カスタマーグループ</value></data>
+        <data name="Email" xml:space="preserve"><value>メール</value></data>
+        <data name="Phone" xml:space="preserve"><value>電話</value></data>
+        <data name="City" xml:space="preserve"><value>市</value></data>
+        <data name="StreetAddress" xml:space="preserve"><value>通り名と番地</value></data>
+        <data name="State" xml:space="preserve"><value>State</value></data>
+        <data name="Zip" xml:space="preserve"><value>Postal / ZIP code</value></data>
+        <data name="Country" xml:space="preserve"><value>国</value></data>
+        <data name="CustomerCode" xml:space="preserve"><value>カスタマーコード</value></data>
+        <data name="CreditLimit" xml:space="preserve"><value>信用枠</value></data>
+        <data name="HowDidYouHearAboutUs" xml:space="preserve"><value>How did you hear about us</value></data>
+        <data name="Notes" xml:space="preserve"><value>メモ</value></data>
+        <data name="CustomerSince" xml:space="preserve"><value>以来のカスタマー</value></data>
+    
+    
+        <data name="ValidAmount" xml:space="preserve"><value>Please enter a valid amount.</value></data>
+        <data name="ValidTenderAmount" xml:space="preserve"><value>Please enter a valid amount.</value></data>
+        <data name="PRINTER_TYPE_POWA_POS" xml:space="preserve"><value>PRINTER_TYPE_POWA_POS_</value></data>
+        <data name="Error_Title" xml:space="preserve"><value>エラー</value></data>
+        <data name="Warning_Title" xml:space="preserve"><value>Warning</value></data>
+        <data name="Authentication_Error_Title" xml:space="preserve"><value>Authentication error</value></data>
+
+
+
+        <data name="AddGiftCard_Title" xml:space="preserve"><value>Sell or check gift card balance</value></data>
+        <data name="AddGiftCardNumber" xml:space="preserve"><value>Gift card number</value></data>
+        <data name="AddGiftCardEnterAmount" xml:space="preserve"><value>金額</value></data>
+        <data name="AddGiftCardBalance" xml:space="preserve"><value>Balance</value></data>
+
+
+        
+        <data name="AddCustomer_Title" xml:space="preserve"><value>Customer profile</value></data>
+        <data name="Server_Error_Title" xml:space="preserve"><value>エラー</value></data>
+        <data name="SomethingWrong" xml:space="preserve"><value>Sorry, something went wrong.</value></data>
+        <data name="NoInternetMessage" xml:space="preserve"><value>Internet is not available! Please check your device settings</value></data>
+        <data name="FirstNameRequiredValidationMessage" xml:space="preserve"><value>Please enter first name.</value></data>
+        <data name="GiftCardAmountValidationMessage" xml:space="preserve"><value>Please enter a valid gift card amount - only numbers, no currency symbols. </value></data>
+        <data name="GiftCardNotAvailableValidationMessage" xml:space="preserve"><value>Sorry, we did not find gift card.</value></data>
+        <data name="GiftCardNumberValidationMessage" xml:space="preserve"><value>Please enter a valid gift card number (max thirty digits and 2 decimal) </value></data>
+        <data name="GiftCardNumberMinimumValidationMessage" xml:space="preserve"><value>ギフトカード番号は４桁以上. </value></data>
+        <data name="BalanceLabelText" xml:space="preserve"><value>残高:</value></data>
+        <data name="GiftCardBalanceValidationMessage" xml:space="preserve"><value>The amount entered as ‘tendered’ is more than the available gift card balance of</value></data>
+        <data name="PrinterValidationMessage" xml:space="preserve"><value>Please select a printer</value></data>
+        <data name="PrinterSelectionValidationMessage" xml:space="preserve"><value>Please select a printer</value></data>
+        <data name="CustomSaleNameValidationMessage" xml:space="preserve"><value>Please enter this custom product name.</value></data>
+        <data name="CustomSaleQuantityValidationMessage" xml:space="preserve"><value>Please enter quantity.</value></data>
+        <data name="NoItemBarcodeMessage" xml:space="preserve"><value>Cannot find a product matching this barcode.</value></data>
+        <data name="NoInvoiceItemBarcodeMessage" xml:space="preserve"><value>Cannot find a sale matching this barcode.</value></data>
+        <data name="ExtraProductSelectionValidationMessage" xml:space="preserve"><value>None selected from the list. Please click on ‘close’ icon if you wish to proceed with no selection.</value></data>
+        <data name="OutofStockMessage" xml:space="preserve"><value>This product is out of stock.</value></data>
+        <data name="CompositeOutofStockMessage" xml:space="preserve"><value>この組合せ商品を構成するアイテムのどれかが在庫切れです。以下のアイテムを入庫させこの組合せ商品を販売してください。</value></data>
+        <data name="DiscountValidationMessage" xml:space="preserve"><value>Please enter valid discount.</value></data>
+        <data name="TipValidationMessage" xml:space="preserve"><value>Please enter valid tip amount.</value></data>
+        <data name="BackOrderCutomerValidation" xml:space="preserve"><value>予約注文を受けるためにはカスタマーを割り当ててください</value></data>
+        <data name="PayButtonCutomerValidation" xml:space="preserve"><value>予約販売にカスタマーを紐づけます</value></data>
+        <data name="NoItemInStockMessage" xml:space="preserve"><value>There isn’t enough stock to finalize this backorder.</value></data>
+        <data name="RefundInternetValidationMessage" xml:space="preserve"><value>Please connect to internet to finalize a refund transaction.</value></data>
+        <data name="RefundSyncValidationMessage" xml:space="preserve"><value> Please connect to internet to finalize a refund transaction.</value></data>
+        <data name="RemovePaymentInCloseRegisterAlertMessage" xml:space="preserve"><value>Please open register to remove payment.</value></data>
+        <data name="EnterSaleNoPermissionMessage" xml:space="preserve"><value>Sorry, You do not have the required access permission.</value></data>
+        <data name="CreditBalanceValidationMessage" xml:space="preserve"><value>The amount is more than the available credit balance.</value></data>
+<!--        <data name="CreditLimitValidationMessage" xml:space="preserve"><value>Cannot finalise this ‘on account’ sale. It crosses the total ‘on account’ balance limit set for this customer account.</value></data>
+-->      <data name="CreditLimitValidationMessage" xml:space="preserve"><value>Payment amount exceeds On Account credit limit.</value></data>
+        <data name="LoyaltyLimitValidationMessage" xml:space="preserve"><value>The payment amount is more than the available loyalty balance.</value></data>
+        <data name="iZettleRefundMessage" xml:space="preserve"><value>This refund cannot be processed using PayPal Zettle!</value></data>
+        <data name="PaypalLoginMessage" xml:space="preserve"><value>Please login to PayPal and try again!</value></data>
+        <data name="PaypalRefundMessage" xml:space="preserve"><value>This refund transaction cannot be processed using PayPal</value></data>
+        <data name="MintRefundMessage" xml:space="preserve"><value>This refund transaction cannot be processed using Mint</value></data>
+        <data name="NumberValidationMessage" xml:space="preserve"><value>Please enter a valid number.</value></data>
+        <data name="SettingUpdateMessage" xml:space="preserve"><value>Settings updated successfully!</value></data>
+        <data name="UpdateDataProccessMessage" xml:space="preserve"><value>Upadating data</value></data>
+        <data name="NoFoundVariantProduct" xml:space="preserve"><value>Sorry, we did not find variant product.</value></data>
+        <data name="RemoveCreditPaymentMessage" xml:space="preserve"><value>Sorry, You can not remove credit payment.</value></data>
+        <data name="CloseRegisterSuccessMessage" xml:space="preserve"><value>Register closed successfully.</value></data>
+        <data name="CloseRegisterLoadDataErrorMessage" xml:space="preserve"><value>It looks like the register is already closed. Please sync data and try again.</value></data>
+        <data name="AlreadyOpenRegisterErrorMessage" xml:space="preserve"><value>It looks like the register is already opened.</value></data>
+        <data name="EmailSendWaiting" xml:space="preserve"><value>Email queued successfully.</value></data>
+        <data name="EmailSuccess" xml:space="preserve"><value>Email sent successfully.</value></data>
+        <data name="EmailFailed" xml:space="preserve"><value>Email failed. Please check the email id and try again.</value></data>
+        <data name="DataSyncSuccess" xml:space="preserve"><value>Data successfully sync’d with your store cloud.</value></data>
+        <data name="ExpireMessage" xml:space="preserve"><value>Sorry, looks like your subscription is expired.</value></data>
+
+        <data name="SubscriptionExntendedMessage" xml:space="preserve"><value>Your Hike subscripiton renewal failed. Please update credit card details to avoid interruption.</value></data>
+        <data name="SubscriptionIsOnHoldMessage" xml:space="preserve"><value>You've currently paused your Hike subscripiton.</value></data>
+    
+        <data name="DataSyncContinueMessage" xml:space="preserve"><value>You have some unsync data in your store. Do you want to continue with sync?</value></data>
+        <data name="RemovePaymentAleartMessage" xml:space="preserve"><value>Are you sure you want to delete this payment?</value></data>
+        <data name="ResetAleartMessage" xml:space="preserve"><value>Are you sure you want to change outlet/register?</value></data>
+
+    
+        <data name="EnableInvoicePrintReceiptText" xml:space="preserve"><value>Invoice receipt</value></data>
+        <data name="EnableDocketPrintReceiptText" xml:space="preserve"><value>Docket receipt</value></data>
+        <data name="EnableCustomerPrintReceiptText" xml:space="preserve"><value>Customer receipt</value></data>
+
+
+        <data name="LoadUpdateDataHeaderText" xml:space="preserve"><value>Sync with your store cloud</value></data>
+        <data name="LoadUpdateDataText" xml:space="preserve"><value>Click to manually sync with your store cloud</value></data>
+
+    <data name="Migration" xml:space="preserve"><value>データインポート</value></data>
+    <data name="Import" xml:space="preserve"><value>インポート</value></data>
+    <data name="HikeEcommers" xml:space="preserve"><value>Hike eCommerce</value></data>
+    <data name="iPad" xml:space="preserve"><value>店舗にあり</value></data>
+    <data name="QB" xml:space="preserve"><value>QuickBooks</value></data>
+    <data name="Web" xml:space="preserve"><value>店舗にあり</value></data>
+    <data name="Woo" xml:space="preserve"><value>WooCommerce</value></data>
+    <data name="BigCommerce" xml:space="preserve"><value>BigCommerce</value></data>
+    <data name="Shopify" xml:space="preserve"><value>Shopify</value></data>
+    <data name="Xero" xml:space="preserve"><value></value>Xero</data>
+    <data name="Magento" xml:space="preserve"><value>Magento</value></data>
+    <data name="ePages" xml:space="preserve"><value>ePages</value></data>
+
+
+    <!--setting page start-->
+
+    
+    <data name="GeneralButtonText" xml:space="preserve"><value>一般設定</value></data>
+    <data name="PrinterButtonText" xml:space="preserve"><value>Hardware</value></data>
+    <data name="PaymentButtonText" xml:space="preserve"><value>支払い方法</value></data>
+
+    <data name="MarkPaidOrderOptionLabelText" xml:space="preserve"><value>Mark paid orders as fulfilled</value></data>
+    <data name="MarkPaidOrderOptionDescriptionText" xml:space="preserve"><value>Deactive this option if you require to park orders for fulfillment after receiving payment and then manually change status to fulfilled.</value></data>
+
+    <data name="AutoLockOptionLabelText" xml:space="preserve"><value>Auto-lock screen</value></data>
+    <data name="AutoLockOptionDescriptionText" xml:space="preserve"><value>POS screen will auto-lock if idle for the duration set here. Use your 4-digit pin to unlock.</value></data>
+
+    <data name="SyncDataOptionLabelText" xml:space="preserve"><value>Sync local data with your store cloud</value></data>
+    <data name="SyncDataOptionDescriptionText" xml:space="preserve"><value>Use manual sync if recent edit/updates (e.g.: product changes) are not yet appearing on your sale screen.</value></data>
+    <data name="SyncDataButtonText" xml:space="preserve"><value>Data Sync</value></data>
+
+    <data name="ClearSyncDataOptionLabelText" xml:space="preserve"><value>Reset/Refresh POS storage on this device</value></data>
+    <data name="ClearSyncDataOptionDescriptionText" xml:space="preserve"><value>Pull data from your store’s cloud to refresh data on this device.</value></data>
+    <data name="ClearSyncDataButtonText" xml:space="preserve"><value>データリセット</value></data>
+
+    <data name="PrimaryReceiptPrinterLabelText" xml:space="preserve"><value>Primary receipt printer</value></data>
+    <data name="UseInHikeLabelText" xml:space="preserve"><value>Use in Hike?</value></data>
+    <data name="DocketPrinterLabelText" xml:space="preserve"><value>Packing slip/kitchen docket printer</value></data>
+    <data name="PrimaryDocketDescriptionText" xml:space="preserve"><value>Specify task/s for this printer: Only print customer receipts, back office docket printer or use it for both?</value></data>
+    
+    <data name="NoOfCopiesLabelText" xml:space="preserve"><value>Number of copies to print for each sale</value></data>
+    <data name="AutoPrintLabelText" xml:space="preserve"><value>Auto-print after sale</value></data>
+    <data name="EnableAutoOpenCashDrawerLabelText" xml:space="preserve"><value>Enable auto-open cash drawer</value></data>
+    <data name="EnableAutoOpenCashDrawerOnlyCashSalesLabelText" xml:space="preserve"><value>Auto-open cash drawer on cash sales only</value></data>
+
+    <data name="AllCloudReceiptLabelText" xml:space="preserve"><value>AllReceipt - cloud receipts</value></data>
+    <data name="AllCloudReceiptDescriptionText" xml:space="preserve"><value>AllReceipt is a digital receipting solution. Allow your customer to claim and store their receipts on the cloud.</value></data>
+    <data name="AllCloudReceiptDescriptionLinkButtonText" xml:space="preserve"><value> &#10;Click here for more details.</value></data>
+
+    
+    <data name="AllCloudReceiptQRCodeLabelText" xml:space="preserve"><value>QR code</value></data>
+    <data name="AllCloudReceiptInfoLabelText" xml:space="preserve"><value>Info</value></data>
+
+    <data name="PaymentOptionDescriptionLabelText" xml:space="preserve"><value>Cash, external non-integrated &amp; custom payment types</value></data>
+    <data name="IntegratedPaymentOptionDescriptionLabelText" xml:space="preserve"><value>Hike integrated card payment terminals. </value></data>
+    <data name="IntegratedPaymentOptionDescriptionLinkButtonText" xml:space="preserve"><value>Click here for help with integrated payment hardware compatibility and setup.</value></data>
+
+    <data name="Vantiv_Device_ISNot_Connected_Message" xml:space="preserve"><value>Your Vantiv device is not connected.</value></data>
+    <data name="Vantiv_Device_IS_Connected_Message" xml:space="preserve"><value>Your Vantiv device is connected.</value></data>
+    <data name="VantivPurchaseTransactionHeader" xml:space="preserve"><value>Vantiv Payment</value></data>
+    <data name="VantivConfigurationMessage" xml:space="preserve"><value>Please configure Vantiv and try again!</value></data>
+
+
+    <data name="AssemblyPayment_Device_ISNot_Connected_Message" xml:space="preserve"><value>Your Westpac Group Payment device is not connected.</value></data>
+    <data name="AssemblyPayment_Device_IS_Connected_Message" xml:space="preserve"><value>Your Westpac Group Payment device is connected.</value></data>
+    <data name="AssemblyPaymentPurchaseTransactionHeader" xml:space="preserve"><value>Simple Payments Integration</value></data>
+    <data name="AssemblyPaymentConfigurationMessage" xml:space="preserve"><value>Please configure Simple Payments Integration and try again!</value></data>
+    
+    
+    <!--Autolock Page-->
+    <data name="AutoLock_EmptyPinText" xml:space="preserve"><value>Please enter your PIN</value></data>
+    <data name="AutoLock_4DigitPasscodeText" xml:space="preserve"><value>Enter your 4-digit passcode</value></data>   
+    <data name="ClearBtnText" xml:space="preserve"><value>clear</value></data>  
+    <data name="AutolockPageTitle" xml:space="preserve"><value>Autolock page</value></data>  
+
+    <data name="ActivePrinterLabelText" xml:space="preserve"><value>Active printer</value></data>
+    <data name="ActivePrinterDescriptionLabelText" xml:space="preserve"><value>Bluetooth printers already paired with your device will appear in the list. For WiFi/network printer, Please ensure that it is connected to the same network as your iPad. </value></data>
+    <data name="ActivePrinterDescriptionLinkButtonText" xml:space="preserve"><value>View Hike iPad app compatible printers.</value></data>
+
+    
+    <data name="PrinterCustomerQueueDocketLabelText" xml:space="preserve"><value>Print customer queue docket</value></data>
+    <data name="DocketNumberRangeLabelText" xml:space="preserve"><value>Docket number range</value></data>
+    <data name="CustomerDocketDescriptionLabelText" xml:space="preserve"><value>Do you require customers to wait while their orders are being prepared? Active this to print a queue docket/token number for your customers to know their place in the queue.</value></data>
+
+    <data name="ConfigurationRequiredLabelText" xml:space="preserve"><value>Configure Now</value></data>
+    <data name="ReadyToUseLabelText" xml:space="preserve"><value>Ready to use</value></data>
+
+
+    <!--Change password Page-->
+    <data name="ChangePassword_TitleText" xml:space="preserve"><value>パスワードを変更</value></data>
+    <data name="CurrentPasswordText" xml:space="preserve"><value>Current Password</value></data>
+    <data name="NewPasswordText" xml:space="preserve"><value>新パスワード</value></data>
+    <data name="RepeatNewPasswordText" xml:space="preserve"><value>新パスワード (再入力)</value></data>
+    <data name="AllValidationMessage" xml:space="preserve"><value>Please fill all information.</value></data>
+
+    <data name="UserCurrentPassword_EmptyMessage" xml:space="preserve"><value>Please enter your current password</value></data>
+    <data name="UserNewPassword_EmptyMessage" xml:space="preserve"><value>Please enter your new password</value></data>
+    <data name="UserRepeatNewPassword_EmptyMessage" xml:space="preserve"><value>Please enter your repeat new password</value></data>
+    
+    <data name="UserPassword_InValidMessage" xml:space="preserve"><value>Password must contain at least 1 number and minimum 6 characters.</value></data>
+
+    <data name="NewPasswordAndRepeatDidntMatchValidationMessage" xml:space="preserve"><value>New password and repeat didnt match.</value></data>
+    <data name="ChangePasswordSuccessMessage" xml:space="preserve"><value>Change password successfully.</value></data>
+
+    <data name="ProductIsCurrentlyLockedMessage" xml:space="preserve"><value>この商品は棚卸中のため現在ロックされています。棚卸が完了したら販売可能になります</value></data>
+    
+
+
+<!--Change user Page-->
+    <data name="SignOutBtnText" xml:space="preserve"><value>サインアウト</value></data> 
+    <data name="ChangeUserPageTitle" xml:space="preserve"><value>Change user page</value></data> 
+
+    <!--Forgot Password / Login / Signup page-->
+    <data name="ForgotPasswordTitleText" xml:space="preserve"><value>パスワードをお忘れですか</value></data>
+    <data name="SignUpPageTitleText" xml:space="preserve"><value>SignUp page</value></data>
+    <data name="StartHike_Title" xml:space="preserve"><value>Start Hike</value></data>
+    <data name="SignupAndAgreementText1" xml:space="preserve"><value>サインアップすることで同意したことになります </value></data>
+    <data name="SignupAndAgreementText2" xml:space="preserve"><value>規約と条件</value></data>
+    <data name="SignupAndAgreementText3" xml:space="preserve"><value>そして </value></data>
+    <data name="SignupAndAgreementText4" xml:space="preserve"><value>プライバシーポリシー</value></data>
+    <data name="AddSomeDemoProductsText" xml:space="preserve"><value>Add some demo products</value></data>
+
+
+
+
+    <!--Cash Register Page-->
+    <data name="SummaryText" xml:space="preserve"><value>Summary</value></data>
+    <data name="PrintText" xml:space="preserve"><value>印刷</value></data>
+     <!--Ticket Start #62713 In print receipt Closed By not show after closing cash register  by: Pratik-->
+    <data name="PrinPreviousText" xml:space="preserve"><value>Print Previous</value></data>
+    <!--Ticket End #62713 by: Pratik-->
+    <data name="AddRemoveCashText" xml:space="preserve"><value>Add/Remove Cash</value></data>
+    <data name="CloseRegisterText" xml:space="preserve"><value>レジ締</value></data>
+    <data name="ResetDataText" xml:space="preserve"><value>データリセット</value></data>
+    <data name="ChangeRegisterOutletText" xml:space="preserve"><value>変更　店舗 / レジ</value></data>
+    <data name="PaymentsText" xml:space="preserve"><value>Payments (balance)</value></data>
+    <data name="TransactionsText" xml:space="preserve"><value>取引</value></data>
+    <data name="SalesText" xml:space="preserve"><value>販売</value></data>
+    <data name="PaymentsReceivedText" xml:space="preserve"><value>受領済支払</value></data>
+    <data name="TaxCollectedText" xml:space="preserve"><value>消費税徴収</value></data>
+    <data name="DiscountsGivenText" xml:space="preserve"><value>ディスカウント適用</value></data>
+    <data name="TipsSurchargeText" xml:space="preserve"><value>チップ/割増</value></data>
+    <data name="RefundsText" xml:space="preserve"><value>返金</value></data>
+    <data name="CashAddedRemovedText" xml:space="preserve"><value>Cash added / removed</value></data>
+
+    <data name="ThisSaleAlreadyRefunded" xml:space="preserve"><value>この売上はすでに全額返金済</value></data>
+    <data name="NoFoundSales" xml:space="preserve"><value>Sorry, we did not find sale in local.</value></data>
+        
+
+    <!--Add Cash in Out page-->
+    <data name="AddOrRemoveCashText" xml:space="preserve"><value>Add or remove cash</value></data>
+    <data name="AmountText" xml:space="preserve"><value>金額</value></data>
+    <data name="NoteText" xml:space="preserve"><value>メモ</value></data>
+    <data name="RemoveCashText" xml:space="preserve"><value>Remove Cash</value></data>
+    <data name="AddCashText" xml:space="preserve"><value>Add Cash</value></data>
+    <data name="AddCashInOutPageTitle" xml:space="preserve"><value>Add cash in/out page</value></data>
+
+    <!--Close register tally page-->
+    <data name="VerifyBalanceAndCloseRegisterText" xml:space="preserve"><value>Verify balance and close register</value></data>
+    <data name="PaymentTypeText" xml:space="preserve"><value>支払い方法</value></data>
+    <data name="CountedText" xml:space="preserve"><value>計算済</value></data>
+    <data name="ExpectedText" xml:space="preserve"><value>予想</value></data>
+    <data name="DifferenceText" xml:space="preserve"><value>差額</value></data>
+
+    <!--Open Register Page-->
+    <data name="OpenRegisterText" xml:space="preserve"><value>レジを開く</value></data>
+    <data name="FloatingAmountText" xml:space="preserve"><value>Floating amount</value></data>
+
+
+
+    <!--Parked sale page-->
+    <data name="FilterByStatusText" xml:space="preserve"><value>Filter by status</value></data>
+    <data name="SalesHistoryText" xml:space="preserve"><value>売上履歴</value></data>
+    <data name="SaleText" xml:space="preserve"><value>Sale #</value></data>
+    <data name="DateText" xml:space="preserve"><value>日</value></data>
+    <data name="CustomerText" xml:space="preserve"><value>カスタマー</value></data>
+    <data name="SourceText" xml:space="preserve"><value>ソース</value></data>
+    <data name="SaleTotalText" xml:space="preserve"><value>売上合計</value></data>
+    <data name="StatusText" xml:space="preserve"><value>状態</value></data>
+
+
+    <data name="FulfillmentStatusText" xml:space="preserve"><value>お届け状況</value></data>
+    <data name="PaymentStatusText" xml:space="preserve"><value>支払状況</value></data>
+    <data name="FilterByOutletsText" xml:space="preserve"><value>Filter by outlet</value></data>
+
+    <!--Parked sale filter option menu-->
+    <data name="AllText" xml:space="preserve"><value>All</value></data>
+    <data name="LayByText" xml:space="preserve"><value>Lay by</value></data>
+    <data name="ParkedText" xml:space="preserve"><value>Parked</value></data>
+    <data name="VoidedText" xml:space="preserve"><value>Voided</value></data>
+    <data name="BackOrderText" xml:space="preserve"><value>Back order</value></data>
+    <data name="OnAccountText" xml:space="preserve"><value>On Account</value></data>
+    <data name="RefundedText" xml:space="preserve"><value>Refunded</value></data>
+    <data name="CompletedText" xml:space="preserve"><value>Completed</value></data>
+    <data name="UnsyncText" xml:space="preserve"><value>Offline</value></data>
+
+    <!--Parked sale detail page-->
+    <data name="EmailText" xml:space="preserve"><value>メール</value></data>
+    <data name="GiftReceiptPrintText" xml:space="preserve"><value>Gift&#10;receipt&#10;print</value></data>
+    <data name="RefundText" xml:space="preserve"><value>返金</value></data>
+    <data name="ReopenText" xml:space="preserve"><value>Reopen</value></data>
+    <data name="MarkAsCompleteText" xml:space="preserve"><value>Mark&#10;as&#10;complete</value></data>
+    <data name="SubtotalText" xml:space="preserve"><value>小計</value></data>
+    <data name="DiscountText" xml:space="preserve"><value>ディスカウント</value></data>
+    <data name="TipText" xml:space="preserve"><value>Surcharge (Inc. Tax)</value></data>
+    <data name="TotalText" xml:space="preserve"><value>合計</value></data>
+    <data name="PaidText" xml:space="preserve"><value>支払済</value></data>
+    <data name="OutstandingText" xml:space="preserve"><value>未決済</value></data>
+
+
+    <!--Payment Page-->
+    <data name="SelectCustomerText" xml:space="preserve"><value>カスタマー選択</value></data>
+    <data name="TaxText" xml:space="preserve"><value>税</value></data>
+    <data name="ToPayText" xml:space="preserve"><value>支払う</value></data>
+    <data name="AmountTenderedText" xml:space="preserve"><value>お預かり金額</value></data>
+    <data name="GiftCardText" xml:space="preserve"><value>ギフトカード</value></data>
+    <data name="ChargeText" xml:space="preserve"><value>チャージ</value></data>
+    <data name="SavePartialyPaidText" xml:space="preserve"><value>Save partialy paid</value></data>
+    <data name="IssueChangeText" xml:space="preserve"><value>Issue change</value></data>
+    <data name="SellLaybyAlertTitle" xml:space="preserve"><value>分割払の売上として保存しますか?</value></data>
+    <data name="SellLaybyAlertBody" xml:space="preserve"><value>売上は分割払、残高で保存されます。 </value></data>
+    <data name="SellAccountAlertTitle" xml:space="preserve"><value>カスタマーの信用枠で売上ますか?</value></data>
+    <data name="SellAccountAlertBody" xml:space="preserve"><value>売上は完了されます、カスタマーのアカウントには残額 {0} が残ります。</value></data>
+    <data name="ParkedAlertTitle" xml:space="preserve"><value>この取引を保留しますか?</value></data>
+    <data name="ParkedAlertBody" xml:space="preserve"><value>'はい'をクリックしてこの取引を一時的に保留する</value></data>
+    <!--Ticket start:#60456 iPad FR: Need to add "Save & print" button in park sale pop-up box in iPad.by Pratik-->
+    <data name="SaveAndPrintButtonText" xml:space="preserve"><value>保存 &amp; 印刷</value></data>
+    <!--Ticket end:#60456 .by Pratik-->
+    <data name="HasOrderFulfilled" xml:space="preserve"><value>Has order already been fulfilled.</value></data>
+
+    <!--IndustryType Enum-->
+    <data name="FashionClothing" xml:space="preserve"><value>アパレルファッション</value></data>
+    <data name="HomewareGift" xml:space="preserve"><value>家庭用品　ギフト</value></data>
+    <data name="CafeRestaurant" xml:space="preserve"><value>Food &amp; bevearages</value></data>
+    <data name="HairSalons" xml:space="preserve"><value>美容院</value></data>
+    <data name="FoodTruck" xml:space="preserve"><value>フードトラック</value></data>
+    <data name="ToysHobbies" xml:space="preserve"><value>趣味、玩具</value></data>
+    <data name="ToolsHardware" xml:space="preserve"><value>金物、建築用品</value></data>
+    <data name="Other" xml:space="preserve"><value>Other</value></data>
+
+    <!--SellerBy Enum-->
+
+    <data name="StartingNewBusiness" xml:space="preserve"><value>新しくビジネスを始める</value></data>
+    <data name="ExistingBusinessNewToCloudPOSSoftware" xml:space="preserve"><value>既存のビジネス, クラウド POS は初めて</value></data>
+    <data name="LookingToSwitchPlatforms" xml:space="preserve"><value>プラットフォームの転換を検討</value></data>
+    <data name="ResearchingForMyClient" xml:space="preserve"><value>クライアントのために検討</value></data>
+    <data name="ImJustPlayingAround" xml:space="preserve"><value>ちょっと試しているだけ</value></data>
+    <data name="HikePartnerSettingItUpForClient" xml:space="preserve"><value>Hikeのパートナー、クライアントのための設定</value></data>
+    <data name="ExistingCustomer" xml:space="preserve"><value>既存のカスタマー</value></data>
+    <data name="CustomerEmailAlreadyExist" xml:space="preserve"><value>Email already exist, please try with other option</value></data>
+    
+    <data name="LastNameRequiredValidationMessage" xml:space="preserve"><value>Please enter Last name.</value></data>
+    <data name="CityRequiredValidationMessage" xml:space="preserve"><value>Please enter city.</value></data>
+    <data name="ZipRequiredValidationMessage" xml:space="preserve"><value>Please enter Postal / Zip code.</value></data>
+    <data name="PhoneRequiredValidationMessage" xml:space="preserve"><value>Please enter phone number.</value></data>
+
+    <data name="Today" xml:space="preserve"><value>今日</value></data>
+    <data name="Yesterday" xml:space="preserve"><value>昨日</value></data>
+    <data name="Last7Days" xml:space="preserve"><value>過去７日間</value></data>
+    <data name="Last30Days" xml:space="preserve"><value>過去３０日間</value></data>
+    <data name="ThisMonth" xml:space="preserve"><value>今月</value></data>
+    <data name="LastMonth" xml:space="preserve"><value>先月</value></data>
+
+
+    <data name="CustomerNotFound" xml:space="preserve"><value>Sorry, we did not find customer.</value></data>
+
+    <data name="CancelButtonText" xml:space="preserve"><value>キャンセル</value></data>
+    <data name="SaveButtonText" xml:space="preserve"><value>保存</value></data>
+    <data name="YesButtonText" xml:space="preserve"><value>はい</value></data>
+    <data name="InputBoxPlaceholder" xml:space="preserve"><value>Please insert text here</value></data>
+    <!--Ticket start:#60456 iPad FR: Need to add "Save & print" button in park sale pop-up box in iPad.by Pratik-->
+	<data name="AddNotePlaceholder" xml:space="preserve"><value>メモ</value></data>
+	 <!--Ticket start:#60456 .by Pratik-->
+    
+    <data name="UsernameLabel" xml:space="preserve"><value>ユーザー名</value></data>
+    <data name="UserpinLabel" xml:space="preserve"><value>ユーザー PIN</value></data>
+    <data name="StatusLabel" xml:space="preserve"><value>状態</value></data>
+    <data name="UserNamePlaceholder" xml:space="preserve"><value>Please insert user name</value></data>
+    <data name="UserPINPlaceholder" xml:space="preserve"><value>Please insert user pin</value></data>
+
+
+    <data name="AcceptorIdLabel" xml:space="preserve"><value>Acceptor Id</value></data>
+    <data name="AcceptorIdPlaceholder" xml:space="preserve"><value>Acceptor Id</value></data>
+    <data name="AccountIdLabel" xml:space="preserve"><value>Account Id</value></data>
+    <data name="AccountIdPlaceholder" xml:space="preserve"><value>Account Id</value></data>
+    <data name="AccountTokenLabel" xml:space="preserve"><value>Account Token</value></data>
+    <data name="AccountTokenPlaceholder" xml:space="preserve"><value>Account Token</value></data>
+    <data name="TerminalIdLabel" xml:space="preserve"><value>ターミナル ID</value></data>
+    <data name="TerminalIdPlaceholder" xml:space="preserve"><value>ターミナル ID</value></data>
+    <data name="ArePartialApprovalsAllowedLabel" xml:space="preserve"><value>Do you want to allow Partial approvals?</value></data>
+    <data name="AreDuplicateTransactionsAllowedLabel" xml:space="preserve"><value>Do you want to allow Duplicate transactions?</value></data>
+    <data name="IsCashbackAllowedLabel" xml:space="preserve"><value>Do you want to allow Cashback?</value></data>
+    <data name="CashbackAmountLabel" xml:space="preserve"><value>Cashback Amount</value></data>
+    <data name="CashbackAmountPlaceHolder" xml:space="preserve"><value>Cashback Amount</value></data>
+    <data name="IsDebitAllowedLabel" xml:space="preserve"><value>Do you want to allow Debit?</value></data>
+    <data name="IsEmvAllowedLabel" xml:space="preserve"><value>Do you want to accept Emv Cards?</value></data>
+
+     <data name="POSIdLabel" xml:space="preserve"><value>POS Id</value></data>
+    <data name="POSIdPlaceholder" xml:space="preserve"><value>POS Id</value></data>
+    <data name="EftposAddressLabel" xml:space="preserve"><value>EFTPOS Address</value></data>
+    <data name="EftposAddressPlaceholder" xml:space="preserve"><value>EFTPOS Address</value></data>
+    <data name="IsAllowPrintOnEFTPOSLabel" xml:space="preserve"><value>Do you want to print merchant and customer receipt on EFTPOS?</value></data>
+    <data name="EncKeyLabel" xml:space="preserve"><value>Enc Key</value></data>
+    <data name="EncKeyPlaceholder" xml:space="preserve"><value>Enc Key</value></data>
+    <data name="HmacKeyLabel" xml:space="preserve"><value>Hmac Key</value></data>
+    <data name="HmacKeyPlaceholder" xml:space="preserve"><value>Hmac Key</value></data>
+    
+
+<!--Create PO Slider-->
+    <data name="POSummaryText" xml:space="preserve"><value>There are {0} items in this backorder with {1} primary supplier/s. So, Hike can create {2} purchase orders for you as below:</value></data>
+    <data name="CreateDraftPOButtonText" xml:space="preserve"><value>ドラフト仕入伝票を作成</value></data>
+    <data name="OrderItemTitleText" xml:space="preserve"><value>ご注文アイテム</value></data>
+    <data name="SuppliersTitleText" xml:space="preserve"><value>仕入先</value></data>
+    <data name="CreatePOText" xml:space="preserve"><value>仕入注文を作成</value></data>
+    <data name="POCreatedText" xml:space="preserve"><value>PO Created</value></data>
+
+
+<!--Customer Detail Slider-->
+    <data name="DOB" xml:space="preserve"><value>誕生日</value></data>
+    <data name="LoyaltyPoints" xml:space="preserve"><value>ロイヤリティポイント</value></data>
+    <data name="CreditBalance" xml:space="preserve"><value>信用残高</value></data>
+    <data name="AvgPurchase" xml:space="preserve"><value>平均購入金額</value></data>
+    <data name="TotalPurchase" xml:space="preserve"><value>合計購入金額</value></data>
+    <data name="VisitThisMonth" xml:space="preserve"><value>今月訪問あり</value></data>
+    <data name="AvgMonthlyVisits" xml:space="preserve"><value>月平均訪問</value></data>
+
+    <data name="StockOfflineText" xml:space="preserve"><value>現在オフラインです、ほかの場所の現在在庫を見るにはインターネット接続してください。</value></data>
+
+    <data name="PrintValidation" xml:space="preserve"><value>You can't print while processing sale</value></data>
+
+
+    <data name="MintResetPin" xml:space="preserve"><value>Mint reset pin</value></data>
+    <data name="MintResetPinSuccessMessage" xml:space="preserve"><value>PIN is reset! Please check your email</value></data>
+    <data name="ForgotPin_ButtonText" xml:space="preserve"><value>Forgot pin</value></data>
+
+    <data name="StoreCredit_ButtonText" xml:space="preserve"><value>Store&#10;Credit</value></data>
+    <data name="IssueCustomerStoreCredit_Text" xml:space="preserve"><value>Issue customer store credit</value></data>
+    <data name="StoreCreditValue_Text" xml:space="preserve"><value>Store credit value</value></data>
+    <data name="IssueStoreCredit_Text" xml:space="preserve"><value>Issue Store Credit</value></data>
+
+    <data name="AverageSaleValueText" xml:space="preserve"><value>Average sale value</value></data>
+    <data name="NumberOfTransactionsText" xml:space="preserve"><value>Number of transactions</value></data>
+    <data name="NewCustomersText" xml:space="preserve"><value>New customers</value></data>
+
+     <!--Ticket Start #61832 iPad:Create text file for invoice log by: Pratik-->
+    <data name="ExportLogLabelText" xml:space="preserve"><value>Export Device Logs</value></data>
+    <data name="ExportLogButtonText" xml:space="preserve"><value>Export</value></data>
+    <data name="ExportLogDescriptionText" xml:space="preserve"><value>Send device log to hike support team</value></data>
+
+    <data name="ShareLogLabelText" xml:space="preserve"><value>Share Invoice Log</value></data>
+    <data name="ShareLogButtonText" xml:space="preserve"><value>Share</value></data>
+    <data name="ShareLogDescriptionText" xml:space="preserve"><value>Share invoice log files to other app</value></data>
+    <!--Ticket End #61832 Pratik -->
+
+     <!--New Add Cash Register Page-->
+    <data name="Payment_Summary" xml:space="preserve"><value>Payment Summary</value></data>
+    <data name="Sales_Summary" xml:space="preserve"><value>Sales Summary</value></data>
+    <data name="Tax_Summary" xml:space="preserve"><value>Tax Summary</value></data>
+    <data name="Cash_In_Out" xml:space="preserve"><value>Cash In/Out</value></data>
+    <data name="In_Out_Cash" xml:space="preserve"><value>In/Out Cash</value></data>
+    <data name="Payment_Tally" xml:space="preserve"><value>PAYMENT TALLY</value></data>
+    <data name="Net_Receipts" xml:space="preserve"><value>Net receipts</value></data>
+    <data name="On_Account_Sales" xml:space="preserve"><value>On account sales</value></data>
+    <data name="Item_Discounts" xml:space="preserve"><value>Item discounts</value></data>
+    <data name="Order_Discounts" xml:space="preserve"><value>Order discounts</value></data>
+    <data name="Surcharge" xml:space="preserve"><value>Surcharge</value></data>
+    <data name="Tax_Rate" xml:space="preserve"><value>消費税率</value></data>
+    <data name="ApplyText" xml:space="preserve"><value>適用する</value></data>
+    <data name="Tax_Codes" xml:space="preserve"><value>消費税コード</value></data>
+    <!--End New Add Cash Register Page-->
+   <data name="ParkThisSaleText" xml:space="preserve"><value>Park this sale</value></data>
+   <data name="DiscardText" xml:space="preserve"><value>取消</value></data>
+   <data name="AddGiftCardText" xml:space="preserve"><value>ギフトカード</value></data>
+   <data name="OpenCashDrawerText" xml:space="preserve"><value>ドロワーを開ける</value></data>
+</root>

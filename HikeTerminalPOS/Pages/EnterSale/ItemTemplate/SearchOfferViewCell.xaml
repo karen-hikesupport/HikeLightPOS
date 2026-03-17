@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ViewCell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.SearchOfferViewCell" xmlns:Helpers="clr-namespace:HikePOS.Helpers" xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto" xmlns:resources="clr-namespace:HikePOS.Resources">
+	<Grid RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,5,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Color="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start" HeightRequest="0.5" Margin="12,0,17,4" />
+        <Border StrokeShape="RoundRectangle 20" Grid.Row="1" Grid.Column="0" Grid.RowSpan="2" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" Padding="0" Margin="12,5,0,5" Stroke="{x:Static resources:AppColors.LightBordersColor}">
+            <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                <Label Text="{Binding Offer.Name, Converter={Helpers:StringToAvtarNameConverter}}" Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Image 
+                    x:Name="ProductImage"
+                    Aspect="Fill" 
+                    VerticalOptions="FillAndExpand" 
+                    HorizontalOptions="FillAndExpand"
+                    >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding Offer.Id, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium}" 
+                            CacheValidity="30" 
+                            CachingEnabled="true"/>
+                    </Image.Source>
+                </Image>
+            </Grid>
+        </Border>
+        <Label Text="{Binding Offer.Name}" Grid.Row="1" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="16" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,5,5,0" />
+        <Label Text="{Binding Offer.Sku}" Grid.Row="2" Grid.Column="1" FontSize="10" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,5,5" />
+        <!--<Label Text="{Binding Product.ProductOutlet.SellingPrice, StringFormat='{}{0:c}'}" Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="14" VerticalOptions="Center" HorizontalOptions="End" Margin="0,5,17,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" />-->
+    </Grid>
+</ViewCell>

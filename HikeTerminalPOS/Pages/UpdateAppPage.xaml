@@ -1,0 +1,69 @@
+﻿<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:BaseViewModel"
+        xmlns:local="clr-namespace:HikePOS"
+        x:Class="HikePOS.UpdateAppPage"
+        BackgroundColor="#44000000">
+
+
+    <Grid>
+
+        <!-- POPUP BORDER -->
+        <Border 
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 20"
+            Padding="30"
+            Shadow="5"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+            <Grid>
+
+                <!-- POPUP CONTENT -->
+                <VerticalStackLayout Spacing="30" Padding="30">
+                    <Label
+                        Text="This version is out of date. Please update the app."
+                        FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                        FontSize="18"
+                        HorizontalTextAlignment="Center"/>
+                    <Button
+                        Text="UPDATE"
+                        Clicked="ImageButton_Clicked"
+                        Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"
+                        HeightRequest="50"
+                        WidthRequest="150"
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <!-- HALF-OUT RED CLOSE BUTTON -->
+                <Border
+                    BackgroundColor="White"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    StrokeShape="RoundRectangle 20"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    TranslationX="20"   
+                    TranslationY="-20" 
+                    Shadow="3">
+
+                    <Label
+                        Text="X"
+                        TextColor="Red"
+                        FontAttributes="Bold"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CloseCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </Grid>
+</local:BaseContentPage>

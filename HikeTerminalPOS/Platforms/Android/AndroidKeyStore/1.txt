@@ -1,0 +1,3 @@
+Keystore Password :- 123456
+Alias :- AndroidMAUI
+Alias Password :- 123456

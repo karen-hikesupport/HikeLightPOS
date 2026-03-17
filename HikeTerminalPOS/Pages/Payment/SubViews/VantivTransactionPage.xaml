@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.VantivTransactionPage" 
+        xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:VantivTransactionViewModel"
+        x:DataType="vm:VantivTransactionViewModel"
+        BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button x:Name="PayButton" Text="{Localize:Translate ChargeButtonText}" Clicked="PayHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                        <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate ChargeButtonText}" Clicked="PayHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Localize:Translate VantivPurchaseTransactionHeader}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid RowSpacing="5" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Text="{Localize:Translate AmountText}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                    <Label Grid.Row="2" Text="{Binding Invoice.TenderAmount, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.PaymentChangeAmountLabelStyle}" HorizontalTextAlignment="Center"/>
+                    <Label Grid.Row="4" x:Name="DeviceStatusTitleLabel" Text="Follow the prompts on the card terminal/PIN Pad" Style="{x:Static resources:Styles.ExpandViewTitleLabelStyle}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"  TextColor="{x:Static resources:AppColors.PlaceholderColor}" />
+                    <Label Grid.Row="5" x:Name="DeviceStatusLabel" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"  TextColor="{x:Static resources:AppColors.PlaceholderColor}" />
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

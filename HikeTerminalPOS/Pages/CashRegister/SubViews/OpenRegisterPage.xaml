@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.OpenRegisterPage" 
+		xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:OpenRegisterViewModel"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        x:DataType="vm:OpenRegisterViewModel" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                  <Button Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}"  />
+                  <Button Text="{Localize:Translate OpenRegisterText}" Command="{Binding SubmitCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                   <Button Text="Close" Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                   <Button Text="{Localize:Translate OpenRegisterText}" Command="{Binding SubmitCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Localize:Translate OpenRegisterText}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,10,20,40',Default='40,10,40,40'}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="130" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!-- Start #94427 Disable cash option on a single register By Pratik-->
+                    <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate FloatingAmountText}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" IsEnabled="{Binding IsActiveCashPayment}">
+                         <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsActiveCashPayment}" Value="False">
+                                <Setter Property="TextColor" Value="{StaticResource Gray300}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+
+                     <!--Ticket start:#30955 iOS - Denomination Entering When Opening Registers.by rupesh-->
+                    <Border Grid.Row="1" Grid.Column="0" IsEnabled="{Binding IsActiveCashPayment}"  Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                         <Border.Triggers>
+                            <DataTrigger TargetType="Border" Binding="{Binding IsActiveCashPayment}" Value="False">
+                                <Setter Property="BackgroundColor" Value="#fafafa" />
+                                 <Setter Property="StrokeDashArray" Value="3,5" />
+                            </DataTrigger>
+                        </Border.Triggers>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                        <Label IsEnabled="{Binding IsActiveCashPayment}" Grid.Column="0" VerticalTextAlignment="Center" Padding="0" Text="{Localize:Translate CalculatorIconUnicode}" Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Start">
+                             <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding OpenCashCalculatorCommand}"/>
+                             </Label.GestureRecognizers>
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsActiveCashPayment}" Value="False">
+                                    <Setter Property="TextColor" Value="{StaticResource Gray300}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                        <userControls:CustomEntry IsEnabled="{Binding IsActiveCashPayment}" Margin="-10,0,0,0" Grid.Column="1"
+                             Text="{Binding OpeningAmount}" x:Name="txtFloatingAmount" Style="{x:Static resources:Styles.FormEntryStyle}"
+                              Keyboard="Numeric"/>
+                        </Grid>
+                    </Border>
+                  <!-- end #94427 By Pratik-->
+                   <!--Ticket end:#30955 .by rupesh-->
+                    <Label Grid.Row="2" Grid.Column="0" Text="{Localize:Translate Notes}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                    <Border Grid.Row="3" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="130" >
+                        <userControls:CustomEditor x:Name="txtNote" Text="{Binding Note}" Style="{x:Static resources:Styles.FormEditorStyle}" HeightRequest="130" />
+                    </Border>
+                </Grid>
+            </StackLayout>
+        </Grid>
+	</ContentPage.Content>
+</local:PopupBasePage>

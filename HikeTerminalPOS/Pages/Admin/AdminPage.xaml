@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:MainBaseContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="HikePOS.AdminPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}"
+    Title="{Localize:Translate Admin_TitleText}">
+    <local:MainBaseContentPage.Content>
+        <Grid ColumnSpacing="10" RowSpacing="0" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{OnPlatform iOS='44', Android='48'}"/>
+                <RowDefinition Height="2" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="70" />
+            </Grid.ColumnDefinitions>
+            <!--<BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Color="White" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />-->
+            
+            <Label Text="{Localize:Translate Admin_TitleText}" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center" />
+            <ImageButton Source="ic_hamburger" Grid.Column="0" Grid.Row="0" Margin="20,0,0,0" MinimumHeightRequest="32" MinimumWidthRequest="32" WidthRequest="32" HeightRequest="32" HorizontalOptions="Start"  Clicked="SliderMenuHandle_Clicked" BackgroundColor="Transparent"/>
+            <ActivityIndicator x:Name="WebViewActivityIndicatior" Color="Black" IsRunning="false" IsVisible="false" Grid.Column="2" Grid.Row="0" Margin="0,20,0,2" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent"/>
+            <ImageButton Source="reload" Grid.Column="3" Grid.Row="0" Margin="0,0,0,0" WidthRequest="28" HeightRequest="28" Clicked="ReloadHandle_Clicked" BackgroundColor="Transparent" Padding="3,3,0,3"/>
+            <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="{x:Static resources:AppColors.HeaderSepratorColor}" />
+            <local:HybridWebView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="WvAdminDashboard" Uri="{Binding webUrl, Mode=TwoWay}" />
+        </Grid>
+
+    </local:MainBaseContentPage.Content>
+</local:MainBaseContentPage>

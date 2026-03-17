@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="HikePOS.CloverPaymentTransactionPage" 
+        xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+         xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:CloverPaymentTransactionViewModel"
+        x:DataType="vm:CloverPaymentTransactionViewModel"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+
+                        <Button x:Name="ChargeButton" Text="{Localize:Translate ChargeButtonText}" IsVisible="{Binding ChargeVisible}" Command="{Binding ChargeCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="3" >
+                                    <Setter Property="Text" Value="Refund" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Text="{Binding CancelText}" IsVisible="{Binding CancelVisible}" Command="{Binding CancelCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}"/>
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate ChargeButtonText}" IsVisible="{Binding ChargeVisible}" Command="{Binding ChargeCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding Invoice.Status}" Value="3" >
+                                    <Setter Property="Text" Value="Refund" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                      <Button Text="{Binding CancelText}" IsVisible="{Binding CancelVisible}" Command="{Binding CancelCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand">
+                <Label Text="Clover payment" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid RowSpacing="5" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="1" Text="{Localize:Translate AmountText}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
+                    <Label Grid.Row="2" Text="{Binding Invoice.TenderAmount, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.PaymentChangeAmountLabelStyle}" HorizontalTextAlignment="Center"/>
+                    <Label Padding="20,0"  Text="{Binding Status}"  Grid.Row="4" Style="{x:Static resources:Styles.ExpandViewTitleLabelStyle}"   HorizontalOptions="FillAndExpand"  HorizontalTextAlignment="Center" LineBreakMode="WordWrap" TextColor="{x:Static resources:AppColors.PlaceholderColor}" />
+                    <Label Padding="20,0"
+                            Text="{Binding PairingCodeText}"
+                            Grid.Row="5"
+                            Style="{x:Static resources:Styles.ExpandViewTitleLabelStyle}"
+                            HorizontalOptions="FillAndExpand"
+                            HorizontalTextAlignment="Center"
+                            LineBreakMode="WordWrap"
+                            TextColor="{x:Static resources:AppColors.PlaceholderColor}" FontSize="20"/>
+
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>
+

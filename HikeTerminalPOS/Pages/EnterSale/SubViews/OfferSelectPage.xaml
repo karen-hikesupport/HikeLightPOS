@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" x:Class="HikePOS.OfferSelectPage" xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:OfferSelectViewModel" 
+        xmlns:model="clr-namespace:HikePOS.Models"
+		x:DataType="vm:OfferSelectViewModel" 
+        BackgroundColor="{StaticResource PopupBG}">
+   <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+              <OnIdiom x:TypeArguments="View">
+               <OnIdiom.Tablet>
+                  <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    <Button Text="Save" Clicked="SaveHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                  </StackLayout>
+               </OnIdiom.Tablet>
+               <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                      <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    <Button Text="Save" Clicked="SaveHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+              </OnIdiom>
+            <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="100,1,*" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                 <Label Grid.Row="0" Text="{local:Translate MultipleOfferSelectText}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                 <BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+                 <CollectionView x:Name="OffersCV" Grid.Row="2" ItemsSource="{Binding Offers}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                    SelectionMode="Single" SelectionChanged="OfferSelect_SelectionChanged" BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:OfferDto">
+                            <Grid>
+                                <Border StrokeShape="RoundRectangle 5"  IsVisible="{Binding IsSelected,Converter={Helpers:InverseBoolConverter}}" Margin="5" Padding="10"
+                                        Stroke="Black" VerticalOptions="FillAndExpand" BackgroundColor="White">
+                                    <Grid RowSpacing="5" ColumnSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="40" />
+                                        </Grid.RowDefinitions>
+                                    <Label Text="{Binding Description}" Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                    <Label Grid.Row="1" Text="{Binding TotalDiscount ,StringFormat='Discounts:{0:c2}'}" Style="{x:Static resources:Styles.ExpandViewTitleLabelStyle}"  HorizontalOptions="FillAndExpand"/>
+                                    </Grid>
+                                </Border>
+                                <Border StrokeShape="RoundRectangle 5" IsVisible="{Binding IsSelected}" Margin="5" Padding="10" Stroke= "Black" VerticalOptions="FillAndExpand" BackgroundColor = "{x:Static resources:AppColors.HikeColor}">
+                                    <Grid RowSpacing="5" ColumnSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="40" />
+                                        </Grid.RowDefinitions>
+                                    <Label Text="{Binding Description}" Style="{x:Static resources:Styles.InvoiceItemProductNameLabelStyle}" TextColor="White" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                    <Label Grid.Row="1" Text="{Binding TotalDiscount ,StringFormat='Discounts:{0:c2}'}" Style="{x:Static resources:Styles.ExpandViewTitleLabelStyle}" TextColor="White" HorizontalOptions="FillAndExpand"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

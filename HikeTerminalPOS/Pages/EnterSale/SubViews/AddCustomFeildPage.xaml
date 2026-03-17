@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+x:Class="HikePOS.AddCustomFeildPage" xmlns:local="clr-namespace:HikePOS" 
+xmlns:resources="clr-namespace:HikePOS.Resources" 
+xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+xmlns:vm="clr-namespace:HikePOS.ViewModels"
+x:TypeArguments="vm:AddCustomFeildViewModel"
+x:DataType="vm:AddCustomFeildViewModel"  
+xmlns:model="clr-namespace:HikePOS.Models.Customer"
+BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+           <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+              <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                  <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    <Button Text="Add New" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                    <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                    <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    <Button Text="Add New" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                    <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                    </StackLayout>
+                 </OnIdiom.Phone>
+                </OnIdiom>
+            <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="100,0.5,*" RowSpacing="10" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand">
+                <Label Grid.Row="0"  Text="Add Custom Field" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="40" />
+                <BoxView Grid.Row="1"  BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" VerticalOptions="Start" Margin="{OnIdiom Phone='20,0',Default='40,0'}" />
+                <CollectionView Grid.Row="2" x:Name="CustomFeildList" SelectionMode="None" ItemsSource="{Binding CustomFeildList}" Margin="0,0,0,5" VerticalOptions="FillAndExpand" BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:CustomField">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130" />
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="{OnIdiom Phone='20',Default='50'}" />
+                                    <ColumnDefinition Width="1" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="0.5" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="Custom Field" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="{OnIdiom Phone='20,0,5,0',Default='40,0,5,0'}" />
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Index}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="5,0"/>
+                                <Border Grid.Row="0" Grid.Column="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" Margin="5">
+                                        <userControls:CustomEntry Text="{Binding FieldName}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>  
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BackgroundColor="White" HeightRequest="0.5" VerticalOptions="Start" Margin="{OnIdiom Phone='20,0',Default='40,0'}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

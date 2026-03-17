@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:MainPopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:HikePOS"
+		xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+		xmlns:behaviors="clr-namespace:HikePOS.Behaviors" 
+	    xmlns:vm="clr-namespace:HikePOS.ViewModels" 
+		x:DataType="vm:CreatePOViewModel"
+		x:Class="HikePOS.CreateNewOrAddToExistingPO" BackgroundColor="{StaticResource PopupBG}">
+	<ContentPage.Content>
+		<Grid ColumnSpacing="0" RowSpacing="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*" />
+			    <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+			<OnIdiom x:TypeArguments="View">
+             <OnIdiom.Tablet>
+				<StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+					<Button Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" HorizontalOptions="End" />
+				</StackLayout>
+             </OnIdiom.Tablet>
+             <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                    <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+             </OnIdiom.Phone>
+            </OnIdiom>  
+		
+			<StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White">
+				<Label Text="Create new PO or add to an existing one" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+				<Grid Margin="{OnIdiom Phone='20,0',Default='40,0'}" RowSpacing="0" ColumnSpacing="0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="0.5" />
+						<RowDefinition Height="30" />
+						<RowDefinition Height="50" />
+                        <RowDefinition Height="60" />
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="0.4*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Label Grid.Row="0" Grid.Column="0" Text="Create new PO for this backorder" TextColor="{x:Static resources:AppColors.HikeColor}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" FontSize="16" HorizontalTextAlignment="Start" Margin="0,0,0,10"/>
+
+					<BoxView Grid.Row="1" Grid.Column="0"  BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                     <Button Grid.Row="3" Grid.Column="0" Text="CREATE NEW PO" BackgroundColor="Black" TextColor="White" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding CreateNewPOCommand}" Margin="10,0,10,10" />
+                     <Label Grid.Row="2" Grid.Column="1" Text="- Or -" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Center" TextColor="Gray" FontSize="20"/>
+
+					<Label Grid.Row="0" Grid.Column="2" Text="Add backorder items to an existing PO" TextColor="{x:Static resources:AppColors.HikeColor}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Start" Margin="0,0,0,10"/>
+					<BoxView Grid.Row="1" Grid.Column="2"  BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                        <Label Grid.Row="2" Grid.Column="2" Text="Purchase order number" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" >
+                                 <Label.Triggers>
+                                  <DataTrigger TargetType="Label" Binding="{Binding IsNotPendingOrder}" Value="True">
+                                                <Setter Property="Text" Value="No existing PO with this suppliers" />
+                                            </DataTrigger>
+                                  </Label.Triggers>
+                            </Label>
+                       <Border Grid.Row="3" Grid.Column="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Margin="0,10,0,0">
+                           <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                             <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                             <userControls:CustomPicker x:Name="PendingOrderPicker" BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"  ItemsSource="{Binding PendingOrderList}" DisplayProperty="RefNumber" SelectedItem="{Binding SelectedPendingOrder}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" IsEnabled="{Binding IsNotPendingOrder, Converter={Helpers:InverseBoolConverter}}"/>       
+                           </Grid>
+                       </Border>
+                      <Button Grid.Row="4" Grid.Column="2" Text="ADD TO EXISTING PO" BackgroundColor="Black" TextColor="White" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding AddToExistingPOCommand}" Margin="{OnIdiom Phone='2,20,2,0',Default='10,20,10,0'}" Padding="{OnIdiom Phone='0,2',Default='5,2'}"/>
+				</Grid>
+			</StackLayout>
+		</Grid>
+	</ContentPage.Content>
+</local:MainPopupBasePage>

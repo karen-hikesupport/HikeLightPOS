@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.ParkSaleFilterOptionMenuView"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        Padding="1" BackgroundColor="{x:Static resources:AppColors.BordersColor}">
+    <ContentView.Content>
+        <StackLayout WidthRequest="220" Spacing="1" BackgroundColor="Transparent">
+            <Button Clicked="AllHandle_Clicked" Text="{Localize:Translate AllText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='All'}"/>
+              
+            <Button Clicked="LayByHandle_Clicked" Text="{Localize:Translate LayByText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='LayBy'}"/>
+
+            <Button Clicked="OnGoingHandle_Clicked" Text="{Localize:Translate OnGoingText}" IsVisible="{Binding IsOnGoing}"  Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='OnGoing'}"/>
+               
+            <Button Clicked="ParkedHandle_Clicked" Text="{Localize:Translate ParkedText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Parked'}"/>
+               
+            <Button Clicked="VoidedHandle_Clicked" Text="{Localize:Translate VoidedText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Voided'}"/>
+                
+            <Button Clicked="BackOrderHandle_Clicked" Text="{Localize:Translate BackOrderText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='BackOrder'}"/>
+                
+            <Button Clicked="OnAccountHandle_Clicked" Text="{Localize:Translate OnAccountText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='OnAccount'}"/>
+               
+            <Button Clicked="RefundedHandle_Clicked" Text="{Localize:Translate RefundedText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Refunded'}"/>
+               
+            <Button Clicked="ExchangedHandle_Clicked" Text="{Localize:Translate ExchangedText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Exchange'}"/>
+
+            <Button Clicked="CompletedHandle_Clicked" Text="{Localize:Translate CompletedText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Completed'}"/>
+
+            <!--Ticket start:#22406 Quote sale.by rupesh-->
+            <Button Clicked="IssueAndOpenQuotesHandle_Clicked" IsVisible="{Binding IsQuoteEnabled}"  Text="{Localize:Translate OpenQuotes}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='OpenQuotes'}"/>
+                
+            <Button Clicked="ClosedQuotesHandle_Clicked" IsVisible="{Binding IsQuoteEnabled}" Text="{Localize:Translate ClosedQuotes}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='ClosedQuotes'}"/>
+               
+            <Button Clicked="VoidedQuotesHandle_Clicked" IsVisible="{Binding IsQuoteEnabled}" Text="{Localize:Translate VoidedQuotes}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='VoidedQuotes'}"/>
+             <!--Ticket end:#22406 .by rupesh-->
+
+            <Button Clicked="UnsyncHandle_Clicked" Text="{Localize:Translate UnsyncText}" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}" Background="{Binding SelectedMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='Unsync'}"/>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

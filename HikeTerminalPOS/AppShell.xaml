@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="HikePOS.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    xmlns:local="clr-namespace:HikePOS"
+    FlyoutBackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}"
+    FlyoutHeaderBehavior="Default"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" FlyoutBehavior="Flyout">
+     <Shell.Resources>
+        <Style x:Key="BaseStyle"
+               TargetType="Element">
+            <Setter Property="Shell.BackgroundColor"
+                    Value="{x:Static resources:AppColors.NavigationBarBackgroundColor}" />
+            <Setter Property="Shell.ForegroundColor"
+                    Value="White" />
+            <Setter Property="Shell.TitleColor"
+                    Value="White" />
+            <Setter Property="Shell.DisabledColor"
+                    Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor"
+                    Value="{x:Static resources:AppColors.SlideItemSelected}" />
+        </Style>
+        <Style Class="FlyoutItemLabelStyle" TargetType="Label"> 
+            <Setter Property="FontFamily" Value="{x:Static resources:Fonts.HikeLightFont}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="TextColor" Value="{x:Static resources:AppColors.SliderTextColor}" />
+        </Style>
+        <Style x:Key="selectcolorstyle" TargetType="Grid">
+            <Setter Property="RowSpacing" Value="6" />
+            <Setter Property="ColumnSpacing" Value="6" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="{x:Static resources:AppColors.SlideItemSelected}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+        <DataTemplate x:Key="IconTemplate" x:DataType="FlyoutItem">
+                <Grid ColumnDefinitions="*" RowDefinitions="Auto,Auto"
+                      Padding="3,0,2,0"
+                      WidthRequest="{Binding FlyoutWidth, Source={x:Reference Shell}}" 
+                      HeightRequest="75">
+                    <Image Grid.Column="0" Grid.Row="0"
+                           Source="{Binding Icon}"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           Margin="0,12,0,0">
+                    </Image>
+                    <Label Grid.Column="0" Grid.Row="1"
+                           Margin="0,-3,0,0"
+                           Text="{Binding Title}"
+                           TextColor="White"
+                           FontSize="12"
+                           HorizontalOptions="Center"/>
+                </Grid>
+        </DataTemplate>
+    </Shell.Resources>
+
+    <Shell.FlyoutHeader>
+       <StackLayout x:Name="HeaderStk" Spacing="0" Grid.Row="0" Padding="0,20,0,20" HeightRequest="285">
+            <Grid BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" MinimumHeightRequest="60" HeightRequest="60" HorizontalOptions="Center" WidthRequest="60" Margin="0" Padding="0">
+                    <Border StrokeShape="RoundRectangle 30,30,30,30" HeightRequest="60" MinimumHeightRequest="60" MinimumWidthRequest="60" 
+                        HorizontalOptions="Center" WidthRequest="60" Stroke="{x:Static resources:AppColors.LightBordersColor}"  Margin="0" Padding="0">
+                    <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}" Margin="0" Padding="0">
+                        <Label x:Name="AvtratName" Text="{Binding CurrentUser.Name, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="30" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                        <Image Grid.Row="0" Grid.Column="0" x:Name="ProfilePicture"
+                            Aspect="Fill" >
+                            <Image.Source>
+                                <UriImageSource Uri="{Binding CurrentUser.ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                    CacheValidity="30" 
+                                    CachingEnabled="true"/>
+                            </Image.Source>
+                        </Image>
+                    </Grid>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="UpdateProfilePictureHandle_Tapped" />
+                    </Border.GestureRecognizers>
+                </Border>
+                <Label x:Name="StatusIcon" Text="" TextColor="{x:Static resources:AppColors.OnlineColor}" Style="{x:Static resources:Styles.TableHeaderIconLabelStyle}" HorizontalTextAlignment="End" VerticalTextAlignment="Start" />
+            </Grid>
+            <Label x:Name="UserName" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" FontSize="18" Margin="5,8,5,8" />
+            <Label x:Name="RegisterName" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}" />
+            <Label x:Name="OutletName" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}" Margin="5,0,5,5" />
+            <StackLayout Spacing="10" Margin="26,22,26,16" Orientation="Horizontal">
+                <Button Text="{Localize:Translate Logout_ButtonText}"  Clicked="LogoutHandle_Clicked" Style="{x:Static resources:Styles.SliderButtonStyle}" MinimumHeightRequest="30" HeightRequest="36" />
+                <!-- <Button x:Name="ChangeUserbtn" Text="{Localize:Translate ChangeUser_ButtonText}" Clicked="ChangeUserHandle_Clicked" Style="{x:Static resources:Styles.SliderButtonStyle}" MinimumHeightRequest="30" HeightRequest="36" /> -->
+                <!-- <Button Grid.Column="0"
+                        Padding="0"
+                        MinimumHeightRequest="30"
+                        x:Name="ChangePasswordbtn"
+                        Text="{Localize:Translate ChangePassword_ButtonText}"
+                        Clicked="ChangePasswordHandle_Clicked"
+                        Style="{x:Static resources:Styles.SliderButtonStyle}"
+                        VerticalOptions="Start"
+                        HeightRequest="36"/> -->
+
+            </StackLayout>
+            <!-- <Grid Margin="26,0,26,0" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Padding="0"  MinimumHeightRequest="30" x:Name="ChangePasswordbtn" Text="{Localize:Translate ChangePassword_ButtonText}" Clicked="ChangePasswordHandle_Clicked" Style="{x:Static resources:Styles.SliderButtonStyle}" VerticalOptions="Start"  HeightRequest="36" />
+                <Button Grid.Column="1" Padding="0" MinimumHeightRequest="30"
+                        x:Name="ClockInOutbtn" Text="{Localize:Translate ClockInOut_ButtonText}"  Clicked="ClockInOutHandle_Clicked" Style="{x:Static resources:Styles.SliderButtonStyle}" HeightRequest="36" VerticalOptions="Start">
+                    </Button>
+            </Grid> -->
+        </StackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>    
+        <DataTemplate>
+            <Grid ColumnDefinitions="40,*" Padding="26,0" ColumnSpacing="10" HeightRequest="55" Style="{StaticResource selectcolorstyle}">
+                <Image Source="{Binding Icon}"
+                       HeightRequest="30"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"/>
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                       FontSize="20"
+                       TextColor="{x:Static resources:AppColors.SliderTextColor}"
+                       VerticalTextAlignment="Center" /> 
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.MenuItemTemplate>    
+        <DataTemplate>
+            <Grid ColumnDefinitions="40,*" Padding="26,0" ColumnSpacing="10" HeightRequest="55" Style="{StaticResource selectcolorstyle}">
+                <Image Source="{Binding Icon}"
+                       HeightRequest="30"
+                       HorizontalOptions="Start"
+                       VerticalOptions="Center"/>
+                <Label Grid.Column="1"
+                       Text="{Binding Text}"
+                       FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                       FontSize="20"
+                       TextColor="{x:Static resources:AppColors.SliderTextColor}"
+                       VerticalTextAlignment="Center" /> 
+            </Grid>
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+    
+    <ShellContent x:Name="EnterSaleMenuBtn" Route="{OnIdiom Phone='EnterSalePagePhone',Default='EnterSalePage'}"
+            Title="{Localize:Translate EnterSale_TitleText}"
+            Icon="entersaleicon.png"
+            >
+            <ShellContent.ContentTemplate>
+                <OnIdiom x:TypeArguments="DataTemplate" Phone="{DataTemplate local:EnterSalePagePhone}" Default="{DataTemplate local:EnterSalePage}" />
+            </ShellContent.ContentTemplate>
+    </ShellContent>
+      
+    <ShellContent x:Name="SaleHistoryMenuBtn" Route="{OnIdiom Phone='ParkSalePagePhone',Default='ParkSalePage'}"
+            Title="{Localize:Translate SaleHistory_TitleText}"
+            Icon="parkedicon.png">
+            <ShellContent.ContentTemplate>
+                <OnIdiom x:TypeArguments="DataTemplate" Phone="{DataTemplate local:ParkSalePagePhone}" Default="{DataTemplate local:ParkSalePage}" />
+            </ShellContent.ContentTemplate>
+    </ShellContent>
+
+    <ShellContent x:Name="CashRegisterMenuBtn" Route="{OnIdiom Phone='CashRegisterPagePhone',Default='CashRegisterPage'}"
+            Title="{Localize:Translate CashRegister_TitileText}"
+            Icon="cashregistericon.png">
+            <ShellContent.ContentTemplate>
+                <OnIdiom x:TypeArguments="DataTemplate" Phone="{DataTemplate local:CashRegisterPagePhone}" Default="{DataTemplate local:CashRegisterPage}" />
+            </ShellContent.ContentTemplate>
+    </ShellContent>
+
+    <!-- <ShellContent Route="{OnIdiom Phone='SettingsPagePhone',Default='SettingsPage'}"
+            Title="{Localize:Translate Settings_TitleText}"
+            Icon="settingsicon.png">
+            <ShellContent.ContentTemplate>
+                <OnIdiom x:TypeArguments="DataTemplate" Phone="{DataTemplate local:SettingsPagePhone}" Default="{DataTemplate local:SettingsPage}" />
+            </ShellContent.ContentTemplate>
+    </ShellContent>
+
+    <ShellContent x:Name="AdminMenuBtn" Route="AdminPage"
+            Title="{Localize:Translate Admin_TitleText}"
+            Icon="adminicon.png"
+            ContentTemplate="{DataTemplate local:AdminPage}" />
+
+   <MenuItem Text="{Localize:Translate Intercom_TitleText}"
+              IconImageSource="question.png"
+              Clicked="ZohoSalesIQHandle_Tapped" />
+
+    <Shell.FlyoutFooter>
+        <Grid Grid.Row="2" RowSpacing="0" Margin="26,26,26,15" HeightRequest="60">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="20" />
+            </Grid.RowDefinitions>
+            <Image Grid.Column="0" Grid.Row="0" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" Source="{x:Static resources:AppImages.CloudConnectivityIcon}" />
+            <Label x:Name="InternetIndicator" Grid.Column="0" Grid.Row="1" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}"/>
+            <Image Grid.Column="1" Grid.Row="0" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" Source="{x:Static resources:AppImages.PrinterIcon}" />
+            <Label x:Name="PrinterIndicator" Grid.Column="1" Grid.Row="1" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}"/>
+            <Image Grid.Column="2" Grid.Row="0" HeightRequest="40" WidthRequest="40" VerticalOptions="Center" Source="{x:Static resources:AppImages.BarcodeIcon}" />
+            <Label x:Name="BarcodeIndicator" Grid.Column="2" Grid.Row="1" Style="{x:Static resources:Styles.SliderIndicatorLabelStyle}"/>
+        </Grid>
+    </Shell.FlyoutFooter>
+ -->
+</Shell>
+

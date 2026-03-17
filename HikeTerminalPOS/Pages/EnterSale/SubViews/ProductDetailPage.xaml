@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                     x:Class="HikePOS.ProductDetailPage"
+                     xmlns:local="clr-namespace:HikePOS"
+                     xmlns:resources="clr-namespace:HikePOS.Resources"
+                     xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+                     xmlns:userControls="clr-namespace:HikePOS.UserControls"
+                     xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+                     xmlns:model="clr-namespace:HikePOS.Models"
+		             x:DataType="vm:ProductDetailViewModel" 
+                     xmlns:vm="clr-namespace:HikePOS.ViewModels"
+  xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+  x:TypeArguments="vm:ProductDetailViewModel" Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+              <OnIdiom x:TypeArguments="View">
+               <OnIdiom.Tablet>
+               <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                  <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                  <Button Text="Save" IsVisible="false" Clicked="SaveButton_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}">
+                    <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsProductInfoStatus}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                  </Button>
+             </StackLayout>
+               </OnIdiom.Tablet>
+               <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                      <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                      <Button Text="Save" IsVisible="false" Clicked="SaveButton_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
+                      <Button.Triggers>
+                        <DataTrigger TargetType="Button" Binding="{Binding IsProductInfoStatus}" Value="0">
+                            <Setter Property="IsVisible" Value="True" />
+                        </DataTrigger>
+                     </Button.Triggers>
+                     </Button>
+                    </StackLayout>
+                 </OnIdiom.Phone>
+              </OnIdiom>
+            <Grid x:Name="rootview" RowDefinitions="Auto,Auto,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+               
+                <Grid Grid.Row="2"  HorizontalOptions="FillAndExpand" >
+                    <!--Ticket start:#26839 iPad - Edit line item issue in cart.by rupesh-->
+                    <userControls:FixedScrollView IsVisible="false" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <!--Ticket end:#26839 .by rupesh-->
+                        <Grid RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,10,20,40',Default='40,10,40,40'}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{OnPlatform Default='90', Android='100'}" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="120" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" ColumnSpacing="10" RowSpacing="0" HorizontalOptions="Center" Margin="{OnPlatform Default='0,20', Android='0,10'}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="50" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="{OnPlatform Default='50', Android='80'}" />
+                                </Grid.RowDefinitions>
+                                <Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseHandleCommand}"  Text="-" Style="{x:Static resources:Styles.IncreaseDescreaseButtonStyle}" TextColor="Red" VerticalOptions="End"/>
+                                <StackLayout Grid.Row="0" Grid.Column="1" Spacing="5" HorizontalOptions="FillAndExpand">
+                                    <Label Text="Quantity" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HeightRequest="30" VerticalTextAlignment="End" HorizontalTextAlignment="Center" HorizontalOptions="Center" />
+                                    <!--Ticket start:#32571 iOS - A few optimisation on qty editing in sales cart.by rupesh-->
+                                    <userControls:CustomEntry Focused="QuantityHandle_Focused" Keyboard="Numeric" OnlyAllowDecimalValue="true"
+                                                              x:Name="VariantProductQuantity" IsEnabled="{Binding VariantProductIsEnabled}"
+                                                              Text="{Binding InvoiceItem.StrQuantity}" Style="{x:Static resources:Styles.QuantityEntryStyle}"
+                                                              HorizontalOptions="FillAndExpand" HeightRequest="{OnPlatform Default='36', Android='48'}">
+                                         <userControls:CustomEntry.Behaviors>
+                                            <toolkit:EventToCommandBehavior
+                                                        EventName="Unfocused"
+                                                        Command="{Binding QuantityUnfocusedCommand}" />
+                                        </userControls:CustomEntry.Behaviors>
+                                    </userControls:CustomEntry>
+                                    <!--Ticket end:#32571 .by rupesh-->
+                                </StackLayout>
+                                <Button Grid.Row="0" Grid.Column="2" Command="{Binding IncreaseHandleCommand}"  Text="+" Style="{x:Static resources:Styles.IncreaseDescreaseButtonStyle}" TextColor="Green" VerticalOptions="End"/>
+                            </Grid>
+                            <Label Grid.Row="1" Grid.Column="0" Text="Price" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="2" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry x:Name="txtPrice" Keyboard="Numeric" OnlyAllowDecimalValue="true"
+                                                          Text="{Binding InvoiceItem.StrRetailPrice}" IsEnabled="{Binding PageIsEnabled}"
+                                                          Opacity="{Binding PageIsEnabled,Converter={Helpers:BoolToOpacityConverter}}"
+                                                          Focused="RetailPriceHandle_Focused" Style="{x:Static resources:Styles.FormEntryStyle}">
+                                    <userControls:CustomEntry.Behaviors>
+                                        <toolkit:EventToCommandBehavior
+                                                    EventName="Unfocused"
+                                                    Command="{Binding PriceUnfocusedCommand}" />
+                                    </userControls:CustomEntry.Behaviors>
+                                </userControls:CustomEntry>
+                            </Border>
+
+                            <!--Start Ticket #66674 iOS: Discount option not available in custom sale edit & custom sale cost price always take 0 (without price) by Pratik-->
+                            <Label Grid.Row="1" Grid.Column="1" Text="Markup Value(%)" Style="{x:Static resources:Styles.FormTitleLabelStyle}" IsVisible="{Binding InvoiceItem.MarkupValue, Converter={Helpers:DecimalToBoolConverter}, ConverterParameter='null'}"/>
+
+                            <Border x:Name="MarkupValueFrame"  Grid.Row="2" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" IsVisible="{Binding InvoiceItem.MarkupValue, Converter={Helpers:DecimalToBoolConverter}, ConverterParameter='null'}">
+                                <userControls:CustomEntry IsEnabled="false" Text="{Binding InvoiceItem.MarkupValue}" Style="{x:Static resources:Styles.FormEntryStyle}" />
+                            </Border>
+
+
+                            <Label Grid.Row="1" Grid.Column="1" Text="Discount(%)" Style="{x:Static resources:Styles.FormTitleLabelStyle}" IsVisible="false">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding InvoiceItem.MarkupValue, Converter={Helpers:DecimalToBoolConverter}, ConverterParameter='null'}" Value="false">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                            <Border Grid.Row="2" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" IsVisible="false">
+                                <userControls:CustomEntry x:Name="txtDiscount" IsEnabled="{Binding PageIsEnabled}"
+                                                        Opacity="{Binding PageIsEnabled,Converter={Helpers:BoolToOpacityConverter}}"
+                                                          Text="{Binding InvoiceItem.StrDiscountValue}" Keyboard="Numeric" OnlyAllowDecimalValue="true"
+                                                          Focused="DiscountValueHandle_Focused" Style="{x:Static resources:Styles.FormEntryStyle}">
+                                     <userControls:CustomEntry.Behaviors>
+                                        <toolkit:EventToCommandBehavior
+                                                    EventName="Unfocused"
+                                                    Command="{Binding DiscountUnfocusedCommand}" />
+                                    </userControls:CustomEntry.Behaviors>
+                                </userControls:CustomEntry>
+                               <Border.Triggers>
+                                    <DataTrigger TargetType="Border" Binding="{Binding InvoiceItem.MarkupValue, Converter={Helpers:DecimalToBoolConverter}, ConverterParameter='null'}" Value="false">
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </DataTrigger>
+                                </Border.Triggers>
+                            </Border>
+                             <!--End Ticket #66674 by Pratik-->
+                           
+
+                            <Label Grid.Row="3" Grid.Column="0" Text="Tax" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker BackgroundColor="Transparent" x:Name="PickerTaxList" ItemsSource="{Binding TaxList}" DisplayProperty="Name" SelectedItem="{Binding SelectedTax}" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" IsEnabled="{Binding CanChangeTax}"  />
+                                </Grid>
+                            </Border>
+
+                            <Label Grid.Row="5" Grid.Column="1" Text="{Binding TaxAmountValueText}" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="End" VerticalOptions="Start"/>
+
+                            <!--Start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik-->
+                            <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Text="Served by (Salesperson)" IsVisible="{Binding IsServedBy}"
+                                   Style="{x:Static resources:Styles.FormTitleLabelStyle}" HeightRequest="30" VerticalTextAlignment="End"/>
+                            <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" IsVisible="{Binding IsServedBy}" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}"/>
+                                    <userControls:CustomPicker BackgroundColor="Transparent"
+                                                               ItemsSource="{Binding Users}" DisplayProperty="FullName" SelectedItem="{Binding SelectedUser}"
+                                                               HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <!--End #84287 By Pratik-->
+
+                            <Label Grid.Row="8" Grid.Column="0" Text="Notes" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+                            <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" VerticalOptions="Start" HeightRequest="120">
+                                <Editor x:Name="txtnote" Text="{Binding InvoiceItem.Description}" Style="{x:Static resources:Styles.FormEditorStyle}" HeightRequest="120" />
+                            </Border>                          
+                        </Grid>
+                        <ScrollView.Triggers>
+                            <DataTrigger TargetType="ScrollView" Binding="{Binding IsProductInfoStatus}" Value="0">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </ScrollView.Triggers>
+                    </userControls:FixedScrollView>
+                    <Grid IsVisible="false" RowSpacing="20" ColumnSpacing="30" VerticalOptions="FillAndExpand" Margin="{OnIdiom Phone='20,20,20,40',Default='40,20,40,40'}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <!-- Ticket start:#91265 iOS:FR Show Product Type on POS screen. by rupesh -->
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="10">
+                        <Grid  MinimumHeightRequest="150"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{Binding ProductDetail.ColorType, Converter={Helpers:ColorTypeToColorConverter}}">
+                            <Label x:Name="ProductImage" MinimumHeightRequest="70" Text="{Binding ProductDetail.Name, Converter={Helpers:StringToAvtarNameConverter}}"
+                                   Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" />
+                            <Image 
+                                Aspect="AspectFit" 
+                                VerticalOptions="FillAndExpand" 
+                                HorizontalOptions="FillAndExpand"
+                                >
+                                <Image.Source>
+                                    <UriImageSource Uri="{Binding ProductDetail.ItemImageUrl, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Details}" 
+                                        CacheValidity="30" 
+                                        CachingEnabled="true"/>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                        <Label Text="{Binding ProductTypes, StringFormat='Product types: {0:c}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" LineBreakMode="WordWrap" HorizontalOptions="FillAndExpand"/>
+                        </VerticalStackLayout>
+                        <!-- Ticket end:#91265. by rupesh -->
+                        <StackLayout Grid.Row="0" Grid.Column="1" Spacing="10" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding ProductDetail.Sku, StringFormat='SKU: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}"  LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                            <Label Text="{Binding ProductDetail.BarCode, StringFormat='Barcode: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                            <Label Text="{Binding ProductDetail.ProductOutlet.Stock1, StringFormat='Stock: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                            <!--Ticket start:#67721 Cost price is still showing in POS screen even after unchecking the box.by rupesh-->
+                            <Label x:Name="CostPrice" IsVisible="{Binding IsCostPrice}" Text="{Binding CostPrice, StringFormat='Cost Price: {0:c}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" LineBreakMode="WordWrap"  Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand"/>
+                             <!--Ticket end:#67721 .by rupesh-->
+
+                            <!--Ticket start:#90941 iOS:FR: Custom filed on product detailpage by pratik-->
+                            <Label IsVisible="{Binding ProductDetail.CustomField,Converter={Helpers:NullValueBoolConverter}}" Text="{Binding ProductDetail.CustomField, StringFormat='Custom filed: {0}'}" LineBreakMode="WordWrap"  HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" HorizontalOptions="FillAndExpand"/>
+                             <!--Ticket end:#90941 .by pratik-->
+
+                            <!--Ticket start:#20064 Unit of measurement feature for iPad app.by rupesh-->
+                              <!--Ticket start:#24687 Product Info Not Showing Completely for Some UoM Products.by rupesh-->
+                            <StackLayout IsVisible="{Binding ProductDetail.IsUnitOfMeasure}" VerticalOptions="FillAndExpand">
+                                <StackLayout.Triggers>
+                                     <DataTrigger TargetType="StackLayout" Binding="{Binding InvoiceItem.InvoiceItemType}" Value="6">
+                                     <Setter Property="StackLayout.IsVisible" Value="True"/>
+                                 </DataTrigger>
+                                </StackLayout.Triggers>
+                              <!--Ticket end:#24687 Product Info Not Showing Completely for Some UoM Products.by rupesh-->
+                             <BoxView  Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+                             <Label Text="{Binding MeasureProductDetail.Name, StringFormat='Name: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}"  LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                             <Label Text="{Binding MeasureProductDetail.Sku, StringFormat='SKU: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}"  LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                            <Label Text="{Binding MeasureProductDetail.BarCode, StringFormat='Barcode: {0}'}" HorizontalTextAlignment="Start" VerticalOptions="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}"  LineBreakMode="WordWrap"  HorizontalOptions="FillAndExpand"/>
+                             <!--Ticket end:#20064.by rupesh-->
+                             </StackLayout>
+                        </StackLayout>
+                        <CollectionView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="lstViewProductImageList" ItemsSource="{Binding ProductDetail.ProductImages}" VerticalOptions="Start" HeightRequest="60"
+                            HorizontalOptions="FillAndExpand" SelectionMode="Single" SelectionChangedCommand="{Binding ProductImagesSelectCommand}" SelectedItem="{Binding SelectedProductImage}"  IsVisible="{Binding ProductDetail.ProductImages, Converter={Helpers:NotNullListValueBoolConverter}}" >
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="0"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ProductImageDto">
+                                        <ContentView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="50"
+                                                     WidthRequest="50" BackgroundColor="{Binding Source={RelativeSource AncestorType={x:Type vm:ProductDetailViewModel}}, Path=ProductDetail.ColorType, x:DataType=vm:ProductDetailViewModel, Converter={Helpers:ColorTypeToColorConverter}}">
+                                            <Image 
+                                                Aspect="Fill" 
+                                                VerticalOptions="FillAndExpand" 
+                                                HorizontalOptions="FillAndExpand"
+                                                >
+                                                <Image.Source>
+                                                    <UriImageSource Uri="{Binding ItemImage, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium}" 
+                                                        CacheValidity="30"
+                                                        CachingEnabled="true"/>
+                                                </Image.Source>
+                                            </Image>
+                                        </ContentView>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
+                       <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" >
+                       <!--Ticket start:#63314 Product description not visible on product info section.by rupesh-->
+                       <StackLayout VerticalOptions="FillAndExpand" >
+                       <userControls:CustomHtmlLabel IsVisible="False" Text="{Binding ProductDescription}" HorizontalTextAlignment="Start" HorizontalOptions="Start" FontSize="16" TextType="Html">
+                             <Label.Triggers>
+                               <DataTrigger TargetType="Label" Binding="{Binding ProductDescription, Converter={Helpers:NullValueBoolConverter}}" Value="True"> 
+                                   <Setter Property="IsVisible" Value="True" />
+                               </DataTrigger>
+                             </Label.Triggers>
+                       </userControls:CustomHtmlLabel>
+                       </StackLayout>
+                        <!--Ticket end:#63314 .by rupesh-->
+                        </ScrollView>
+                        <Grid.Triggers>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsProductInfoStatus}" Value="1">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Grid.Triggers>
+                    </Grid>
+                    <Grid IsVisible="false" RowDefinitions="Auto,45,*" RowSpacing="10" VerticalOptions="FillAndExpand" BackgroundColor="Transparent" Padding="0,20,0,0">
+                        <Label x:Name="lblOfflineText" Grid.Row="0" IsVisible="{Binding IsOfflineStock}" Text="{Localize:Translate StockOfflineText} " Margin="{OnIdiom Phone='20,0,20,0',Default='40,0,40,0'}" BackgroundColor="Transparent" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" />
+                        <Grid HeightRequest="40" Grid.Row="1" Margin="{OnIdiom Phone='20,0,20,0',Default='40,0,40,0'}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5" />
+                                <RowDefinition Height="39" />
+                                <RowDefinition Height="0.5" />
+                            </Grid.RowDefinitions>
+                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                            <Label Grid.Row="1" Grid.Column="0" Text="Outlet Name" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="0,0,5,0" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="Stock" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="0,0,5,0" />
+                            <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                        </Grid>
+                        <CollectionView x:Name="lstStockDetail" Grid.Row="2" Margin="{OnIdiom Phone='20,4,20,40',Default='40,4,40,40'}"  BackgroundColor="Transparent"
+                             ItemsSource="{Binding ProductDetail.ProductOutlets}" SelectionMode="None" VerticalOptions="FillAndExpand">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:ProductOutletDto_POS">
+                                    <Grid RowSpacing="0" ColumnSpacing="0" HeightRequest="51">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="0.5" />
+                                        </Grid.RowDefinitions>
+                                        <Label Grid.Row="0" Grid.Column="0" Text="{Binding OutletName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" Margin="0,0,0,0" />
+                                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Stock1}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Margin="0,0,5,0" />
+                                        <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Grid.Triggers>
+                            <DataTrigger TargetType="Grid" Binding="{Binding IsProductInfoStatus}" Value="2">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </Grid.Triggers>
+                    </Grid>
+                </Grid>
+
+                <Label Grid.Row="0" Text="{Binding InvoiceItem.Title}" Margin="0" Padding="40" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}"/>
+                <Grid Grid.Row="1" RowSpacing="0" ColumnSpacing="30" Margin="{OnIdiom Phone='20,0,20,10',Default='40,0,40,10'}" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform Default='30', Android='40'}" />
+                        <RowDefinition Height="1" />
+                    </Grid.RowDefinitions>
+                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+                    <Button Grid.Row="0" Grid.Column="0" Text="In this cart" Command="{Binding ProductInfoCommand}" Style="{x:Static resources:Styles.TabButtonStyle}" />
+                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="0" Color="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView" Binding="{Binding IsProductInfoStatus}" Value="0">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                    <Button Grid.Row="0" Grid.Column="1" Text="Product info" Command="{Binding MoreDetailsCommand}" Style="{x:Static resources:Styles.TabButtonStyle}" >
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding InvoiceItem.InvoiceItemType}" Value="2">
+                                <Setter Property="IsVisible" Value="false" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="1" BackgroundColor="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView" Binding="{Binding IsProductInfoStatus}" Value="1">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                    <Button Grid.Row="0"  Grid.Column="2" Text="Stock info" Command="{Binding StockDetailsCommand}" Style="{x:Static resources:Styles.TabButtonStyle}" >
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding InvoiceItem.InvoiceItemType}" Value="2">
+                                <Setter Property="IsVisible" Value="false" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding ProductDetail.TrackInventory}" Value="False">
+                                <Setter Property="IsVisible" Value="false" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="2" BackgroundColor="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView" Binding="{Binding IsProductInfoStatus}" Value="2">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                </Grid>
+
+            </Grid>
+             <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+             </Grid.GestureRecognizers>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.ParkSaleFilterDateRangeMenuView"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:DataType="vm:ParkSaleViewModel"        
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        Padding="1" BackgroundColor="{x:Static resources:AppColors.BordersColor}">
+    <ContentView.Content>
+        <StackLayout WidthRequest="220" Spacing="1" BackgroundColor="Transparent">
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate Today}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate Today}}" />
+
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate Yesterday}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate Yesterday}}" />
+
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate Last7Days}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate Last7Days}}" />
+         
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate Last30Days}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate Last30Days}}" />
+          
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate ThisMonth}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate ThisMonth}}" />
+          
+            <Button Clicked="DateRangeHandle_Clicked" Text="{Localize:Translate LastMonth}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter={Localize:Translate LastMonth}}" />
+            <Grid RowSpacing="10" ColumnSpacing="10" Padding="10" Background="{Binding SelectedDateRange, Converter={Helpers:SortToColorConverter}, ConverterParameter='CustomRange'}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+               
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Label Text="Custom Range" Grid.Row="0" Style="{x:Static resources:Styles.SalesFilterStatusOptionRangeDateLabelStyle}" HorizontalTextAlignment="Center"/>
+
+                <Border x:Name="frmFromDate" Grid.Row="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="40" Padding="0" >
+                    <userControls:CustomDatePicker x:Name="FromDate" TextColor="{StaticResource Black}" Date="{Binding CustomStartingDate}" Format="MMM dd, yyyy" MaximumDate="{x:Static system:DateTime.Now}"  Style="{x:Static resources:Styles.SalesFilterStatusOptionRangeDatePickerStyle}" DisplayBorder="false"/>
+                </Border>
+                
+                <Border x:Name="frmToDate" Grid.Row="2"  Style="{x:Static resources:Styles.FormRoundBorderStyle}" HorizontalOptions="FillAndExpand" HeightRequest="40" Padding="0" >
+                    <userControls:CustomDatePicker x:Name="ToDate" TextColor="{StaticResource Black}" Date="{Binding CustomEndingDate}" Format="MMM dd, yyyy" MaximumDate="{x:Static system:DateTime.Now}" Style="{x:Static resources:Styles.SalesFilterStatusOptionRangeDatePickerStyle}" DisplayBorder="false"/>
+                </Border>
+            </Grid>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+ <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.ParkSaleFilterOutletMenuView" 
+        xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        Padding="1" BackgroundColor="{x:Static resources:AppColors.BordersColor}" 
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:ParkSaleViewModel">
+
+     <!--ItemSelected="FilterOutlrtHandle_ItemChangedAsync"-->
+    <ContentView.Content>
+        <Grid WidthRequest="220" BackgroundColor="Transparent">
+              <CollectionView x:Name="OutletListView" VerticalOptions="Start" 
+                BackgroundColor="{x:Static resources:AppColors.BordersColor}" SelectionMode="None">
+                  <CollectionView.ItemTemplate>
+                      <DataTemplate x:DataType="model:OutletDto_POS">
+                            <Grid Margin="0,0,0,1" >
+                              <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                              </Grid.RowDefinitions>
+                              <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                              </Grid.ColumnDefinitions>
+                                <Button Text="{Binding Title}"  Clicked="OutletSelected" Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}">
+                                  <Button.Triggers>
+                                      <DataTrigger  TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                          <Setter Property="Background" Value="{x:Static resources:AppColors.BorderButtonColor}" />
+                                      </DataTrigger>
+                                      <DataTrigger  TargetType="Button" Binding="{Binding IsSelected}" Value="False">
+                                          <Setter Property="Background" Value="White" />
+                                      </DataTrigger>
+                                  </Button.Triggers>
+                              </Button>
+                            </Grid>
+                      </DataTemplate>
+                    </CollectionView.ItemTemplate>
+               </CollectionView>
+          </Grid>
+    </ContentView.Content>
+</ContentView>

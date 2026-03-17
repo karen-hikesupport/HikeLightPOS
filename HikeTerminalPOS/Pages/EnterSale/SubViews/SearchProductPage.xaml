@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.SearchProductPage" 
+    xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+    xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers" xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:TypeArguments="vm:SearchProductViewModel" x:DataType="vm:SearchProductViewModel" ShowDirection="TopToBottom" Title="{Binding Title}" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EnterSaleSearchItemTemplateSelector x:Key="ItemTemplateSelector" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid RowDefinitions="Auto,*" RowSpacing="0" x:Name="mainGrd">
+            <Grid x:Name="SearchProductView" RowSpacing="0" ColumnSpacing="0" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="5" Margin="0"  BackgroundColor="White">
+                <!--<Grid.Padding>
+            <OnPlatform x:TypeArguments="Thickness" iOS="0,20,0,0" />
+        </Grid.Padding>-->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{OnPlatform iOS='20', Default='0'}" />
+                    <RowDefinition Height="44" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="70" />
+                </Grid.ColumnDefinitions>
+                <Image Source="ic_search" Grid.Column="0" Grid.Row="1" MinimumHeightRequest="{OnPlatform Default='32', Android='25'}" MinimumWidthRequest="{OnPlatform Default='32', Android='25'}" WidthRequest="{OnPlatform Default='32', Android='25'}" HeightRequest="{OnPlatform Default='32', Android='25'}" HorizontalOptions="Center" />
+                <!--Ticket #9308 Start:Search product text change.By Nikhil.-->
+                <userControls:BorderLessEntry x:Name="SearchEntry" Text="{Binding SearchPrdouctKeyword}"  Grid.Row="1" Grid.Column="1" TextColor="Black" BackgroundColor="White" PlaceholderColor="Gray" Placeholder="Search product by name, barcode or SKU" />
+                <!--Ticket #9308 End:By Nikhil.-->
+                <ImageButton Source="close" Grid.Column="2" Grid.Row="1" MinimumHeightRequest="{OnPlatform Default='30', Android='22'}" MinimumWidthRequest="{OnPlatform Default='30', Android='22'}" WidthRequest="{OnPlatform Default='30', Android='22'}" Padding="10,3,0,3"  HeightRequest="{OnPlatform Default='30', Android='22'}" Command="{Binding CloseCommand}" BackgroundColor="Transparent" HorizontalOptions="End" Margin="0,0,20,0"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                 <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Grid.GestureRecognizers>
+            </Grid>
+            <CollectionView Grid.Row="1" x:Name="SearchProductList" MaximumHeightRequest="300" BackgroundColor="White" 
+                ItemsSource="{Binding SearchProducts}" 
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedSearchProducts}"
+                SelectionChangedCommand="{Binding ProductSelectCommand}"
+                VerticalOptions="Start" >
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="0"/> 
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:EnterSaleItemDto">
+                        <Grid  RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0,5,5,5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="20" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="100" />
+                            </Grid.ColumnDefinitions>
+                            <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Color="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start" HeightRequest="0.5" Margin="12,0,17,4" />
+                            <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"  StrokeShape="RoundRectangle 20,20,20,20" HorizontalOptions="Center" HeightRequest="40" WidthRequest="40" Padding="0" Margin="12,5,0,5" Stroke="{x:Static resources:AppColors.LightBordersColor}">
+                                <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
+                                    <Label Text="{Binding Product.Name, Converter={Helpers:StringToAvtarNameConverter}}" Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                    <Image 
+                                        Aspect="Fill" 
+                                        VerticalOptions="FillAndExpand" 
+                                        HorizontalOptions="FillAndExpand"
+                                        >
+                                        <!--Ticket #11004 Start : Search bar product image not showing issue resolved. By Nikhil-->
+                                        <Image.Source>
+                                            <UriImageSource Uri="{Binding Product.ItemImageUrl, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Product_Medium}" 
+                                                CacheValidity="30"
+                                                CachingEnabled="true"/>
+                                        </Image.Source>
+                                        <!--Ticket #11004 End : By Nikhil-->
+                                    </Image>
+                                </Grid>
+                            </Border>
+                            <Label Text="{Binding Product.Name}" Grid.Row="1" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="16" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,5,5,0" MaxLines="2" LineBreakMode="TailTruncation"/>
+                            <!--Ticket start:#36346 Android: SKU is not showing under product list in POS search Bar.by rupesh-->
+                            <Label Text="{Binding Product.Sku}" Grid.Row="2" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="10" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,5,0" />
+                            <!--Ticket end:#36346 .by rupesh-->
+                            <Label Text="{Binding Product.Specification}" Grid.Row="2" Grid.Column="1" FontSize="10" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="15,0,5,5" />
+                            <!--Ticket start:#20064 Unit of measurement feature for iPad app.by rupesh-->
+                            <!--Start #84444 iOS: FR: remove item price at search bar that includes tax by Pratik-->
+                            <Label
+                                IsVisible="{Binding Product.IsUnitOfMeasure,Converter={Helpers:InverseBoolConverter}}"
+                                Text="{Binding Product.ProductOutlet.SearchPrice, StringFormat='{}{0:c}'}"
+                                Grid.Row="0" Grid.Column="3" Grid.RowSpan="3" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" FontSize="14"
+                                VerticalOptions="Center"
+                                HorizontalOptions="End"
+                                Margin="0,5,17,0" TextColor="{x:Static resources:AppColors.DarkTextColor}" />
+                            
+                            <Label IsVisible="{Binding Product.IsUnitOfMeasure}"
+                                    Text="{Binding Product.UOMSearchPrice, StringFormat='{}{0:c}'}"
+                                    Grid.Row="0" Grid.Column="3" Grid.RowSpan="3"
+                                    FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                                    FontSize="14" VerticalOptions="Center"
+                                    HorizontalOptions="End" Margin="0,5,17,0"
+                                    TextColor="{x:Static resources:AppColors.DarkTextColor}" >
+                                <!--#36847 iPad: UOM product price showing 0 in search bar list-->
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Product.IsUnitOfMeasure}" Value="True">
+                                        <Setter Property="IsVisible" Value="False"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                                <!--#36847 iPad: UOM product price showing 0 in search bar list-->
+                                </Label>
+                            <!--End #84444 by Pratik-->
+                            <!--Ticket end:#26980 .by rupesh-->
+                            <!--Ticket end:#20064 .by rupesh-->
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

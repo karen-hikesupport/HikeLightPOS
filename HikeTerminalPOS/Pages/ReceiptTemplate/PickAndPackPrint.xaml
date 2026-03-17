@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:resources="clr-namespace:HikePOS.Resources"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+        xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+		x:Class="HikePOS.PickAndPackPrint" 
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:ParkSaleDetailViewModel"
+        VerticalOptions="FillAndExpand" 
+		HorizontalOptions="FillAndExpand" BackgroundColor="White">
+    <StackLayout x:Name="ChildStack" VerticalOptions="Start" BackgroundColor="White" Padding="10,0,10,0" Spacing="5">
+        <ffimageloading:CachedImage x:Name="Logo" Source="{Binding GeneralShopDto.LogoImagePath, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Store}" IsVisible="{Binding GeneralShopDto.LogoImagePath, Converter={Helpers:NullValueBoolConverter}}" HeightRequest="280" WidthRequest="280">
+            <ffimageloading:CachedImage.Triggers>
+                <DataTrigger TargetType="ffimageloading:CachedImage" Binding="{Binding CurrentRegister.ReceiptTemplate.Displaylogo}" Value="False">
+                    <Setter Property="IsVisible" Value="False" />
+                </DataTrigger>
+            </ffimageloading:CachedImage.Triggers>
+        </ffimageloading:CachedImage>
+         <!--Ticket start:#63007 iOS: Footer need to match with web receipt template.by rupesh-->
+        <Label Margin="0,0,0,5" Text="{Binding CurrentRegister.ReceiptTemplate.StoreNameLable}" FontSize="50" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Center"/>
+        <Label Padding="0,0,0,-10" x:Name="lblHeader" FontFamily="{x:Static resources:Fonts.ArialMTFont}" FontSize="20" HorizontalTextAlignment="Center" TextType="Html"/>
+         <!--Ticket start:#63690 iOS: Order Date - Time & Issue Date - Time is same in pick and pack order.by rupesh-->
+        <Label Text="{Binding Invoice.CreationStoreTime, StringFormat='Order date : {0 : dd MMM, yyyy - hh.mmtt}'}" FontSize="20" HorizontalTextAlignment="Center" />
+        <Label  x:Name="txtissuedate" FontSize="20" HorizontalTextAlignment="Center" />
+        <!--Ticket end:#63690 .by rupesh-->
+        <StackLayout x:Name="OutletDetail"  IsVisible="{Binding CurrentRegister.ReceiptTemplate.ShowOutletAddress}" Spacing="1">
+            <Label Text="{Binding Invoice.OutletName}" IsVisible="{Binding Invoice.OutletName, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Center" Margin="0,5,0,0" />
+            <Label Text="{Binding CurrentOutlet.Address.Address1}" IsVisible="{Binding CurrentOutlet.Address.Address1, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+            <!--Ticket start:#43106 iPad: Outlet details should be shown in gift card print receipt.by rupesh-->
+            <Label Text="{Binding CurrentOutlet.Address.FullAddress}" IsVisible="{Binding CurrentOutlet.Address.FullAddress, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+            <!--Ticket end:#43106 .by rupesh-->
+            <Label Text="{Binding CurrentOutlet.Email}" IsVisible="{Binding CurrentOutlet.Email, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding CurrentOutlet.Phone}" IsVisible="{Binding CurrentOutlet.Phone, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+        </StackLayout>
+        <!--Ticket end:#63007 .by rupesh-->
+        <!--Ticket Start:#26664 IOS - New feature :: Customer delivery address.by rupesh-->
+        <StackLayout x:Name="DeliveryAddress" IsVisible="{Binding CurrentRegister.ReceiptTemplate.ShowCustomerDeliverAddress}" Spacing="1">
+            <Label Text="Delivery Address" IsVisible="{Binding Invoice.DeliveryAddressId, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" 
+                FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Invoice.DeliveryAddress.FullAddress}" IsVisible="{Binding Invoice.DeliveryAddressId, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}" HorizontalTextAlignment="Center" />
+        </StackLayout>
+        <!--Ticket end:#26664 IOS - New feature :: Customer delivery address.by rupesh-->
+
+        <!--Ticket start:#32371 iPad :: Feature request :: customer custom field not reflecting in print receipt.by rupesh-->
+        <StackLayout Orientation="Horizontal" VerticalOptions="Start" HorizontalOptions="Center" IsVisible="False">
+            <StackLayout.Triggers>
+                <MultiTrigger TargetType="StackLayout">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding CurrentRegister.ReceiptTemplate.PrintCustomerTaxId}" Value="True" />
+                        <BindingCondition Binding="{Binding CurrentRegister.ReceiptTemplate.CustomerTaxIdLabel, Converter={Helpers:NullValueBoolConverter}}" Value="True" />
+                        <BindingCondition Binding="{Binding Invoice.CustomerDetail.CustomerTaxId, Converter={Helpers:NullValueBoolConverter}}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </StackLayout.Triggers>
+            <Label Text="{Binding CurrentRegister.ReceiptTemplate.CustomerTaxIdLabel, StringFormat='{0}: '}" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}"  HorizontalTextAlignment="End" Margin="0,20,0,0" />
+            <Label Text="{Binding Invoice.CustomerDetail.CustomerTaxId}" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}"  HorizontalTextAlignment="Start" Margin="0,20,0,0" />
+        </StackLayout>
+        <!--Ticket end:#32371 .by rupesh-->
+        <!--Ticket start:#45652 iPad: FR - Show the title for the 'Customer name' field on the receipt.by rupesh-->
+        <Label x:Name="LblCustomerTitle" Text="{Binding CurrentRegister.ReceiptTemplate.CustomerTitleLabel}" FontSize="22" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}"
+             IsVisible="False" HorizontalTextAlignment="Center" Margin="0,20,0,0" >
+            <Label.Triggers>
+                <MultiTrigger TargetType="Label">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding CurrentRegister.ReceiptTemplate.ShowCustomerTitle}" Value="True" />
+                        <BindingCondition Binding="{Binding Invoice.CustomerId, Converter={Helpers:NullOrZeroValueToBoolConverter}}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </Label.Triggers>
+        </Label>
+         <Label Text="{Binding Invoice.CustomerName}" HorizontalTextAlignment="Center" FontSize="20" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Margin="0,10,0,0" >
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding Invoice.CustomerName}" Value="Walk in">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                     <DataTrigger TargetType="Label" Binding="{Binding Source={x:Reference LblCustomerTitle},
+                                       Path=IsVisible}" Value="True">
+                        <Setter Property="Margin" Value="0,0,0,0"/>
+                    </DataTrigger>
+                </Label.Triggers>
+         </Label>
+        <!--Ticket end:#45652 .by rupesh-->
+       
+        <StackLayout x:Name="CustomerDetail"  HorizontalOptions="CenterAndExpand" IsVisible="{Binding CurrentRegister.ReceiptTemplate.ShowCustomerAddress}" Spacing="1">
+            <Label Text="{Binding Invoice.CustomerDetail.Address.Address1}" IsVisible="{Binding Invoice.CustomerDetail.Address.Address1, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Invoice.CustomerDetail.Address.FullAddress}" IsVisible="{Binding Invoice.CustomerDetail.Address.FullAddress, Converter={Helpers:NullValueBoolConverter}}" FontSize="20" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Invoice.CustomerDetail.Email}" FontSize="20" IsVisible="{Binding Invoice.CustomerDetail.Email, Converter={Helpers:NullValueBoolConverter}}" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Invoice.CustomerDetail.Phone}" FontSize="20" IsVisible="{Binding Invoice.CustomerDetail.Phone, Converter={Helpers:NullValueBoolConverter}}" HorizontalTextAlignment="Center" />
+        </StackLayout>
+
+        <Label Text="{Binding CurrentRegister.ReceiptTemplate.InvoiceHeading}" HorizontalTextAlignment="Center" FontSize="20" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Margin="0,20,0,0" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Label Text="{Binding CurrentRegister.ReceiptTemplate.InvoiceNoPrefix}" FontSize="20" HorizontalTextAlignment="Center" />
+            <Label Text="{Binding Invoice.Number}" FontSize="20" HorizontalTextAlignment="Center" />
+        </StackLayout>
+
+        <!--Ticket start:#42478,#62808 iPad: Gift card receipt issue.-->
+        <Grid Margin="0,5,0,0" HeightRequest="30" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="85" />
+            </Grid.ColumnDefinitions>
+            <Label Text="Item" FontSize="22" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" />
+            <Label Text="Ordered" Grid.Column="1" FontSize="22" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" HorizontalOptions="Center" />
+            <Label Text="Packed" Grid.Column="2" FontSize="22" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" HorizontalTextAlignment="End" />
+        </Grid>
+        <!-- Ticket end:#42478,#62808  .by Nutan-->
+        <BoxView HeightRequest="3" HorizontalOptions="FillAndExpand" BackgroundColor="Black" />
+       
+        <StackLayout x:Name="ProductList" VerticalOptions="Start">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="model:InvoiceItemFulfillmentDisplay">
+                    <Grid RowSpacing="0" Padding="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label Text="{Binding ItemName}" Grid.Row="0" Grid.Column="0"  FontFamily="{x:Static resources:Fonts.HikeBoldFont}" FontSize="20" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="StartAndExpand" Margin="5,0,5,0" >
+                              
+                        </Label>
+                        <Label Grid.Row="0" Grid.Column="1" Text="{Binding Ordered}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Margin="5,0,0,0" />
+                        <Label Grid.Row="0" Grid.Column="2" Text="{Binding FulfillmentQuantity}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="EndAndExpand" Margin="5,0,0,0" />
+                    </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+        <BoxView HeightRequest="3" HorizontalOptions="FillAndExpand" BackgroundColor="Black" />
+         <zxing:BarcodeGeneratorView  x:Name="QRCodeImage" Format="QrCode" Value="{Binding Invoice.QRString}" IsVisible="false" ForegroundColor="Black" HorizontalOptions="Center" WidthRequest="300" HeightRequest="300" Margin="2">
+            <zxing:BarcodeGeneratorView.Triggers>
+                <MultiTrigger TargetType="zxing:BarcodeGeneratorView">
+                    <MultiTrigger.Conditions>
+                        <BindingCondition Binding="{Binding ReceiptTemplate.ShowQRCode}" Value="True" />
+                        <BindingCondition Binding="{Binding Invoice.QRString, Converter={Helpers:NullValueBoolConverter}}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True" />
+                </MultiTrigger>
+            </zxing:BarcodeGeneratorView.Triggers>
+        </zxing:BarcodeGeneratorView>
+        <zxing:BarcodeGeneratorView  Format="Code128" Value="{Binding Invoice.Barcode}"  IsVisible="{Binding CurrentRegister.ReceiptTemplate.PrintReceiptBarcode}"  ForegroundColor="Black" HorizontalOptions="FillAndExpand" HeightRequest="100" Margin="50,2"/>
+        <Label Text="{Binding Invoice.Barcode}" FontSize="18" HorizontalTextAlignment="Center" />
+        <Label Text="{Binding Invoice.FinalizeDateStoreDate, StringFormat='{0:hh.mmtt, dd MMM yyyy}'}" FontSize="20" HorizontalTextAlignment="Center" />
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Label Text="{Binding CurrentRegister.ReceiptTemplate.ServedByLable, StringFormat='{0} '}" FontSize="20" HorizontalTextAlignment="Center"/>
+            <Label Text="{Binding Invoice.ServedByName}" FontSize="20" HorizontalTextAlignment="Center"/>
+        </StackLayout>
+        <StackLayout Spacing="5" IsVisible="false" VerticalOptions="EndAndExpand">
+            <BoxView HeightRequest="3" HorizontalOptions="FillAndExpand" BackgroundColor="Black" />
+            <Label Text="Thank you for trialing" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}" HorizontalTextAlignment="Center" />
+            <Label Text="Hike point of sale." FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}" HorizontalTextAlignment="Center" />
+            <Image Source="hike_logo_login1" WidthRequest="200" HeightRequest="80" />
+            <Label Text="hikeup.com" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" HorizontalTextAlignment="Center" />
+            <StackLayout.Triggers>
+                <DataTrigger TargetType="StackLayout" Binding="{Binding Subscription.Edition.PlanType}" Value="1">
+                    <Setter Property="IsVisible" Value="True" />
+                </DataTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>
+        <!--Ticket start:#63007 iOS: Footer need to match with web receipt template.by rupesh-->
+        <Label x:Name="lblFooter" FontSize="20" FontFamily="{x:Static resources:Fonts.ArialMTFont}" HorizontalTextAlignment="Center" Margin="0,5,0,5" TextType="Html"/>
+        <!--Ticket end:#63007.by rupesh-->
+        <BoxView x:Name="boxFooter"  HeightRequest="5" BackgroundColor="Transparent"/>
+    </StackLayout>
+</ScrollView>
+

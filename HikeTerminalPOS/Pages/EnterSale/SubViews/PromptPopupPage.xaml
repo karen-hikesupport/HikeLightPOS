@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.PromptPopupPage" 
+        xmlns:local="clr-namespace:HikePOS" 
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels" x:TypeArguments="vm:BaseViewModel"
+        ShowDirection = "TopToBottom"
+        Title="Title"
+        x:Name="PopupPage" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <ScrollView VerticalOptions="Center" HorizontalOptions="Center">
+            <!-- Start ticket #60456 Pratik -->
+            <Grid RowSpacing="0" ColumnSpacing="10" Padding="10" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{OnIdiom Phone='100',Default='150'}"/>
+                    <ColumnDefinition Width="{OnIdiom Phone='100',Default='150'}"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Source={x:Reference PopupPage}, Path=Title}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="10" />
+                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" IsVisible="False"/>
+                <Label x:Name="DescriptionLabel" IsVisible="false" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="10,10,10,0" />
+                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50" Margin="0,10,0,10" VerticalOptions="Start" >
+                    <userControls:BorderLessEntry x:Name="inputText" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Placeholder="{Localize:Translate InputBoxPlaceholder}" HeightRequest="50" />
+                </Border>
+                <BoxView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" IsVisible="False"/>
+                <Button x:Name="NoButton" Grid.Row="5" Grid.Column="0" HeightRequest="44" BackgroundColor="White" BorderColor="{x:Static resources:AppColors.RedButtonBackgroundColor}" BorderWidth="1" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" CornerRadius="5" TextColor="{x:Static resources:AppColors.RedButtonBackgroundColor}" Clicked="CancelHandle_Clicked" Margin="0,10,0,0" />
+                <Button x:Name="YesButton" Grid.Row="5" Grid.Column="1" HeightRequest="44" BackgroundColor="White" BorderColor="{x:Static resources:AppColors.HikeColor}" BorderWidth="1" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" CornerRadius="5" TextColor="{x:Static resources:AppColors.HikeColor}" Clicked="SaveHandle_Clicked" Margin="0,10,0,0" />
+
+                <Button x:Name="YesPrintButton" IsVisible="False"  Grid.Row="5" Grid.Column="2" HeightRequest="44" BackgroundColor="White" BorderColor="{x:Static resources:AppColors.HikeColor}" BorderWidth="1" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" CornerRadius="5" TextColor="{x:Static resources:AppColors.HikeColor}" Clicked="SaveAndPrintHandle_Clicked" Margin="0,10,0,0" />
+            </Grid>
+            <!-- End ticket #60456 Pratik -->
+        </ScrollView>
+	</ContentPage.Content>
+</local:PopupBasePage>

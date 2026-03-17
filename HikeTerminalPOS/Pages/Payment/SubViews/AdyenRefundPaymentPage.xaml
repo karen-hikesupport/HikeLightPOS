@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:local="clr-namespace:HikePOS"
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        xmlns:models="clr-namespace:HikePOS.Models"
+        x:TypeArguments="vm:AdyenRefundPaymentViewModel"
+        x:DataType="vm:AdyenRefundPaymentViewModel"
+        x:Class="HikePOS.AdyenRefundPaymentPage" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button  Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" Clicked="CloseHandle_Clicked"/>
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                        <Button Text="Close" Clicked="CloseHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid Grid.Column="1" BackgroundColor="White" HorizontalOptions="FillAndExpand"
+              VerticalOptions="FillAndExpand" Padding="0,40,0,0"  ColumnSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="6*" />
+                    <ColumnDefinition Width="4*" />
+                    <ColumnDefinition Width="{OnIdiom Phone='70',Default='90'}" />
+                    <ColumnDefinition Width="{OnIdiom Phone='90',Default='120'}" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate PaymentTypeText}" HorizontalTextAlignment="Start" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="{OnIdiom Phone='10,15,0,10',Default='20,15,0,10'}"/>
+                <Label Grid.Row="0" Grid.Column="2" Text="{Localize:Translate RefundedText}" HorizontalTextAlignment="End" Style="{x:Static resources:Styles.TableHeaderLabelStyle}" Margin="0,15,0,10"/>
+                <BoxView Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" HeightRequest="1" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" />
+                <CollectionView x:Name="EconduitRefundList" Grid.Row="2" SelectionMode="None" Grid.Column="0" Grid.ColumnSpan="4"   
+                    ItemsSource="{Binding InvoiceRefundPayments}" BackgroundColor="White" ItemSizingStrategy="MeasureFirstItem">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:RefundPaymentDto">
+                                <Grid ColumnSpacing="5" RowSpacing="0" HeightRequest="60">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="1" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="4*" />
+                                        <ColumnDefinition Width="{OnIdiom Phone='70',Default='90'}" />
+                                        <ColumnDefinition Width="{OnIdiom Phone='90',Default='120'}"  />
+                                    </Grid.ColumnDefinitions>
+                                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="2" VerticalOptions="Center" Margin="{OnIdiom Phone='10,5',Default='20,5'}">
+                                        <Label Text="{Binding PrintPaymentOptionName}" Style="{x:Static resources:Styles.TableItemLabelStyle}" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                        <Label Text="{Binding Amount, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.TableItemLabelStyle}" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                    </VerticalStackLayout>
+                                    <Border StrokeShape="RoundRectangle 5,5,5,5" HorizontalOptions="Fill" VerticalOptions="Center" 
+                                        Grid.Row="0" Grid.Column="1" Padding="5" HeightRequest="40"
+                                        Stroke="{x:Static resources:AppColors.LightBordersColor}">
+                                        <userControls:CustomEntry Text="{Binding TenderedAmount, StringFormat='{}{0:n}'}" Keyboard="Numeric" OnlyAllowDecimalValue="true"/>
+                                    </Border>
+                                    <Label Grid.Row="0" Grid.Column="2" Text="{Binding ReturnAmount, StringFormat='{}{0:c}'}" VerticalOptions="Center"
+                                        HorizontalTextAlignment="End" Margin="0,15,0,15" LineBreakMode="TailTruncation" MaxLines="1"/>
+                                    <Button Grid.Column="3"  Grid.Row="0" Grid.RowSpan="2"  CornerRadius="10" Margin="10" VerticalOptions="Center" HeightRequest="40" 
+                                        Text="{Localize:Translate RefundText}" BackgroundColor="{x:Static resources:AppColors.HikeColor}" 
+                                        IsVisible="{Binding IsRefundSucceed,Converter={Helpers:InverseBoolConverter}}"
+                                        TextColor="White" FontSize="Default" Clicked="RefundHandel_Clicked"
+                                        Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"/>
+                                    <BoxView Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="4" HeightRequest="1" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" />
+                                </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <local:LoaderView Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"/>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

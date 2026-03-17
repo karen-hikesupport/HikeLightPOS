@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		x:Class="HikePOS.CustomerReceipt" 
+		xmlns:resources="clr-namespace:HikePOS.Resources"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:DataType="vm:PaymentViewModel"
+		BackgroundColor="White" VerticalOptions="Start" >
+		<StackLayout x:Name="ChildStack" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White">
+			<Label Text="{Binding CustomerPrintNo}" FontSize="24" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="Black"
+			 VerticalOptions="Center" HorizontalOptions="CenterAndExpand" Margin="0,5,0,0" HeightRequest="40"/>
+			<BoxView Margin="17,0,17,10" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="2" VerticalOptions="Start" />
+	</StackLayout>
+</ScrollView>

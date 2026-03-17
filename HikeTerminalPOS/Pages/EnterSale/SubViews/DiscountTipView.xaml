@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Border 
+        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		x:Class="HikePOS.DiscountTipView" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		Padding="0" 
+		xmlns:model="clr-namespace:HikePOS.ViewModels"
+		x:DataType="model:InvoiceViewModel"
+		BackgroundColor="{x:Static resources:AppColors.BordersColor}"
+		StrokeShape="RoundRectangle 5,5,5,5">
+	<Grid RowSpacing="0" ColumnSpacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="60" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="50" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+
+		<Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding PopupTitle}" x:Name="lblDiscountValues"
+			  Style="{x:Static resources:Styles.DicountTipTitleLabelStyle}" />
+
+		
+		<Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="0" Margin="20,10,20,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="150" />
+			</Grid.ColumnDefinitions>
+			<Border HeightRequest="40" StrokeShape="RoundRectangle 0,0,0,0" Stroke="White"
+				   BackgroundColor="White" HorizontalOptions="FillAndExpand"
+				   IsVisible="{OnPlatform Default='False', Android='True'}"/>
+			<userControls:BorderLessEntry Grid.Column="0" IsEnabled="false" x:Name="txtDiscountValues" Text="{Binding AmountValue, Mode=TwoWay}" Placeholder=" Discount"
+									  Style="{x:Static resources:Styles.DicountTipEntryStyle}" HeightRequest="40" />
+			<!--<Label x:Name="lblDiscountValues" FontFamily="{x:Static resources:Fonts.Hike baLightFont}" HeightRequest="50" Text="{Binding AmountValue, Mode=TwoWay}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="20" BackgroundColor="White"  />-->
+
+			<StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Start" Spacing="0">
+				<Button x:Name="PercentDiscount" WidthRequest="75" IsVisible="{Binding IsShippingPurpose}"  Text="%" Clicked="PerecentageButtonHandle_Clicked" Style="{x:Static resources:Styles.AmountPercentageButtonStyle}" >
+					<Button.Triggers>
+						<DataTrigger TargetType="Button" Binding="{Binding DiscountType}" Value="Percentage">
+							<Setter Property="Background" Value="{x:Static resources:AppColors.HikeColor}" />
+						</DataTrigger>
+						<DataTrigger TargetType="Button" Binding="{Binding DiscountType}" Value="Amount">
+							<Setter Property="Background" Value="{x:Static resources:AppColors.ItemBackgroundColor}" />
+						</DataTrigger>
+					</Button.Triggers>
+				</Button>
+				<Button x:Name="AmountDiscount" WidthRequest="75" Text="{Binding CurrencySymbol}" Clicked="AmountButtonHandle_Clicked" Style="{x:Static resources:Styles.AmountPercentageButtonStyle}">
+				<Button.Triggers>
+					<DataTrigger TargetType="Button" Binding="{Binding DiscountType}" Value="Amount">
+						<Setter Property="Background" Value="{x:Static resources:AppColors.HikeColor}" />
+					</DataTrigger>
+					<DataTrigger TargetType="Button" Binding="{Binding DiscountType}" Value="Percentage">
+						<Setter Property="Background" Value="{x:Static resources:AppColors.ItemBackgroundColor}" />
+					</DataTrigger>
+				</Button.Triggers>
+			</Button>
+			</StackLayout>
+		</Grid>
+
+		<Button x:Name="OneButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="0" Text="1" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="TwoButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="1" Text="2" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="ThreeButton" Clicked="Button_Clicked" Grid.Row="2" Grid.Column="2" Text="3" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+
+		<Button x:Name="FourButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="0" Text="4" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="FiveButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="1" Text="5" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="SixButton" Clicked="Button_Clicked" Grid.Row="3" Grid.Column="2" Text="6" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+
+		<Button x:Name="SevenButton" Clicked="Button_Clicked" Grid.Row="4" Grid.Column="0" Text="7" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="EightButton" Clicked="Button_Clicked" Grid.Row="4" Grid.Column="1" Text="8" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+		<Button x:Name="NineButton" Clicked="Button_Clicked" Grid.Row="4" Grid.Column="2" Text="9" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+
+		<Button x:Name="DotButton" Clicked="Button_Clicked" Grid.Row="5" Grid.Column="0" Text="." Style="{x:Static resources:Styles.DicountTipButtonStyle}" />
+		<Button x:Name="ZeroButton" Clicked="Button_Clicked" Grid.Row="5" Grid.Column="1" Text="0" Style="{x:Static resources:Styles.DicountTipButtonStyle}" />
+		<Button x:Name="BackspaceButton" Clicked="Button_Clicked" Grid.Row="5" Grid.Column="2" Text="&lt;" Style="{x:Static resources:Styles.DicountTipButtonStyle}"/>
+
+		<StackLayout Grid.Row="6" IsVisible="False"
+			   Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.ProductWhiteColor}" Grid.ColumnSpan="3" Orientation="Vertical" >
+			<BoxView HeightRequest="1" Color="LightGray"  />
+			<Label  Text="{Localize:Translate Tax_Rate}" HeightRequest="30" Margin="14,0,0,0" VerticalTextAlignment="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+			<Border Margin="0,0,0,0"  Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" StrokeShape="RoundRectangle 0,0,0,0">
+			<Grid HeightRequest="50"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+				                <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                <userControls:CustomPicker BackgroundColor="Transparent" x:Name="PickerTaxList" ItemsSource="{Binding TaxList}"
+														   DisplayProperty="Name"
+														   SelectedItem="{Binding SelectedTax}" HorizontalOptions="FillAndExpand"
+														   TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+               
+
+			</Grid>
+			</Border>
+
+			<StackLayout.Triggers>
+				<DataTrigger TargetType="StackLayout" Binding="{Binding IsTaxListDisplay}" Value="False">
+						<Setter Property="IsVisible" Value="True" />
+					</DataTrigger>
+			</StackLayout.Triggers>
+		</StackLayout>
+		<StackLayout Grid.Row="6" IsVisible="False"
+			   Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.ProductWhiteColor}" Grid.ColumnSpan="3" Orientation="Vertical" >
+			<BoxView HeightRequest="1" Color="LightGray"  />
+			<Label  Text="{Localize:Translate Tax_Rate}" HeightRequest="30" Margin="14,0,0,0" VerticalTextAlignment="Center" Style="{x:Static resources:Styles.FormTitleLabelStyle}" />
+			<Border Margin="0,0,0,0"  Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+			<Grid HeightRequest="50"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
+				                <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                <userControls:CustomPicker BackgroundColor="Transparent" ItemsSource="{Binding TaxList}"
+														   DisplayProperty="Name"
+														   SelectedItem="{Binding SelectedShippingTax}" HorizontalOptions="FillAndExpand"
+														   TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+			</Grid>
+			</Border>
+
+			<StackLayout.Triggers>
+				<DataTrigger TargetType="StackLayout" Binding="{Binding IsShippingTaxListDisplay}" Value="False">
+						<Setter Property="IsVisible" Value="True" />
+					</DataTrigger>
+			</StackLayout.Triggers>
+		</StackLayout>
+		<Grid Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" ColumnSpacing="0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="30*" />
+				<ColumnDefinition Width="70*" />
+			</Grid.ColumnDefinitions>
+			<Button x:Name="CancelButton" Command="{Binding CloseDiscountTipCommand}" Grid.Column="0" BackgroundColor="White" Text="{Localize:Translate CancelButtonText}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" CornerRadius="0" BorderWidth="0.5" BorderColor="{x:Static resources:AppColors.LightBordersColor}" />
+			<Button x:Name="ApplyButton" Command="{Binding ApplyDiscountCommand}" Grid.Column="1" BackgroundColor="White" Text="{Localize:Translate ApplyText}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" CornerRadius="0" BorderWidth="0.5" BorderColor="{x:Static resources:AppColors.LightBordersColor}" Margin="0.5,0,0,0" />
+		</Grid>
+
+	</Grid>
+</Border>

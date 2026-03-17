@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.EditDenominationPage" 
+        xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:EditDenominationViewModel"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        x:DataType="vm:EditDenominationViewModel"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+        BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button x:Name="AddDenomination" Text="{Localize:Translate DenominationAddButtonText}" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button  Text="{Localize:Translate DenominationAddButtonText}" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid RowDefinitions="110,0.5,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Grid.Row="0" Text="Edit Denomination" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                     TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"
+                      HorizontalOptions="Center" VerticalOptions="Start" Margin="40" />
+                <BoxView Grid.Row="1" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" VerticalOptions="Start" Margin="{OnIdiom Phone='20,0',Default='40,0'}" />
+                <CollectionView Grid.Row="2" x:Name="CashCountList" SelectionMode="None" ItemsSource="{Binding lstDenomination}" 
+                    Margin="{OnIdiom Phone='20,0',Default='40,0'}"
+                    BackgroundColor="Transparent">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:DenominationDto">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="35" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="62" />
+                                    <RowDefinition Height="0.5" />
+                                </Grid.RowDefinitions>
+                                <StackLayout Grid.Row="0" Grid.Column="0" IsVisible="true" Margin="10" Orientation="Horizontal">
+                                    <Border StrokeShape="RoundRectangle 5,5,5,5" Stroke="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="200"  Padding="0" VerticalOptions="FillAndExpand">
+                                        <userControls:CustomEntry ItemId="{Binding Id}"  HeightRequest="40" Focused="DenominationHandle_Focused" PlaceholderColor="{x:Static resources:AppColors.PlaceholderColor}" Keyboard="Numeric" FontSize="14" Text="{Binding Value}" Unfocused="DenominationHandle_Unfocused" OnlyAllowDecimalValue="true" Margin="0,0,7,0" HorizontalTextAlignment="Start" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="FillAndExpand">
+                                        </userControls:CustomEntry>
+                                    </Border>
+                                    <Button Grid.Column="0" IsVisible="false" Text="{Localize:Translate CheckIconUnicode}" Style="{x:Static resources:Styles.SaveDenominationButtonStyle}"  HeightRequest="30" WidthRequest="30" VerticalOptions="Center" HorizontalOptions="Start"  Clicked="Button_Clicked" CommandParameter="{Binding .}">
+                                        <Button.Triggers>
+                                            <DataTrigger TargetType="Button" Binding="{Binding IsEditable}" Value="True">
+                                                <Setter Property="IsVisible" Value="True" />
+                                            </DataTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </StackLayout>
+                                <Grid Grid.Row="0" Grid.Column="1" HeightRequest="40" WidthRequest="30" VerticalOptions="Center" IsVisible="{Binding IsRemove}" >
+                                    <Label Grid.Column="3" Text="{Localize:Translate CloseIconUnicode}" FontSize="15"
+                                            VerticalOptions="Center" HorizontalOptions="End" WidthRequest="30"
+                                            HorizontalTextAlignment="End" TextColor="Black">
+                                    </Label>
+                                    <Grid.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EditDenominationViewModel}}, Path=RemoveDenominationItemCommand, x:DataType=vm:EditDenominationViewModel}" CommandParameter="{Binding .}"  />
+                                    </Grid.GestureRecognizers> 
+                                </Grid>
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BackgroundColor="White" HeightRequest="0.5" VerticalOptions="Start" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

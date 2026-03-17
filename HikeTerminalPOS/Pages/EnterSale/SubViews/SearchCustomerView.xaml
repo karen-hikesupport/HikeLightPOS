@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Border xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.SearchCustomerView" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+		StrokeShape="RoundRectangle 5"
+		xmlns:vm="clr-namespace:HikePOS"
+        x:DataType="vm:CustomerViewModel"
+		xmlns:model="clr-namespace:HikePOS.Models"
+        BackgroundColor="{x:Static resources:AppColors.BordersColor}"         
+		Padding="0">
+	<Grid RowSpacing="0" BackgroundColor="{x:Static resources:AppColors.HeadingColor}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="60" />
+			<RowDefinition Height="0.5" />
+			<RowDefinition Height="200" />
+		</Grid.RowDefinitions>
+		<ContentView Grid.Row="0" >
+
+		</ContentView>
+		<Grid RowSpacing="0" ColumnSpacing="0" Margin="5,10,10,10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="25" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<ContentView Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="White" TranslationX="5">
+			</ContentView>
+			<userControls:BorderLessEntry x:Name="SearchCustomerEntry"
+										  Grid.Column="1" Placeholder="{Localize:Translate SearchCustomerPlaceholderText}"
+										  PlaceholderColor="{x:Static resources:AppColors.PlaceholderColor}" TextColor="Black"
+										  BackgroundColor="White" FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+										  FontSize="16"  Keyboard="Email" HorizontalOptions="FillAndExpand" HeightRequest="40" Margin="8,0"/>
+			<Button Grid.Column="2" IsVisible="{Binding IsHavingAddCustomerPermission}" BackgroundColor="Transparent" Text="{Localize:Translate CustomerAddButtonText}" TextColor="Black" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" BorderWidth="0" VerticalOptions="Start" Command="{Binding SearchCustomerAddCommand}" WidthRequest="100" />
+            <Image Source="{x:Static resources:AppImages.SearchIcon}" HeightRequest="25" WidthRequest="25" Aspect="AspectFit" VerticalOptions="Center" HorizontalOptions="Center" TranslationX="10" />
+		</Grid>
+		<BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start" HeightRequest="0.5" />
+		<CollectionView Grid.Row="2" x:Name="SearchCustomerList" SelectionMode="Single" HeightRequest="200" ItemsSource="{Binding CustomerList}" BackgroundColor="White" Margin="10,0,10,0">
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="model:CustomerDto_POS">
+						<Grid RowSpacing="0" ColumnSpacing="0" VerticalOptions="Start">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="0.5" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="70" />
+							</Grid.ColumnDefinitions>
+							<StackLayout Grid.Row="0" Grid.Column="0" Spacing="2" VerticalOptions="Center" Margin="0,10,0,10" >
+								<Label Text="{Binding FullName}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" FontSize="16" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" />
+								<Label Text="{Binding ContactDetail}" IsVisible="{Binding ContactDetail, Converter={Helpers:NullValueBoolConverter}}" FontFamily="{x:Static resources:Fonts.HikeLightFont}" FontSize="14" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" />
+                                <Label Text="{Binding CompanyName}" IsVisible="{Binding CompanyName, Converter={Helpers:NullValueBoolConverter}}" FontFamily="{x:Static resources:Fonts.HikeLightFont}" FontSize="14" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" />
+							</StackLayout>
+							<BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start" HeightRequest="0.5" />
+                            <Button x:Name="btnEditCustomer" IsVisible="{Binding IsAbletoEdit}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" TextColor="Black" Text="{Localize:Translate EditIconUnicode}" Style="{x:Static resources:Styles.EntersaleSearchCustomerButtonStyle}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CustomerViewModel}}, Path=SearchCustomerEditCommand, x:DataType=vm:CustomerViewModel}" CommandParameter="{Binding .}"></Button>
+						    <Grid.GestureRecognizers>
+                              <TapGestureRecognizer Tapped="CustomerSelected"/>
+                            </Grid.GestureRecognizers>
+						</Grid>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+	</Grid>
+</Border>

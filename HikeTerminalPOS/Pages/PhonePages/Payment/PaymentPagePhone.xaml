@@ -1,0 +1,482 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.PaymentPagePhone" 
+		xmlns:local="clr-namespace:HikePOS"
+		xmlns:resources="clr-namespace:HikePOS.Resources"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:PaymentViewModel"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:PaymentViewModel"
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+        >
+    <ContentPage.Content>
+        <Grid BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand"   RowSpacing="0" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                <RowDefinition Height="2" />
+                <!-- <RowDefinition Height="55" /> -->
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <ContentView BackgroundColor="White" Grid.Row="0"  />
+            <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+                    </Grid.RowDefinitions>
+                    <Label Text="Payment"
+                           Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center"
+                           HorizontalTextAlignment="Center"/>
+                    <StackLayout Orientation="Horizontal" Spacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="Start" Margin="20,0,0,0">
+                        <Label Text="{Localize:Translate BackIconUnicode}" VerticalOptions="Center"  Margin="0,0,0,2" TextColor="Black" FontSize="35" Style="{x:Static resources:Styles.PageBackLabelStyle}" />
+                        <!-- <Label Text="{Localize:Translate EnterSale_TitleText}" Margin="0,0,0,0" Style="{x:Static resources:Styles.PageTitleLabelStyle}" /> -->
+                        <StackLayout.GestureRecognizers>
+                            <TapGestureRecognizer  Command="{Binding BackPageCommand}" />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+            </Grid>
+            <!-- <BoxView Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  Color="{x:Static resources:AppColors.HeaderSepratorColor}" /> -->
+             <!-- <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center" Padding="20,0">
+                    <Label Text="{Localize:Translate ToPayText}" Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                    <Label Text="{Binding Invoice.TotalPay, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToPayCommand}"/>
+                    </StackLayout.GestureRecognizers>
+            </StackLayout> -->
+              <!--Ticket start:#84289 IOS-Feature:-Ability to re-open Backorders and apply partial payments at any time. by rupesh-->
+              <!-- <StackLayout Grid.Row="2" Grid.Column="0"  Margin="20,8,20,0" IsVisible="{Binding Invoice.BackOrdertotal, Converter={Helpers:NullOrZeroValueToBoolConverter}}" BackgroundColor="White">
+                     <userControls:CustomEntry x:Name="BackorderDepositEntry" IsEnabled="{Binding IsBackorderDepositEntryEnabled}" Keyboard="Numeric" HorizontalTextAlignment="Center" Text="{Binding Invoice.StrBackorderDeposite}"  OnlyAllowDecimalValue="true" Placeholder="Backorder deposit amount"  FontSize="20" >
+                      <userControls:CustomEntry.Behaviors>
+                       <toolkit:EventToCommandBehavior  EventName="TextChanged"  Command="{Binding BackorderDepositHandleCommand}" CommandParameter="{x:Reference BackorderDepositEntry}"/>
+                     </userControls:CustomEntry.Behaviors>
+                     </userControls:CustomEntry>
+              </StackLayout> -->
+              <!--Ticket end:#84289 . by rupesh-->
+            <Grid Grid.Row="2" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" RowSpacing="0" ColumnSpacing="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                     <RowDefinition Height="55" />
+                </Grid.RowDefinitions>
+
+                <!-- <ContentView Content="{Binding InvoiceReceiptView}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/>
+                <ContentView Content="{Binding DocketReceipt}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/>
+                <ContentView Content="{Binding CustomerReceipt}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/>
+                <ContentView Content="{Binding VantivReceiptView}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/>
+                <ContentView Content="{Binding GiftReceipt}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/>
+                <ContentView Content="{Binding DeliveryDocketReceipt}" Scale="0"  Grid.ColumnSpan="3" Grid.Column="0" HorizontalOptions="Start"/> -->
+
+                <userControls:FixedScrollView x:Name="rootview" Grid.Row="0" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.RowSpan="4" IsVisible="{Binding IsAddPaymentActive}">
+                    <Grid ColumnSpacing="10" RowSpacing="30" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                       <Grid.RowDefinitions>
+                            <RowDefinition Height="55"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Row="0"
+                                Grid.Column="0"
+                                Orientation="Horizontal"
+                                HorizontalOptions="Center"
+                                Padding="20,0">
+                            <Label Text="{Localize:Translate ToPayText}"
+                                    Style="{x:Static resources:Styles.InvoicePayTitleLabelStyle}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                            <Label Text="{Binding Invoice.TotalPay, StringFormat='{}{0:c}'}"
+                                    Style="{x:Static resources:Styles.InvoicePayValueLabelStyle}"
+                                    TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToPayCommand}"/>
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <StackLayout Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="20,8,20,0"
+                                IsVisible="{Binding Invoice.BackOrdertotal, Converter={Helpers:NullOrZeroValueToBoolConverter}}"
+                                BackgroundColor="White">
+                            <userControls:CustomEntry x:Name="BackorderDepositEntry"
+                                    IsEnabled="{Binding IsBackorderDepositEntryEnabled}"
+                                    Keyboard="Numeric"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding Invoice.StrBackorderDeposite}"
+                                    OnlyAllowDecimalValue="true"
+                                    Placeholder="Backorder deposit amount"
+                                    FontSize="20">
+                                <userControls:CustomEntry.Behaviors>
+                                    <toolkit:EventToCommandBehavior  EventName="TextChanged"
+                                            Command="{Binding BackorderDepositHandleCommand}"
+                                            CommandParameter="{x:Reference BackorderDepositEntry}"/>
+                                </userControls:CustomEntry.Behaviors>
+                            </userControls:CustomEntry>
+                        </StackLayout>
+                        <StackLayout  Grid.Row="1" VerticalOptions="CenterAndExpand" Spacing="10" Margin="10,0,10,0" >
+                            <Label TextColor="DarkGray"  Text="{Binding RefundAmountText}" IsVisible="{Binding IsRefundAmountText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                            <Label Margin="0,5,0,0" Text="{Localize:Translate AmountTenderedText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                            <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="60" StrokeThickness="0">
+                            <userControls:CustomEntry x:Name="StrTenderAmountEntry" Text="{Binding Invoice.StrTenderAmount}" IsEnabled="{Binding IsStrTenderAmountEntryEnabled}" OnlyAllowDecimalValue="true"  Placeholder="Tendered amount" Style="{x:Static resources:Styles.PaymentTenderedAmountEntryStyle}">
+                                <userControls:CustomEntry.Behaviors>
+                                   <toolkit:EventToCommandBehavior
+                                         EventName="Unfocused"
+                                         Command="{Binding TenderAmountHandleCommand}"
+                                         CommandParameter="{x:Reference StrTenderAmountEntry}"
+                                       />
+                                </userControls:CustomEntry.Behaviors>
+                            </userControls:CustomEntry>
+                            </Border>
+                            <!-- <Grid x:Name="QuickCash" IsVisible="{Binding IsQuickCashVisible}" ColumnSpacing="5" RowSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Text="{Binding Invoice.QuickCashFirstOption}"  Command="{Binding QuickCashOptionCommand}" CommandParameter="{Binding Invoice.QuickCashFirstOption}" Style="{x:Static resources:Styles.QuickCashOptionButtonStyle}" HorizontalOptions="FillAndExpand">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding Invoice.QuickCashFirstOption}" Value="0">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button Grid.Column="1" Text="{Binding Invoice.QuickCashSecondOption}" Command="{Binding QuickCashOptionCommand}" CommandParameter="{Binding Invoice.QuickCashSecondOption}" Style="{x:Static resources:Styles.QuickCashOptionButtonStyle}" HorizontalOptions="FillAndExpand">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding Invoice.QuickCashSecondOption}" Value="0">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button Grid.Column="2" Text="{Binding Invoice.QuickCashThirdOption}" Command="{Binding QuickCashOptionCommand}" CommandParameter="{Binding Invoice.QuickCashThirdOption}" Style="{x:Static resources:Styles.QuickCashOptionButtonStyle}" HorizontalOptions="FillAndExpand">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding Invoice.QuickCashThirdOption}" Value="0">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button Grid.Column="3" Text="{Binding Invoice.QuickCashFourOption}" Command="{Binding QuickCashOptionCommand}" CommandParameter="{Binding Invoice.QuickCashFourOption}" Style="{x:Static resources:Styles.QuickCashOptionButtonStyle}" HorizontalOptions="FillAndExpand">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding Invoice.QuickCashFourOption}" Value="0">
+                                            <Setter Property="IsVisible" Value="false" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </Grid> -->
+                        </StackLayout>
+
+                        <Grid RowDefinitions="Auto,*,Auto" Grid.Row="2" RowSpacing="10">
+                            <!-- <Label Grid.Row="0" Text="{Localize:Translate PaymentTypeText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Start" /> -->
+
+
+                               <!--Command="{Binding Source={x:Reference POListView}, Path=BindingContext.CreatePOCommand}" CommandParameter="{Binding .}"-->
+                            <CollectionView Grid.Row="1" x:Name="lstViewPaymentList" 
+                                    VerticalOptions="StartAndExpand"
+                                    ItemSizingStrategy="MeasureFirstItem"
+                                    HorizontalOptions="FillAndExpand" 
+                                    HeightRequest = "{Binding PaymentListHeight}"
+                                    ItemsSource="{Binding PaymentOptionList}" Margin="10,0,10,0" >
+                                <CollectionView.ItemsLayout>
+                                     <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="5" HorizontalItemSpacing="5"/> 
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:PaymentOptionDto">
+                                        <!--Start ticket #73190 iOS FR :Automatic Surcharge For Card Payment ONLY By Pratik-->
+                                        <!-- Ticket start:#94673 iOS-FR-Colour on pay screen.by rupesh -->
+                                        <ContentView HeightRequest="80" HorizontalOptions="FillAndExpand" BackgroundColor="{Binding BackgroundColor}">
+                                                <ContentView.GestureRecognizers>
+                                                    <TapGestureRecognizer NumberOfTapsRequired="1" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PaymentViewModel}}, Path=selectPaymentHandle_Command, x:DataType=vm:PaymentViewModel}" CommandParameter="{Binding .}"/>
+                                                </ContentView.GestureRecognizers>
+                                                <ContentView.Triggers>
+                                                    <DataTrigger TargetType="ContentView" Binding="{Binding DisplayName}" Value="[MOTO]">
+                                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                                    </DataTrigger>
+                                                </ContentView.Triggers>
+                                            <Border Stroke="{Binding BorderColor}">
+                                                <StackLayout VerticalOptions="Center" Spacing="2" Padding="5,0">
+                                                    <Label Text="{Binding DisplayName}"
+                                                            TextColor="{Binding TextColor}"
+                                                           x:Name="PaymentButton" IsEnabled="{Binding IsEnable}" Style="{x:Static resources:Styles.PaymentTypeLblStyle}"
+                                                            HorizontalOptions="FillAndExpand">
+                                                        <Label.Triggers>
+                                                            <!-- <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionType}" Value="5">
+                                                                <Setter Property="TextColor" Value="{Binding Source={x:Reference PaymentButton}, Path=TextColor}" />
+                                                            </DataTrigger>
+
+                                                             <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionType}" Value="6">
+                                                                <Setter Property="TextColor" Value="{Binding Source={x:Reference PaymentButton}, Path=TextColor}" />
+                                                            </DataTrigger>
+ -->
+                                                            <DataTrigger TargetType="Label" Binding="{Binding DisplayName}" Value="[MOTO]">
+                                                                <Setter Property="TextColor" Value="Blue" />
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding PaymentOptionName}" Value="Afterpay">
+                                                                <Setter Property="Text" Value="Afterpay" />
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Text="{Binding DisplaySubName}" IsVisible="{Binding DisplaySubName,Converter={Helpers:NullValueBoolConverter}}"
+                                                            TextColor="{Binding TextColor}"
+                                                            IsEnabled="{Binding IsEnable}"
+                                                            Style="{x:Static resources:Styles.PaymentTypeLblStyle}"
+                                                            FontSize="16" HorizontalOptions="FillAndExpand" />
+                                                </StackLayout>
+                                                </Border>
+                                            </ContentView>
+                                        <!-- Ticket end:#94673.by rupesh -->
+                                        <!--End ticket #73190 By Pratik-->
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                            <!-- <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="10" VerticalOptions="End" Margin="10,0,10,0">
+                                <Button IsVisible="{Binding IsPayment_OnAccountVisible}"
+                                        IsEnabled="{Binding IsPayment_OnAccountEnable}"
+                                        Text="{Binding OnAccountText}" LineBreakMode="WordWrap"
+                                        Padding="8,2"
+                                        Command="{Binding OnAccountChargeHandleCommand}"
+                                        Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"
+                                        HorizontalOptions="FillAndExpand"
+                                        HeightRequest="50" >
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPayment_OnAccountEnable}" Value="False">
+                                            <Setter Property="Background" Value="{x:Static resources:AppColors.ItemBackgroundColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPayment_OnAccountEnable}" Value="True">
+                                            <Setter Property="Background" Value="{x:Static resources:AppColors.NavigationBarBackgroundColor}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                                <Button IsVisible="{Binding IsPayment_LaybyVisible}" IsEnabled="{Binding IsPayment_LaybyEnable}" Text="{Localize:Translate LayByText}" Command="{Binding LayByHandleCommand}" Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" HorizontalOptions="FillAndExpand" HeightRequest="50">
+                                    <Button.Triggers>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPayment_LaybyEnable}" Value="False">
+                                            <Setter Property="Background" Value="{x:Static resources:AppColors.ItemBackgroundColor}" />
+                                        </DataTrigger>
+                                        <DataTrigger TargetType="Button" Binding="{Binding IsPayment_LaybyEnable}" Value="True">
+                                            <Setter Property="Background" Value="{x:Static resources:AppColors.NavigationBarBackgroundColor}" />
+                                        </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                            </StackLayout> -->
+                        </Grid>
+
+                        <StackLayout Grid.Row="3" Spacing="10" IsVisible="{Binding IsPayment_GiftCardVisible}" Margin="10,0,10,0" >
+                            <Label x:Name="GiftcardLabel" Text="{Binding GiftcardLabelText}"  Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" />
+                            <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" HeightRequest="60" Padding="0" VerticalOptions="Start">
+                                <Grid ColumnSpacing="0" RowSpacing="0" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="6*" />
+                                        <ColumnDefinition Width="4*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="60" />
+                                    </Grid.RowDefinitions>
+                                    <userControls:BorderLessEntry x:Name="GiftCardUserEntry" IsEnabled="{Binding IsGiftCardUserEntryEnabled}"
+                                                                  Text="{Binding Payment_GiftCardNumber}" Grid.Row="0" Grid.Column="0" VerticalOptions="Center"
+                                                                  Placeholder ="{Binding GiftCardUserEntryHint}" Style="{x:Static resources:Styles.PaymentGiftNumberEntryStyle}">
+                                    <userControls:BorderLessEntry.Behaviors>
+                                      <toolkit:EventToCommandBehavior
+                                          EventName="TextChanged"
+                                          Command="{Binding GiftCardHandleCommand}"
+                                          CommandParameter="{x:Reference GiftCardUserEntry}"  />
+                                      <toolkit:EventToCommandBehavior
+                                          EventName="Focused"
+                                          Command="{Binding GiftCardHandleFocusedCommand}"/>
+                                      <toolkit:EventToCommandBehavior
+                                          EventName="Unfocused"
+                                          Command="{Binding GiftCardHandleUnFocusedCommand}"/>
+                                     </userControls:BorderLessEntry.Behaviors>
+                                    </userControls:BorderLessEntry>
+                                    <Button Grid.Row="0"  x:Name="GiftCardAfterPayButton" Grid.Column="1" IsEnabled="{Binding IsGiftCardAfterPayButtonEnabled}"
+                                            Text="{Localize:Translate ChargeText}" Command="{Binding GiftCardChargeHandleCommand}"
+                                            Style="{x:Static resources:Styles.PaymentGiftChargeButtonStyle}" VerticalOptions="FillAndExpand"
+                                            HorizontalOptions="FillAndExpand" >
+                                              <!--Start #90944 iOS:FR Gift cards expiry date by Pratik-->
+                                            <Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsGiftCardAfterPayButtonEnabled}" Value="False">
+                                                    <Setter Property="Background" Value="{x:Static resources:AppColors.ItemBackgroundColor}" />
+                                                </DataTrigger>
+                                                <DataTrigger TargetType="Button" Binding="{Binding IsGiftCardAfterPayButtonEnabled}" Value="True">
+                                                    <Setter Property="Background" Value="{x:Static resources:AppColors.HikeColor}" />
+                                                </DataTrigger>
+                                            </Button.Triggers>
+                                            <!--End #90944 by Pratik-->
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <Label Text="{Binding GiftCardBalance}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Start"/>
+                        </StackLayout>
+                         <!--#29903 Void payment during checkout.-->
+                        <StackLayout Grid.Row="4" IsVisible="{Binding IsPayment_PartialyPaid}" Margin="-100,0,-100,40" Spacing="0" Padding="0">
+                            <BoxView BackgroundColor="{x:Static resources:AppColors.BordersColor}" HeightRequest="1" VerticalOptions="Start"/>
+                            <Border BackgroundColor="White"  Stroke="{x:Static resources:AppColors.LightBordersColor}" Margin="30" Padding="7,0,7,0" HorizontalOptions="CenterAndExpand" HeightRequest="60" VerticalOptions="Center" >
+                                <StackLayout Margin="10,10,10,10" Spacing="0" VerticalOptions="CenterAndExpand">
+                                    <Label Text="{Localize:Translate SavePartialyPaidText}" Margin="20,0,20,0" Style="{x:Static resources:Styles.PaymentPartialyPaidHeaderLabelStyle}" />
+                                    <Label Text="{Binding Invoice.TotalPay, StringFormat='Remaining: {0:c}' }" Style="{x:Static resources:Styles.PaymentPartialyPaidValueLabelStyle}" />
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ParkCommand}" />
+                                    </StackLayout.GestureRecognizers>
+                                </StackLayout>
+                            </Border>
+                        </StackLayout>
+                           <!--#29903 Void payment during checkout.-->
+                    </Grid>
+                </userControls:FixedScrollView>
+
+                <userControls:FixedScrollView Grid.Row="0" Grid.Column="2" Grid.RowSpan="4" IsVisible="{Binding IsSuccessPaymentActive}" HorizontalOptions="FillAndExpand">
+                    <Grid x:Name="SuccessPaymentView" ColumnSpacing="10" RowSpacing="30" HorizontalOptions="FillAndExpand" Padding="10">
+                        <Grid.RowDefinitions>
+                            <!-- <RowDefinition Height="Auto" /> -->
+                            <RowDefinition Height="*" />
+                            <!--Ticket start:#38877 iPad: Feature request - Add Gift Receipt Button on Checkout Page.by rupesh-->
+                            <!-- <RowDefinition Height="Auto" /> -->
+                            <!--Ticket end:#38877 .by rupesh-->
+                            <RowDefinition Height="Auto" />
+                            <!-- <RowDefinition Height="*" /> -->
+                        </Grid.RowDefinitions>
+
+                         <!--Ticket start:#22406 Quote sale.by rupesh-->
+                        <!-- <StackLayout IsVisible="{Binding IsQuoteSale, Converter={Helpers:InverseBoolConverter}}" Grid.Row="0" VerticalOptions="CenterAndExpand" Spacing="10" Margin="30,0,30,0" HorizontalOptions="FillAndExpand">
+                            <Label Text="{Localize:Translate IssueChangeText}" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                            <Label Text="{Binding Invoice.ChangeAmount, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.PaymentChangeAmountLabelStyle}" />
+                            <Label Text="{Binding Invoice.OutstandingAmount, StringFormat='Outstanding ( {0:c} )' }"  Style="{x:Static resources:Styles.PaymentOutstandingAmountLabelStyle}" />
+                        </StackLayout>
+                         <StackLayout IsVisible="{Binding IsQuoteSale}" Grid.Row="0" VerticalOptions="CenterAndExpand" Spacing="10" Margin="30,0,30,0" HorizontalOptions="FillAndExpand">
+                            <Label Text="Total quote amount" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center" />
+                            <Label Text="{Binding Invoice.TotalPay, StringFormat='{}{0:c}'}" Style="{x:Static resources:Styles.PaymentChangeAmountLabelStyle}" />
+                        </StackLayout> -->
+                        <!--Ticket end:#22406 .by rupesh-->
+
+                        <StackLayout Grid.Row="0" Spacing="10" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                            <Label Text="Would you like a receipt?" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" VerticalOptions="Center"/>
+                            <Border StrokeShape="RoundRectangle 5,5,5,5" Grid.Row="1" Margin="0,0,0,0" BackgroundColor="Transparent" Padding="0"  HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                                Stroke="{x:Static resources:AppColors.BordersColor}">
+                                <Grid ColumnSpacing="0" RowSpacing="0" BackgroundColor="Transparent">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="120" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="60">
+                                        </RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <userControls:CustomEntry Grid.Row="0" Grid.Column="0" Keyboard="Email" x:Name="txtemail" IsEnabled="{Binding IsTxtEmailEnabled}" Text="{Binding CustomerEMailId}" Style="{x:Static resources:Styles.PaymentGiftNumberEntryStyle}" VerticalOptions="Center" />
+                                    <BoxView Grid.Row="0" Grid.Column="1" Color="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="1" />
+                                    <Button Grid.Row="0" Grid.Column="2" Text="EMAIL" Command="{Binding EmailCommand}" Style="{x:Static resources:Styles.PaymentEmailButtonStyle}"
+                                              IsEnabled="{Binding EnableSendEmail}"/>
+                                </Grid>
+                            </Border>
+                             <!--Ticket start:#45653 iPad: FR - create a new customer from the payment slider.by rupesh-->
+                            <Border StrokeShape="RoundRectangle 5,5,5,5" Margin="0,0,0,0" BackgroundColor="Transparent" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center"
+                                Stroke="{x:Static resources:AppColors.BordersColor}" IsVisible="{Binding IsEmailWithPayLinkVisible,Converter={Helpers:InverseBoolConverter}}">
+                                   <userControls:CustomEntry HeightRequest="60" x:Name="txtCustomer" Placeholder="Customer Name" Text="{Binding CustomerName}" Style="{x:Static resources:Styles.PaymentGiftNumberEntryStyle}" />
+                                  <Border.Triggers>
+                                                <DataTrigger TargetType="Border" Binding="{Binding Invoice.CustomerName, Converter={Helpers:NullValueBoolConverter}}" Value="False">
+                                                    <Setter Property="IsVisible" Value="False" />
+                                                </DataTrigger>
+                                   </Border.Triggers>
+                              </Border>
+                               <Grid ColumnDefinitions="Auto,Auto" HeightRequest="60" ColumnSpacing="20" IsVisible="{Binding IsEmailWithPayLinkVisible}">
+                                    <userControls:CustomSwitch VerticalOptions="Center" IsToggled="{Binding IsEmailWithPayLink}" >
+                                    </userControls:CustomSwitch>
+                                    <Label Grid.Column="1" Text="Email receipt with pay link" Style="{x:Static resources:Styles.SettingsOptionTitleLabelStyle}" />
+                             </Grid>
+                              <!--Ticket end:#45653 .by rupesh-->
+                        </StackLayout>
+
+                         <!--Ticket start:#38877 iPad: Feature request - Add Gift Receipt Button on Checkout Page.by rupesh-->
+                        <!--Ticket start:#74633 iOS: Print Delivery Docket and Invoice together (FR) .by pratik-->
+                        <!-- <Grid Grid.Row="2" IsVisible="{Binding IsQuoteSale, Converter={Helpers:InverseBoolConverter}}" HorizontalOptions="FillAndExpand">
+                             <Grid RowDefinitions="35,35" ColumnDefinitions="Auto,*" IsVisible="{Binding IsDeliveryPrint, Converter={Helpers:InverseBoolConverter}}"
+                                      ColumnSpacing="8"  VerticalOptions="FillAndExpand" >
+                                <ImageButton Grid.Row="0" Grid.Column="0" Source="{x:Static resources:AppImages.FalseRadioIcon}" IsVisible="{Binding IsToPrintInvoiceReceipt, Converter={Helpers:InverseBoolConverter}}" Command ="{Binding TaxInvoiceReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <ImageButton Grid.Row="0" Grid.Column="0" Source="{x:Static resources:AppImages.TrueRadioIconBlue}" IsVisible="{Binding IsToPrintInvoiceReceipt}" Command ="{Binding TaxInvoiceReceiptClickedCommand}" WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="Tax Invoice/Receipt" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+                                <ImageButton Grid.Row="1" Grid.Column="0"  Source="{x:Static resources:AppImages.FalseRadioIcon}" IsVisible="{Binding IsToPrintGiftReceipt, Converter={Helpers:InverseBoolConverter}}" Command ="{Binding GiftReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <ImageButton Grid.Row="1" Grid.Column="0"  Source="{x:Static resources:AppImages.TrueRadioIconBlue}" IsVisible="{Binding IsToPrintGiftReceipt}" Command ="{Binding GiftReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="Gift receipt" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+                            </Grid>
+                            <Grid RowDefinitions="35,35,35" ColumnDefinitions="Auto,*" IsVisible="{Binding IsDeliveryPrint}"
+                                      ColumnSpacing="8"  VerticalOptions="FillAndExpand" >
+                                <ImageButton Grid.Row="0" Grid.Column="0" Source="{x:Static resources:AppImages.FalseRadioIcon}" IsVisible="{Binding IsToPrintInvoiceReceipt, Converter={Helpers:InverseBoolConverter}}" Command ="{Binding TaxInvoiceReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <ImageButton Grid.Row="0" Grid.Column="0" Source="{x:Static resources:AppImages.TrueRadioIconBlue}" IsVisible="{Binding IsToPrintInvoiceReceipt}" Command ="{Binding TaxInvoiceReceiptClickedCommand}" WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <Label Grid.Row="0" Grid.Column="1" Text="Tax Invoice/Receipt" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+                                <ImageButton Grid.Row="1" Grid.Column="0" Source="{x:Static resources:AppImages.FalseRadioIcon}" IsVisible="{Binding IsToPrintGiftReceipt, Converter={Helpers:InverseBoolConverter}}" Command ="{Binding GiftReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <ImageButton Grid.Row="1" Grid.Column="0" Source="{x:Static resources:AppImages.TrueRadioIconBlue}" IsVisible="{Binding IsToPrintGiftReceipt}" Command ="{Binding GiftReceiptClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <Label Grid.Row="1" Grid.Column="1" Text="Gift receipt" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+                                <ImageButton Grid.Row="2" Grid.Column="0" Source="{x:Static resources:AppImages.FalseRadioIcon}" IsVisible="{Binding IsToPrintDeliveryDocket, Converter={Helpers:InverseBoolConverter}}" Command ="{Binding DDClickedCommand}"  WidthRequest="26" HeightRequest="26" Padding="2"/>
+                                <ImageButton Grid.Row="2" Grid.Column="0" Source="{x:Static resources:AppImages.TrueRadioIconBlue}" IsVisible="{Binding IsToPrintDeliveryDocket}" Command ="{Binding DDClickedCommand}"   WidthRequest="26" HeightRequest="26"/>
+                                <Label Grid.Row="2" Grid.Column="1" Text="Delivery Docket" Style="{x:Static resources:Styles.PaymentGroupHeaderLabelStyle}" HorizontalTextAlignment="Start" VerticalOptions="Center" />
+                            </Grid>
+                        </Grid> -->
+                         <!--Ticket end:#74633 .by pratik-->
+                       
+                           <!--Ticket end:#38877 .by rupesh-->
+                        <!-- <Grid Grid.Row="3" IsVisible="{Binding IsPrinterAvailable}"
+                                     HorizontalOptions="FillAndExpand">
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10">
+                                <Button Text="Print" Command="{Binding PrintHandleCommand}" Style="{x:Static resources:Styles.PaymentPrintButtonStyle}" WidthRequest="120" HeightRequest="50" />
+                                <Button Text="Cloud print" IsVisible="{Binding IsCloudPrintActive}" Command="{Binding CloudPrintHandleCommand}" Style="{x:Static resources:Styles.PaymentPrintButtonStyle}" WidthRequest="120" HeightRequest="50"/>
+                            </StackLayout>
+                        </Grid> -->
+
+                         <!--Ticket start:#22406 Quote sale.by rupesh-->
+                        <StackLayout Grid.Row="1" VerticalOptions="CenterAndExpand" Spacing="0" HorizontalOptions="FillAndExpand">
+                            <Button Text="Add new sale" Command="{Binding AddNewSaleHandleCommand}" Style="{x:Static resources:Styles.PaymentAddNewSaleButtonStyle}" HeightRequest="60" HorizontalOptions="Center">
+                               <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsQuoteSale}" Value="True">
+                                         <Setter Property="Text" Value="Add new quote" />
+                                    </DataTrigger>
+                                    </Button.Triggers>
+                                </Button>
+                        </StackLayout>
+                          <!--Ticket end:#22406.by rupesh-->
+
+                    </Grid>
+                </userControls:FixedScrollView>
+               
+                <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" BackgroundColor="{x:Static resources:AppColors.BackgroundOverlayColor}" Scale="{Binding IsOpenMainBackground}" IsVisible="{OnPlatform Android={Binding IsOpenMainBackground,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
+                    <BoxView.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackgroundHandleCommand}"/>
+                    </BoxView.GestureRecognizers>
+                </BoxView>
+
+                <Grid Scale="{Binding IsWindcaveButtonViewDisplay}" IsVisible="{OnPlatform Android={Binding IsWindcaveButtonViewDisplay,Converter={Helpers:IntegerToBoolConverter}},Default=True}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" BackgroundColor="{x:Static resources:AppColors.BackgroundOverlayColor}">
+
+                    <Grid HorizontalOptions="Center" HeightRequest="200" BackgroundColor="White" VerticalOptions="Center" WidthRequest="400" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                            <Label Text="{Binding WindcavePopupText}" Grid.Row="1" HorizontalOptions="Center" FontSize="15" />
+                        <StackLayout  Orientation="Horizontal" Grid.Row="2" Margin="10,0,10,10" HorizontalOptions="FillAndExpand" >
+                            <Button Text="{Binding FirstButtonText}"
+                                    IsVisible= "{Binding IsFirstWindcaveButtonVisible}"
+                                    Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"
+                                    HorizontalOptions="FillAndExpand"
+                                    Command="{Binding WindcaveButtonSelectedOption}" CommandParameter="Yes"/>
+                            <Button Text="{Binding SecondButtonText}"
+                                    IsVisible= "{Binding IsSecondWindcaveButtonVisible}"
+                                    Style="{x:Static resources:Styles.PaymentTypeButtonStyle}"
+                                    HorizontalOptions="FillAndExpand"
+                                    Command="{Binding WindcaveButtonSelectedOption}" CommandParameter="No"/>
+                        </StackLayout>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+             <local:LoaderView  Grid.Row="0" Grid.RowSpan="4"/>
+        </Grid>
+    </ContentPage.Content>
+</local:BaseContentPage>

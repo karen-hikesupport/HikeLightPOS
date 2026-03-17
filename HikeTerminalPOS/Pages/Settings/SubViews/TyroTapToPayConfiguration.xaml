@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HikePOS.Pages.Settings.TyroTapToPayConfiguration"
+             xmlns:local="clr-namespace:HikePOS"
+		     xmlns:resources="clr-namespace:HikePOS.Resources"
+             xmlns:helper="clr-namespace:HikePOS.Helpers" 
+		     xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+             xmlns:vm="clr-namespace:HikePOS.ViewModels"
+             x:TypeArguments="vm:TyroTapToPayConfigurationViewModel"
+             x:DataType="vm:TyroTapToPayConfigurationViewModel"
+		     xmlns:userControls="clr-namespace:HikePOS.UserControls"
+             Title="TapToPay Configuration" BackgroundColor="{StaticResource PopupBG}">
+   <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='Auto',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button Text="Connect" Command="{Binding ConnectCommand}" IsVisible="{Binding IsReaderConnected,Converter={helper:InverseBoolConverter}}" IsEnabled="{Binding IsReaderConnecting,Converter={helper:InverseBoolConverter}}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}">
+                         <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsReaderConnecting}" Value="True" >
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                         </Button>
+                        <Button IsVisible="{OnPlatform Android ='True', iOS='False'}"
+                                Text="Tyro Settings"
+                                Opacity="1.0"
+                                IsEnabled="{Binding IsReaderConnected}"
+                                Command="{Binding SettingCommand}"
+                                Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                        Binding="{Binding IsReaderConnected}"
+                                        Value="False">
+                                    <Setter Property="TextColor"
+                                            Value="LightGray"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Vertical" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,20">
+                        <Button Text="Connect" Command="{Binding ConnectCommand}" IsVisible="{Binding IsReaderConnected,Converter={helper:InverseBoolConverter}}" IsEnabled="{Binding IsReaderConnecting,Converter={helper:InverseBoolConverter}}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
+                         <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsReaderConnecting}" Value="True" >
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                         </Button>
+                        <Button IsVisible="{OnPlatform Android ='True', iOS='False'}"
+                                Text="Set Refund Password"
+                                Opacity="1.0"
+                                IsEnabled="{Binding IsReaderConnected}"
+                                Command="{Binding SettingCommand}"
+                                Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button"
+                                        Binding="{Binding IsReaderConnected}"
+                                        Value="False">
+                                    <Setter Property="Opacity"
+                                            Value="0.5"/>
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                        <Button Text="Close"
+                                Command="{Binding ClosePopupCommand}"
+                                Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                        <!-- <Button IsVisible="{OnPlatform Android ='False', iOS='True'}"
+                                Text="Merchant Education"
+                                Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"
+                                Clicked="Button_Clicked"/> -->
+                        <!-- <Button Text="Close"
+                                Clicked="CloseHandle_Clicked"
+                                Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/> -->
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}"
+                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+                <Label Text="Tap To Pay Configuration" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <ScrollView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <VerticalStackLayout Spacing="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Padding="{OnIdiom Phone='20,40',Default='40'}">
+                            <Label Text="{Binding PaymentOptionName, StringFormat='Payment Name : {0}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Center" VerticalOptions="Center" />
+                            <!-- <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" VerticalOptions="Start" Margin="0,0,0,10">
+                                <userControls:CustomEntry Text="{Binding ReaderId}" Placeholder="Enter reader id" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HeightRequest="60" />
+                            </Border> -->
+                               <Label HorizontalOptions="FillAndExpand" Margin="0,20,0,0" VerticalOptions="Start"
+                                FontSize="14" Text="{Binding ReaderStatus}" 
+                                TextColor="Black" HorizontalTextAlignment="Center">
+                        </Label>
+                        </VerticalStackLayout>
+                    </Grid>
+                </ScrollView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

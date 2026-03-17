@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="HikePOS.AccountBasicDetailPage"
+                    xmlns:local="clr-namespace:HikePOS"
+                    xmlns:resources="clr-namespace:HikePOS.Resources"
+                    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+                    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+                    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+                    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+                    x:TypeArguments="vm:AccountBasicDetailViewModel"
+                    x:DataType="vm:AccountBasicDetailViewModel"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    x:Name="accountdetails" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                   <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                   <Button Text="Save" Command="{Binding SaveAccountBasicInfoCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="30,0,30,0">
+                      <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                      <Button Text="Save" Command="{Binding SaveAccountBasicInfoCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>            
+            <StackLayout Grid.Row="0" Grid.Column="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Label Text="{Localize:Translate StartHike_Title}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <ScrollView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid RowSpacing="5" ColumnSpacing="30" Margin="30,0,30,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate FirstName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding AccountBasicInfo.Name}" x:Name="txtFirstName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Localize:Translate LastName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding AccountBasicInfo.LastName}" x:Name="txtLastName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Localize:Translate City}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border x:Name="CityAutoCompleteFrame" Grid.Row="3" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry x:Name="CityAutoComplete" Text="{Binding City}"  FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}"  TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Localize:Translate Zip}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="3" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding AccountBasicInfo.PostCode}" x:Name="txtZip" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="4" Grid.Column="0" Text="Industry type" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="5" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}"/>
+                                    <userControls:CustomPicker BackgroundColor="Transparent" x:Name="PickerIndustryType" HorizontalOptions="FillAndExpand" ItemsSource="{Binding IndustryTypeList}" SelectedItem="{Binding SelectedIndustryType}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <Label Grid.Row="4" Grid.Column="1" Text="What best describes your business" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="5" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker ItemsSource="{Binding DescribesYourBusinessList}" SelectedItem="{Binding DescribesYourBusiness}" BackgroundColor="Transparent" x:Name="PickerDescribesYourBusiness" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <Label Grid.Row="6" Grid.Column="0" Text="{Localize:Translate Phone}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding AccountBasicInfo.Phone}" x:Name="txtPhone" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="6" Grid.Column="1" Text="{Localize:Translate AddSomeDemoProductsText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" BackgroundColor="Transparent" Padding="0">
+                                <Grid RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Text="Yes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding AccountBasicInfo.ToBuildDemoData, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='yes'}" Command="{Binding YesAddDemoProductCommand}" CornerRadius="0" />
+                                    <BoxView Grid.Row="0" Grid.Column="1" Color="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="1" />
+                                    <Button Grid.Row="0" Grid.Column="2" Text="No" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding AccountBasicInfo.ToBuildDemoData, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='yes'}" Command="{Binding NoAddDemoProductCommand}" CornerRadius="0" />
+                                </Grid>
+                            </Border>
+                            <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Spacing="0" Orientation="Horizontal" VerticalOptions="CenterAndExpand">
+                                <Label Text="{Localize:Translate SignupAndAgreementText1}" Style="{x:Static resources:Styles.SignupTermAndConditionLabelStyle}" VerticalTextAlignment="Center" HorizontalOptions="Start" />
+                                <Label Text="{Localize:Translate SignupAndAgreementText2}" Style="{x:Static resources:Styles.SignupTermAndConditionLabelStyle}" TextColor="{x:Static resources:AppColors.ProductBlueColor}" VerticalTextAlignment="Center" HorizontalOptions="Start">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TermsAndConditionCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                                <Label Text="{Localize:Translate SignupAndAgreementText3}" Style="{x:Static resources:Styles.SignupTermAndConditionLabelStyle}" VerticalTextAlignment="Center" HorizontalOptions="Start" />
+                                <Label Text="{Localize:Translate SignupAndAgreementText4}" Style="{x:Static resources:Styles.SignupTermAndConditionLabelStyle}" TextColor="{x:Static resources:AppColors.ProductBlueColor}" VerticalTextAlignment="Center" HorizontalOptions="Start">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding PrivacyPolicyCommand}" />
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                            <ContentView x:Name="AutoCompleteView" Grid.Column="0" Grid.Row="0" Grid.RowSpan="9" IsVisible="{Binding AutoCompleteViewVisible}" BackgroundColor="Transparent" VerticalOptions="Start">
+                                <Border StrokeShape="RoundRectangle 5,5,5,5" Margin="0" Padding="0" BackgroundColor="White" Stroke="{x:Static resources:AppColors.LightBordersColor}" VerticalOptions="Start">
+                                    <CollectionView x:Name="CityListView" ItemsSource="{Binding LocationPredictionList}" 
+                                        SelectionMode="None" HeightRequest="0" VerticalOptions="Start" BackgroundColor="Transparent" Margin="0" >
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="local:Prediction">
+                                                <Grid RowSpacing="0" RowDefinitions="49,1" Padding="10,0,10,0" HeightRequest="50">
+                                                    <Grid.GestureRecognizers>
+                                                        <TapGestureRecognizer  Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AccountBasicDetailViewModel}}, Path=ItemSelectedCommand, x:DataType=vm:AccountBasicDetailViewModel}"
+                                            CommandParameter="{Binding .}"/>
+                                                    </Grid.GestureRecognizers>
+                                                    <Label Grid.Row="0" Text="{Binding description}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HeightRequest="49" VerticalOptions="CenterAndExpand" VerticalTextAlignment="Center" />
+                                                    <BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Border>
+                            </ContentView>
+                        </Grid>
+                    </StackLayout>
+                </ScrollView>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="HikePOS.DocketReceipt"
+            xmlns:resources="clr-namespace:HikePOS.Resources"
+            xmlns:userControls="clr-namespace:HikePOS.UserControls"
+            xmlns:vm="clr-namespace:HikePOS.ViewModels"
+            x:DataType="vm:PaymentViewModel"
+            xmlns:Helpers="clr-namespace:HikePOS.Helpers" VerticalOptions="Start"
+            BackgroundColor="White" VerticalScrollBarVisibility="Never">
+    <StackLayout x:Name="MainStack"
+        VerticalOptions="FillAndExpand" Spacing="5" 
+        HorizontalOptions="FillAndExpand" Padding="10,0,10,0" BackgroundColor="White">        
+         
+        <Label Text="{Binding CurrentRegister.ReceiptTemplate.InvoiceNoPrefix}" FontSize="35"
+               HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" MaxLines="1" LineBreakMode="WordWrap">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="{Binding CurrentRegister.ReceiptTemplate.InvoiceNoPrefix}" FontSize="35" FontFamily="{x:Static resources:Fonts.HikeBoldFont}"/>
+                    <Span Text=" " FontSize="35" />
+                    <Span Text="{Binding Invoice.Number}" FontSize="35" FontFamily="{x:Static resources:Fonts.HikeBoldFont}"/>
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+           
+        <Label x:Name="lblDatetime" FontSize="32" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" />
+        <Label Text="{Binding CustomerPrintNo}" FontSize="32" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" />
+        <Label x:Name="LblCustomerName" Text="{Binding Invoice.CustomerName}" FontSize="38" FontFamily="{x:Static resources:Fonts.ArialBoldMTFont}" IsVisible="{Binding Invoice.CustomerId, Converter={Helpers:NullOrZeroValueToBoolConverter}}" HorizontalTextAlignment="Center"/>
+        <Label x:Name="lblServedBy" 
+               FontSize="32" 
+               FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" 
+               TextColor="Black" 
+               VerticalOptions="Start" 
+               LineBreakMode="WordWrap"
+               HorizontalOptions="CenterAndExpand" />
+      
+         <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+         <StackLayout x:Name="ProductList" VerticalOptions="Start" HorizontalOptions="FillAndExpand"
+                      BindableLayout.ItemsSource="{Binding Invoice.InvoiceLineItems,Converter={Helpers:InvoiceLineItemsDiscountConverter}}">
+         <!--Ticket end:#33854.by rupesh-->
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                        <Grid RowSpacing="0" ColumnSpacing="0"  HorizontalOptions="FillAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5" />
+                                <RowDefinition Height="Auto" />
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <BoxView Grid.Row="0" IsVisible="true" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Start" HeightRequest="3" HorizontalOptions="FillAndExpand" >
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding IsExtraproduct}" Value="True">
+                                        <Setter Property="IsVisible" Value="false" />
+                                        <Setter Property="MinimumHeightRequest" Value="0" />
+                                    </DataTrigger>
+                                </BoxView.Triggers>
+                            </BoxView>
+                            <!--Ticket start:#51828 Printing docket receipt issue.by rupesh-->
+                            <Grid 
+                                         
+                                    Grid.Row="1" Margin="0,5,0,0" >
+                                <!--<StackLayout.Triggers>
+                                     <DataTrigger TargetType="StackLayout" Binding="{Binding IsExtraproduct}" Value="True">
+                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                </DataTrigger>  
+                                </StackLayout.Triggers>-->
+                               <Grid.RowDefinitions>
+                                  <RowDefinition Height="*" />
+                               </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                  <ColumnDefinition Width="Auto" />
+                                  <ColumnDefinition Width="40" />
+                                  <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0"
+                                   Text="{Binding Quantity}" 
+                                   FontSize="35" 
+                                   FontFamily="{x:Static resources:Fonts.HikeBoldFont}"
+                                   TextColor="Black" HorizontalOptions="Start" 
+                                   >
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExtraproduct}" Value="True">
+                                            <Setter Property="Margin" Value="50,-20,0,0" />
+                                            <Setter Property="FontFamily" Value="{x:Static resources:Fonts.ArialMTFont}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                <Label Grid.Row="0" Grid.Column="1"
+                                   Margin="5,0,0,0"
+                                   Text="@" 
+                                   FontFamily="{x:Static resources:Fonts.HikeBoldFont}" 
+                                   FontSize="38" 
+                                   TextColor="{x:Static resources:AppColors.DarkTextColor}" 
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Start" 
+                                   LineBreakMode="CharacterWrap" WidthRequest="40">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExtraproduct}" Value="True">
+                                            <Setter Property="Margin" Value="5,-20,0,0" />
+                                            <Setter Property="FontFamily" Value="{x:Static resources:Fonts.ArialMTFont}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+                                 <!-- Ticket start:#90943 iOS:FR Display Barcode or SKU instead of Product Name .by Pratik-->
+                                <Label Grid.Row="0" Grid.Column="2"
+                                   Margin="2,0,0,0"
+                                   Text="{Binding ProductTitle}" 
+                                   FontFamily="{x:Static resources:Fonts.HikeBoldFont}" 
+                                   FontSize="38" 
+                                   TextColor="{x:Static resources:AppColors.DarkTextColor}" 
+                                   VerticalOptions="Start"
+                                   HorizontalOptions="Start" 
+                                   LineBreakMode="WordWrap">
+                                   <!-- Ticket end:#90943 by Pratik-->
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsExtraproduct}" Value="True">
+                                            <Setter Property="Margin" Value="2,-20,0,0" />
+                                            <Setter Property="FontFamily" Value="{x:Static resources:Fonts.ArialMTFont}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                            </Grid>
+                          <!--Ticket end:#51828 .by rupesh-->
+
+                            <!--<BoxView Grid.Row="2" IsVisible="true" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Start" HeightRequest="3" HorizontalOptions="FillAndExpand" >
+                                <BoxView.Triggers>
+                                    <DataTrigger TargetType="BoxView" Binding="{Binding IsExtraproduct}" Value="True">
+                                    <Setter Property="IsVisible" Value="false" />
+                        </DataTrigger>
+                                </BoxView.Triggers>
+                        </BoxView>-->
+
+                        </Grid>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+         <!--Ticket end: #62808 .by rupesh-->
+        <BoxView BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="3" VerticalOptions="Start" />
+        <Grid HeightRequest="40" HorizontalOptions="Fill"/>
+        <!--Ticket #9180 Start:Docket Print Note Printing issue. By Nikhil.-->
+        <!--<StackLayout x:Name="NoteContainer"   HeightRequest="50" Spacing="0" Padding="0" IsVisible="false"  VerticalOptions="Start" Margin="0,0,0,5">
+            <StackLayout HeightRequest="47" Orientation="Horizontal" VerticalOptions="Center">
+                <Label Text="Notes : " FontFamily="{x:Static resources:Fonts.HikeBoldFont}" FontSize="20" TextColor="{x:Static resources:AppColors.DarkTextColor}" VerticalOptions="Center" HorizontalOptions="Start" Margin="0,0,5,0" />
+                <Label x:Name="lblCustomerNote" Text="{Binding Invoice.Note}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="Black" VerticalOptions="Center" Margin="0,0,5,0" />
+            </StackLayout>
+            <BoxView BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="3" VerticalOptions="EndAndExpand" />
+            <StackLayout.Triggers>
+                <MultiTrigger TargetType="StackLayout">
+                    <MultiTrigger.Conditions> 
+                        <BindingCondition Binding="{Binding Invoice.Note, Converter={Helpers:NullValueBoolConverter}}" Value="True" />
+                    </MultiTrigger.Conditions>
+                    <Setter Property="IsVisible" Value="True"/>
+                </MultiTrigger>
+            </StackLayout.Triggers>
+        </StackLayout>-->
+        <!--Ticket #9180 End:By Nikhil.-->
+        <!--Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+       <userControls:CustomHtmlLabel Text="" IsVisible="false" FontSize="22" FontFamily="{x:Static resources:Fonts.ArialMTFont}" HorizontalOptions="CenterAndExpand" Margin="0,5,0,5" TextType="Html"/>
+        <!--Ticket end: #62808 iPad:Print Receipt spacing issues.by rupesh-->
+    </StackLayout>
+</ScrollView>

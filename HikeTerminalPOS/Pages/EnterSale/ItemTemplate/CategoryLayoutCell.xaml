@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.CategoryLayoutCell" xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" HeightRequest="140">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="Transparent"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <ContentView Margin="5" BackgroundColor="{Binding Category.LayoutColor, Converter={Helpers:ColorTypeToColorConverter}}">
+        <Grid Padding="10">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="{Binding Category.ProductsCount}" HorizontalTextAlignment="Center" FontSize="32" TextColor="{Binding Category.LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='text'}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}"/>
+                <Label Text="{Binding Category.Name}" FontSize="18" TextColor="{Binding Category.LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='text'}" HorizontalTextAlignment="Center"  FontFamily="{x:Static resources:Fonts.HikeLightFont}"/>
+            </VerticalStackLayout>
+        </Grid>
+    </ContentView>
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+</Grid>

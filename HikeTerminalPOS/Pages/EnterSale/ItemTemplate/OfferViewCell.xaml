@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.OfferViewCell"
+        xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" xmlns:model="clr-namespace:HikePOS.Models" x:DataType="model:EnterSaleItemDto">
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup Name="CommonStates">
+            <VisualState Name="Normal"></VisualState>
+            <VisualState Name="Selected">
+                <VisualState.Setters>
+                    <Setter Property="BackgroundColor" Value="Transparent"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+    <ContentView BackgroundColor="#d0d7de" Margin="5">
+        <Grid ColumnSpacing="0" RowSpacing="0" Padding="0.5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Offer.Name, Converter={Helpers:StringToAvtarNameConverter}}" Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                <Image Grid.Row="0" Grid.Column="0" x:Name="OfferIcon"
+                    Aspect="AspectFit" 
+                    VerticalOptions="FillAndExpand" 
+                    HorizontalOptions="FillAndExpand"
+                    >
+                    <Image.Source>
+                        <UriImageSource Uri="{Binding Offer.OfferImage, Converter={Helpers:GuidToImageConverter}, ConverterParameter=Offer_Medium}" 
+                            CacheValidity="30" 
+                            CachingEnabled="true"/>
+                    </Image.Source>
+                </Image>
+            </Grid>
+            <ContentView x:Name="ItemName" Grid.Row="1" Grid.Column="0" BackgroundColor="White">
+                <Label Text="{Binding Offer.Name}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,0,10,0" />
+            </ContentView>
+             <ContentView x:Name="ItemName1" Grid.Row="1" Grid.Column="0" TranslationY="-16">
+                <Border StrokeShape="RoundRectangle 12" Padding="0" Margin="0" BackgroundColor="Transparent" Stroke="Transparent" HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Center">
+                    <Grid ColumnSpacing="0" RowSpacing="0">
+                         <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <BoxView Grid.Row="0" Grid.Column="0" HeightRequest="24" WidthRequest="24" BackgroundColor="#000000" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Opacity="0.75"/>
+                        <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate GiftIconUnicode}"  Style="{x:Static resources:Styles.EntersaleItemOfferLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="24" HorizontalOptions="Start" />
+                    </Grid>
+                </Border>
+            </ContentView>
+        </Grid>
+    </ContentView>
+    <Grid.GestureRecognizers>
+        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+    </Grid.GestureRecognizers>
+</Grid>

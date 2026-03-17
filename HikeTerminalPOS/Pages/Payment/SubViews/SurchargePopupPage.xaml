@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:HikePOS"
+            xmlns:resources="clr-namespace:HikePOS.Resources"
+            xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+            xmlns:userControls="clr-namespace:HikePOS.UserControls"
+            xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+            xmlns:vm="clr-namespace:HikePOS.ViewModels"
+            xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            x:TypeArguments="vm:BaseViewModel"
+            x:Class="HikePOS.Pages.SurchargePopupPage"
+            ShowDirection="TopToBottom"
+            Title="Title"
+            x:Name="PopupPage"
+            IsFullScreen="false" BackgroundColor="{StaticResource PopupBG}">
+
+    <Grid RowSpacing="0" Padding="10" HeightRequest="290" WidthRequest="400" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="158"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"  Text="Surcharge" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" 
+                   HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalTextAlignment="Center"/>
+            <BoxView Grid.Row="1"  BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" />
+            <Grid RowSpacing="12" Grid.Row="2" VerticalOptions="Center" RowDefinitions="Auto,Auto" ColumnDefinitions="170,150" Margin="30,0">
+                <Label Grid.Column="0" Text="Payment:" FontAttributes="Bold" HorizontalTextAlignment="Start"
+                       Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                <Label x:Name="lblpayment" Grid.Column="1" Text="20" FontAttributes="Bold" HorizontalTextAlignment="End"
+                       Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="Surcharge:" FontAttributes="Bold" HorizontalTextAlignment="Start"
+                       Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+                <Label x:Name="lblsurcharge" Grid.Row="1" Grid.Column="1" Text="2" FontAttributes="Bold" HorizontalTextAlignment="End"
+                       Style="{x:Static resources:Styles.TableItemLabelStyle}"/>
+            </Grid>
+            <BoxView Grid.Row="3"  BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" />
+            <StackLayout Orientation="Horizontal" Grid.Row="4" HeightRequest="50" Margin="0,10,0,10" HorizontalOptions="Center">
+                 <Button Text="Cancel" Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" WidthRequest="120" 
+                    BackgroundColor="Gray" TextColor="White"  Clicked="OkHandle_Clicked"/>
+                 <Button x:Name="btntopay"  Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" Padding="10,0" Clicked="btntopay_Clicked"/>  
+            </StackLayout>
+            </Grid>
+</local:PopupBasePage>

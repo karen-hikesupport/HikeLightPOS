@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+	x:Class="HikePOS.AddCustomerPage"
+	xmlns:local="clr-namespace:HikePOS"
+	xmlns:resources="clr-namespace:HikePOS.Resources"
+	xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+	xmlns:userControls="clr-namespace:HikePOS.UserControls"
+	xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:DataType="vm:AddCustomerViewModel" 
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:TypeArguments= "vm:AddCustomerViewModel"
+	Title="{Binding Title}"
+	x:Name="addcustomerpage" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding ClosePopupCommand}" 
+							Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                        <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                        <Button Text="{Localize:Translate CustomFieldInsert}"
+							IsVisible="{Binding IsCustomFieldAlllowed}"
+							Command="{Binding CustomeFieldCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate CustomFieldInsert}"
+							IsVisible="{Binding IsCustomFieldAlllowed}"
+							Command="{Binding CustomeFieldCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid x:Name="rootview" RowDefinitions="Auto,Auto,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <userControls:FixedScrollView Grid.Row="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,0,0,30">
+                    <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <Grid IsVisible="false" RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,0,20,0',Default='30,0,30,0'}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate FirstName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.FirstName}" x:Name="txtFirstName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Localize:Translate LastName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.LastName}" x:Name="txtLastName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{Localize:Translate Email}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="3" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Email}" x:Name="txtEmail" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Email" />
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="1" Text="{Localize:Translate Phone}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="3" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Phone}" x:Name="txtPhone" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+
+
+
+                            <!--Ticket start:#32389 iPad :: Feature request :: Allow to add multiple email address.by rupesh-->
+                            <Label Grid.Row="4" x:Name="SecondaryEmailLabel1" IsVisible="{Binding IsSecondaryEmailVisible, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikeCustomerSecondaryEmailFeature}"
+									   Grid.Column="0" Text="{Localize:Translate SecondaryEmail1}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="5"
+									   IsVisible="{Binding  Source={x:Reference SecondaryEmailLabel1}, Path=IsVisible}"
+									   Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.SecondaryEmail1}"  x:Name="txtSecondaryEmail1" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Email" />
+                            </Border>
+                            <Label IsVisible="{Binding  Source={x:Reference SecondaryEmailLabel1}, Path=IsVisible}"
+									   Grid.Row="4" Grid.Column="1" Text="{Localize:Translate SecondaryEmail2}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border
+									IsVisible="{Binding  Source={x:Reference SecondaryEmailLabel1}, Path=IsVisible}"
+									Grid.Row="5" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.SecondaryEmail2}" x:Name="txtSecondaryEmail2" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Email" />
+                            </Border>
+                            <!--Ticket end:#32389 .by rupesh-->
+                            <Label Grid.Row="6" Grid.Column="0" Text="Customer group" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker BackgroundColor="Transparent" x:Name="PickerCustomerGroup" HorizontalOptions="FillAndExpand" IsEnabled="{Binding CanSelectGroup}" ItemsSource="{Binding CustomerGroupList}" DisplayProperty="Name" SelectedItem="{Binding SelectedCustomerGroup}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <Label Grid.Row="6" Grid.Column="1" Text="How did you hear about us?" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker ItemsSource="{Binding HearAboutUsList}" SelectedItem="{Binding SelectedHearAboutUs}" DisplayProperty="Name" BackgroundColor="Transparent" x:Name="PickerHowDidYouHearAboutUs" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <!--Ticket start:#23573 iOS - Gender Options.by rupesh-->
+                            <Label Grid.Row="8" Grid.Column="0" Text="Gender" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="9" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}"  Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker ItemsSource="{Binding GenderList}" SelectedItem="{Binding SelectedGender}" BackgroundColor="Transparent" x:Name="PickerGender" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <!--Ticket end:#23573 iOS - Gender Options.by rupesh-->
+                            <!--Ticket start:#32371 iPad :: Feature request :: customer custom field not reflecting in print receipt.by rupesh-->
+                            <Label Grid.Row="8" Grid.Column="1" Text="{Localize:Translate CustomerTaxID}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="9" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}"  Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomerTaxId}" x:Name="CustomerTaxID" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Email" />
+                            </Border>
+                            <!--Ticket end:#32371.by rupesh-->
+                            <Label x:Name="LoyaltyTitleSection" IsVisible="{Binding LoyaltySectionVisible}" Grid.Row="10" Grid.Column="0" Margin="0,12,0,0"  Text="Sign up for loyalty program?" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border  x:Name="LoyaltySection" IsVisible="{Binding LoyaltySectionVisible}" Grid.Row="11" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" BackgroundColor="Transparent" Padding="0">
+                                <Grid RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Text="Yes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.AllowLoyalty, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='yes'}" Command="{Binding YesLoyaltyRewordCommand}" CornerRadius="0"/>
+
+                                    <BoxView Grid.Row="0" Grid.Column="1" Color="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="1" />
+                                    <Button Grid.Row="0" Grid.Column="2" Text="No" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.AllowLoyalty, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='no'}" Command="{Binding NoLoyaltyRewordCommand}" CornerRadius="0"/>
+
+                                </Grid>
+                            </Border>
+                            <!--Ticket start:#20998 feature request for IPAD (#20096). By rupesh.-->
+
+                            <!--START ticket #76208 IOS:FR:Terms of payments by Pratik-->
+                            <Label x:Name="lblInvoicesDue" IsVisible="false" Grid.Row="10" Grid.Column="1" Text="Invoices payment due date (on account sales)" FontSize="14"
+									   FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"
+									   HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border x:Name="frmInvoicesDue" IsVisible="false" Grid.Row="11" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" ColumnDefinitions="70,1,*" ColumnSpacing="0">
+                                    <userControls:CustomEntry x:Name="lblInvoicesDueDay" Placeholder="Due" PlaceholderColor="Gray" WidthRequest="70" Text="{Binding InvoicesDueDays}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                                    <BoxView Grid.Column="1" WidthRequest="1" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.LightBordersColor}"/>
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" Grid.Column="2" Aspect="AspectFill" VerticalOptions="Center" HorizontalOptions="End">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <userControls:CustomPicker Grid.Column="2" ItemsSource="{Binding InvoicesDueTypeList}" SelectedItem="{Binding SelectedInvoicesDueType}"
+																   BackgroundColor="Transparent" x:Name="PickerOverDueDate" HorizontalOptions="FillAndExpand"
+																   TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Margin="0,0,28,0"/>
+                                </Grid>
+                            </Border>
+                            <!--End ticket #76208 by Pratik-->
+
+                            <Label x:Name="MultiOutletLabel"
+									   IsVisible="{Binding  EnableCustomerMultiOutlet, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSCustomerMultiOutletFeature}" 
+									   Margin="0,10,0,0" Grid.Row="16" Grid.Column="0" Text="Outlets" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border
+									  IsVisible="{Binding  Source={x:Reference MultiOutletLabel}, Path=IsVisible}" 
+									 x:Name="OutletSection" Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" BackgroundColor="Transparent" Padding="0" HeightRequest="300">
+                                <CollectionView x:Name="collectionView"
+													IsVisible="{Binding  Source={x:Reference MultiOutletLabel}, Path=IsVisible}" 
+													ItemsSource="{Binding Outlets}">
+                                    <CollectionView.ItemsLayout>
+                                        <GridItemsLayout Orientation="Vertical" Span="2"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:OutletDto_POS">
+                                            <StackLayout HorizontalOptions="FillAndExpand" Orientation="Horizontal" Padding="10">
+                                                <ImageButton Source="uncheckmark" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AddCustomerViewModel}}, Path=OutletSelectedCommand, x:DataType=vm:AddCustomerViewModel}" CommandParameter="{Binding .}"  VerticalOptions="Center" Padding="10" HeightRequest="30" WidthRequest="30">
+                                                    <ImageButton.Triggers>
+                                                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="Source" Value="checkmark" />
+                                                        </DataTrigger>
+                                                    </ImageButton.Triggers>
+                                                </ImageButton>
+                                                <Label Text="{Binding Title}" FontSize="16" HorizontalOptions="StartAndExpand" VerticalOptions="Center" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                                            </StackLayout>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Border>
+                            <!--Ticket end: #20998 feature request for IPAD (#20096). By rupesh.-->
+                            <!--Ticket start:#43905 Signup for Loyalty program section has changed. by rupesh-->
+                            <Label x:Name="lblCustomField1" IsVisible="{Binding CustomFeild1Visible}" Grid.Row="12" Grid.Column="0" Text="{Binding CustomFeild1Text}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand"/>
+                            <Border x:Name="frmCustomField1" IsVisible="{Binding CustomFeild1Visible}" Grid.Row="13" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomeField1}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                            </Border>
+
+                            <Label x:Name="lblCustomField2" IsVisible="{Binding CustomFeild2Visible}" Grid.Row="12" Grid.Column="1" Text="{Binding CustomFeild2Text}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand"/>
+                            <Border x:Name="frmCustomField2" IsVisible="{Binding CustomFeild2Visible}" Grid.Row="13" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomeField2}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+
+                            <Label x:Name="lblCustomField3" IsVisible="{Binding CustomFeild3Visible}" Grid.Row="14" Grid.Column="0" Text="{Binding CustomFeild3Text}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand"/>
+                            <Border x:Name="frmCustomField3" IsVisible="{Binding CustomFeild3Visible}" Grid.Row="15" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomeField3}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+
+                            <Label x:Name="lblCustomField4" IsVisible="{Binding CustomFeild4Visible}" Grid.Row="14" Grid.Column="1" Text="{Binding CustomFeild4Text}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand"/>
+                            <Border x:Name="frmCustomField4" IsVisible="{Binding CustomFeild4Visible}" Grid.Row="15" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="50">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomeField4}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <!--Ticket end:#43905. by rupesh-->
+
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid" Binding="{Binding IsPriaryInfoActive}" Value="True">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+                        <Grid IsVisible="false" RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,0,20,0',Default='30,0,30,0'}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <!--Ticket #9042 Start : Customer country field added. By Nikhil.-->
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <!--Ticket #9042 End : By Nikhil.-->
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="50" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Company name" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CompanyName}" x:Name="txtCompanyName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="0" Grid.Column="1" Text="Customer code" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="1" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.CustomerCode}" x:Name="txtCustomerCode" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="0" Text="Account limit" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="3" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.StrCreditLimit}" x:Name="txtCreditLimit" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" >
+
+                                </userControls:CustomEntry>
+                            </Border>
+                            <Label Grid.Row="2" Grid.Column="1" Text="Date of birth" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="3" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomDatePicker Format="{Binding BirthDateFormat}" NullableDate="{Binding NewCustomer.BirthDate}" MaximumDate="{x:Static system:DateTime.Now}" x:Name="BirthDatePicker" DisplayBorder="false" AllowNullDate="true" />
+                            </Border>
+                            <Label Grid.Row="4" Grid.Column="0" Text="Street address" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="5" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Address.Address1}" x:Name="txtStreetAddress" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="4" Grid.Column="1" Text="City / Suburb" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="5" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Address.City}" x:Name="txtCity" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="6" Grid.Column="0" Text="State" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Address.State}" x:Name="txtState" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+                            <Label Grid.Row="6" Grid.Column="1" Text="Postal / Zip code" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="7" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <userControls:CustomEntry Text="{Binding NewCustomer.Address.PostCode}" x:Name="txtPostCode" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Numeric"  />
+                            </Border>
+                            <!--Ticket #9042 Start : Customer country field added. By Nikhil.-->
+                            <Label Grid.Row="8" Grid.Column="0" Text="Country" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand"/>
+                            <Border Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                    <userControls:CustomPicker ItemsSource="{Binding CountryList}" DisplayProperty="displayText" SelectedItem="{Binding SelectedCountry}" BackgroundColor="Transparent" x:Name="PickerCountry" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Grid>
+                            </Border>
+                            <!--Ticket #9042 End :By Nikhil.-->
+                            <Label    Grid.Row="10" Grid.Column="0"  Text="Notes" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                            <Border Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0" HeightRequest="90" >
+                                <!--<userControls:CustomEntry Text="{Binding NewCustomer.Note}" x:Name="txtNotes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />-->
+                                <userControls:CustomEditor Text="{Binding NewCustomer.Note}" Margin="9,0" x:Name="txtNotes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                            </Border>
+
+                            <Label x:Name="AllowForMarketingTitleSection" Grid.Row="13" Grid.Column="0"  Text="Customer has opted in to receive marketing and promo communications" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" Margin="0,10,0,0"/>
+                            <Border x:Name="AllowForMarketingSection" Grid.Row="14" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" BackgroundColor="Transparent" Padding="0">
+                                <Grid RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Text="Yes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.ToAllowForMarketing, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='yes'}" Command="{Binding YesMarketingCommand}" CornerRadius="0" />
+                                    <BoxView Grid.Row="0" Grid.Column="1" Color="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="1" />
+                                    <Button Grid.Row="0" Grid.Column="2" Text="No" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.ToAllowForMarketing, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='no'}" Command="{Binding NoMarketingCommand}" CornerRadius="0" />
+                                </Grid>
+                            </Border>
+
+                            <Label Grid.Row="13" Grid.Column="1"  Text="This customer is tax exempt. All taxes to be removed when this customer profile is allocated to a sale" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" Margin="0,10,0,0"/>
+                            <Border  Grid.Row="14" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" BackgroundColor="Transparent" Padding="0">
+                                <Grid RowSpacing="0" ColumnSpacing="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="1" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Grid.Column="0" Text="Yes" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.ToAllowForTaxExempt, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='yes'}" Command="{Binding ChangeTaxExemptCommand}" CommandParameter="Yes" CornerRadius="0" />
+                                    <BoxView Grid.Row="0" Grid.Column="1" Color="{x:Static resources:AppColors.LightBordersColor}" WidthRequest="1" />
+                                    <Button Grid.Row="0" Grid.Column="2" Text="No" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Background="{Binding NewCustomer.ToAllowForTaxExempt, Converter={Helpers:YesNoToColorConverter}, ConverterParameter='no'}" Command="{Binding ChangeTaxExemptCommand}" CommandParameter="No"  CornerRadius="0"/>
+                                </Grid>
+                            </Border>
+
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid" Binding="{Binding IsPriaryInfoActive}" Value="False">
+                                    <Setter Property="IsVisible" Value="True" />
+                                </DataTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+                    </StackLayout>
+                </userControls:FixedScrollView>
+
+                <Label Grid.Row="0" Text="{Localize:Translate AddCustomer_Title}" Margin="0" Padding="40" Style="{x:Static resources:Styles.PopupTitleLabelStyle}"  BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}"/>
+                <Grid Grid.Row="1" RowSpacing="0" ColumnSpacing="30" Margin="{OnIdiom Phone='20,0,20,10',Default='30,0,30,10'}"  BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <!-- <ColumnDefinition Width="20" />-->
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="{OnPlatform Default='30', Android='40'}" />
+                        <RowDefinition Height="1" />
+                    </Grid.RowDefinitions>
+                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+                    <Button Grid.Row="0" Grid.Column="0" Text="Primary info"  Style="{x:Static resources:Styles.TabButtonStyle}"  Command="{Binding PrimaryInfoCommand}" CommandParameter="addDetail"/>
+                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="0" BackgroundColor="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView" Binding="{Binding IsPriaryInfoActive}" Value="True">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                    <Button Grid.Row="0" Grid.Column="1" Text="More details"  Style="{x:Static resources:Styles.TabButtonStyle}"  Command="{Binding MoreDetailsCommand}" />
+                    <BoxView IsVisible="false" Grid.Row="1" Grid.Column="1" BackgroundColor="{x:Static resources:AppColors.HikeColor}" HeightRequest="1">
+                        <BoxView.Triggers>
+                            <DataTrigger TargetType="BoxView" Binding="{Binding IsPriaryInfoActive}" Value="False">
+                                <Setter Property="IsVisible" Value="True" />
+                            </DataTrigger>
+                        </BoxView.Triggers>
+                    </BoxView>
+                </Grid>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

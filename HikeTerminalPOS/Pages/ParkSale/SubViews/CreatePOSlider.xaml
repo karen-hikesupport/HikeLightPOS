@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:HikePOS"
+		xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+	    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:TypeArguments="vm:CreatePOViewModel"
+		xmlns:behaviors="clr-namespace:HikePOS.Behaviors"  
+        x:DataType="vm:CreatePOViewModel"
+		x:Class="HikePOS.CreatePOSlider" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" HorizontalOptions="End" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                        <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+
+            <StackLayout x:Name="rootview" Grid.Row="0" Grid.Column="1" Spacing="0" BackgroundColor="White">
+                <Label Text="{Localize:Translate CreatePOText}" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid Margin="{OnIdiom Phone='20,0',Default='40,0'}" RowSpacing="0" ColumnSpacing="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="80" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="POSummaryText" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5"  Style="{x:Static resources:Styles.PopupSaleDetailCustomerTitleLabelStyle}" HorizontalTextAlignment="Start" Margin="0,0,0,20" />
+
+                    <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+
+                    <Label Text="{Localize:Translate OrderItemTitleText}" Grid.Row="2" Grid.Column="0" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="0,10,5,10"/>
+                    <Label Text="{Localize:Translate QuantityTitleText}" Grid.Row="2" Grid.Column="1" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="0,10,5,10"/>
+                    <Label Text="{Localize:Translate ReceivedTitleText}" Grid.Row="2" Grid.Column="2" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="0,10,5,10"/>
+                    <Label Text="{Localize:Translate SuppliersTitleText}" Grid.Row="2" Grid.Column="3" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="0,10,5,10"/>
+
+                    <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="5" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                    <!--Ticket start:#84288 iOS: FR:Backorder Management.by rupesh-->
+                    <StackLayout x:Name="POListView" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5" BindableLayout.ItemsSource="{Binding PurchaseOrderes}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="model:PurchaseOrderDto">
+                                <StackLayout  x:Name="SubPOListView" BindableLayout.ItemsSource="{Binding PurchaseOrderLineItems}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="model:PurchaseOrderLineItemDto">
+                                            <Grid RowSpacing="0" ColumnSpacing="0" Padding="{OnIdiom Phone='0,0,5,0',Default='0'}">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="80" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="0.5" />
+                                                </Grid.RowDefinitions>
+                                                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="5" VerticalOptions="Center">
+                                                     <Label Text="{Binding Title}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center"/>
+                                                     <Label Text="{Binding RoundedOnHandstock,StringFormat='(On hand: {0} )'}" FontSize="12" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PlaceholderColor}" VerticalTextAlignment="Center"/>
+                                                </VerticalStackLayout>
+                                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding RoundedQuantity}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HeightRequest="40" Margin="0,10,0,10"/>
+                                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding RoundedReceivedQty}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HeightRequest="40" Margin="0,10,0,10"/>
+                                                <Label Grid.Row="0" Grid.Column="3" Text="{Binding Source={x:Reference SubPOListView}, Path=BindingContext.SupplierName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HeightRequest="40" Margin="0,10,0,10"/>
+                                                <VerticalStackLayout Grid.Row="0" Grid.Column="4" Spacing="5" VerticalOptions="Center">
+                                                     <!-- Ticket start:#84288 iOS: FR:Backorder Management.by rupesh -->
+                                                     <Label Text="{Binding POCreatedNumber}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.ProductBlueColor}" VerticalTextAlignment="Center"/>
+                                                     <Label Text="{Binding POLineStatus}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center"/>
+                                                     <!-- Ticket end:#84288 .by rupesh -->
+                                                     <VerticalStackLayout.Triggers>
+                                                        <DataTrigger TargetType="VerticalStackLayout" Binding="{Binding Id}" Value="0">
+                                                            <Setter Property="IsVisible" Value="false" />
+                                                        </DataTrigger>
+                                                    </VerticalStackLayout.Triggers>
+                                                </VerticalStackLayout>
+                                                <Button Grid.Row="0" Grid.Column="4" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CreatePOViewModel}}, Path=CreatePOCommand,x:DataType=vm:CreatePOViewModel}" CommandParameter="{Binding Source={RelativeSource AncestorType={x:Type model:PurchaseOrderDto}}, Path=.,x:DataType=model:PurchaseOrderDto}" IsVisible="false" HeightRequest="30" BorderWidth="1" VerticalOptions="Center" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" Text="{Localize:Translate CreateDraftPOButtonText}" BorderColor="Gray" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" Padding="{OnIdiom Phone='5,0,5,0',Default='8,0'}">
+                                                    <Button.Triggers>
+                                                        <DataTrigger TargetType="Button" Binding="{Binding Id}" Value="0">
+                                                            <Setter Property="IsVisible" Value="True" />
+                                                        </DataTrigger>
+                                                    </Button.Triggers>
+                                                </Button>
+                                                <BoxView Color="{x:Static resources:AppColors.LightBordersColor}" Grid.Row="1" Grid.Column="0" HeightRequest="0.5" Grid.ColumnSpan="5" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                    <!--Ticket end:#84288.by rupesh-->
+                </Grid>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

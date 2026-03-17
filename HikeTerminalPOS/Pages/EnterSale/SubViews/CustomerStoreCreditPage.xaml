@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+    x:Class="HikePOS.CustomerStoreCreditPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:DataType="vm:CustomerStoreCreditViewModel"
+    xmlns:model="clr-namespace:HikePOS.Models.Customer"
+    x:TypeArguments="vm:CustomerStoreCreditViewModel" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                    <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    <Button Text="{Localize:Translate IssueStoreCredit_Text}" Command="{Binding StoreCreditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
+                </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="30,0,30,0">
+                        <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        <Button Text="{Localize:Translate IssueStoreCredit_Text}" Command="{Binding StoreCreditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
+                    </StackLayout>
+                 </OnIdiom.Phone>
+             </OnIdiom>
+            <Grid Grid.Row="0" Grid.Column="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                 BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" RowSpacing="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="110" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Text="Credit balance" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                <Grid Grid.Row="1" Margin="30,0,30,0" HeightRequest="50" RowSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5" />
+                        <RowDefinition Height="49" />
+                        <RowDefinition Height="0.5" />
+                    </Grid.RowDefinitions>  
+                    <BoxView Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                    <Label Grid.Row="1" Grid.Column="0" Text="{Localize:Translate DateText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" Margin="0,5,5,5" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Localize:Translate StatusText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="0,5,5,5" />
+                    <Label Grid.Row="1" Grid.Column="2" Text="{Localize:Translate AmountText}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" Margin="0,5,5,5" />
+                    <BoxView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" HeightRequest="0.5" />
+                </Grid>
+                <CollectionView Grid.Row="2" Margin="30,5,30,0" BackgroundColor="Transparent" ItemsSource="{Binding HistoryList}" 
+                    SelectionMode="None" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate  x:DataType="model:CreditBalanceHistoryDto">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="0.5" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding CreationTime, StringFormat='{0:D}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" Margin="0,10,0,10" />
+                                <!--Ticket start:#71139:iOS: Store credit balance history not working.by rupesh-->
+                                <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0,10,0,10">
+                                <Label  Text="{Binding AccountTransactionTypeName}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"  />
+                                <Label IsVisible="{Binding InvoiceNo,Converter={Helpers:NullValueBoolConverter}}" Text="{Binding InvoiceNo,StringFormat='#{0}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"  />
+                                </StackLayout>
+                                <!--Ticket end:#71139.by rupesh-->
+                                <!--Ticket start:#72472 Couldn't remove store credit payment from sales.by rupesh-->
+                                <Label Grid.Row="0" Grid.Column="2" Text="{Binding 	CreditAmount, StringFormat='{0:c}'}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Margin="0,10,5,10" />
+                                <!--Ticket end:#72472 .by rupesh-->
+                                <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

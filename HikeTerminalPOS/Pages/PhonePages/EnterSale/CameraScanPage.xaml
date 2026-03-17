@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="HikePOS.CameraScanPage" 
+    xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" 
+    xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls"
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:TypeArguments="vm:BaseViewModel"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid BackgroundColor="White" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{OnPlatform iOS='44', Android='50'}"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="CameraGrid" BackgroundColor="{x:Static resources:AppColors.CameraBG}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  Grid.Row="1" Grid.Column="0" IsClippedToBounds="True">
+            <Grid x:Name="mainStackView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                              IsClippedToBounds="True" >
+            </Grid>
+            <StackLayout x:Name="flashView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" 
+                             BackgroundColor="White" Opacity="0"/>
+
+            <Grid Padding="30,60" BackgroundColor="Transparent" VerticalOptions="FillAndExpand">
+                <Image Source="focus_barcode" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+            </Grid>
+            <StackLayout BackgroundColor="Transparent" VerticalOptions="Start" >
+                <StackLayout x:Name="noMatchView" BackgroundColor="#80000000" Padding="12"
+                             Opacity="0" Spacing="12">
+                    <Label Text="{Localize:Translate ProductNotFound}" TextColor="White"
+                           FontSize="14" FontFamily="OpenSansSemibold" LineBreakMode="WordWrap"/>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout x:Name="stkTouch" HeightRequest="60" BackgroundColor="Transparent" VerticalOptions="End">
+                <Image x:Name="imgLight" Source="turn_on" WidthRequest="100" HeightRequest="40" Aspect="AspectFill"/>
+            </StackLayout>
+            <StackLayout x:Name="stkPermissions" IsVisible="False" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Spacing="15" Padding="60,5">
+                <Label Text="{Localize:Translate AccessCameraTitle}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" TextColor="White"
+                        LineBreakMode="WordWrap" HorizontalTextAlignment="Center" WidthRequest="220"/>
+                <Label Text="{Localize:Translate AccessCameraMsg}" LineBreakMode="WordWrap" TextColor="White"
+                        Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" HorizontalTextAlignment="Center"  />
+                <Button Text="{Localize:Translate OpenSettings}" Padding="10,3" BackgroundColor="White" FontSize="16" MinimumHeightRequest="34"
+                        TextColor="{x:Static resources:AppColors.HikeColor}" Clicked="OpenSettings" HorizontalOptions="Center"/>
+            </StackLayout>
+        </Grid>
+        <Grid Grid.Row="0" VerticalOptions="FillAndExpand" BackgroundColor="White" ColumnDefinitions="70,*,70">
+            <StackLayout Orientation="Horizontal" Spacing="0" VerticalOptions="CenterAndExpand" HorizontalOptions="Start" Margin="20,0,0,0">
+                <Label Text="{Localize:Translate BackIconUnicode}" VerticalOptions="Center"  Margin="0,0,0,2" TextColor="Black" FontSize="35" Style="{x:Static resources:Styles.PageBackLabelStyle}" />
+                <Label Text="Back" Margin="0,0,0,0" VerticalOptions="Center" Style="{x:Static resources:Styles.PageTitleLabelStyle}" />
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="Back_Tapped" />
+                </StackLayout.GestureRecognizers>
+            </StackLayout>
+            <Label Text="Barcode Scanner" Grid.Column="1" Grid.Row="0" Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+        </Grid>
+    </Grid>
+</local:BaseContentPage>

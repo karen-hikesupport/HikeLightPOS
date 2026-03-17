@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                xmlns:local="clr-namespace:HikePOS"
+                xmlns:resources="clr-namespace:HikePOS.Resources"
+                xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS"
+                xmlns:userControls="clr-namespace:HikePOS.UserControls"
+                xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+                xmlns:vm="clr-namespace:HikePOS.ViewModels"
+                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                x:TypeArguments="vm:BaseViewModel"
+                x:Class="HikePOS.Pages.EmailSendPopupPage"
+                ShowDirection="TopToBottom"
+                Title="Title" x:Name="PopupPage" IsFullScreen="false" BackgroundColor="{StaticResource PopupBG}">
+
+    <Grid x:Name="maingrid" RowSpacing="0" Padding="10" MinimumHeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="0.5"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.5"/>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Text="{Localize:Translate Email}" FontSize="18" FontFamily="{x:Static resources:Fonts.HikeBoldFont}"
+                 TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Margin="10,0" VerticalTextAlignment="Center"/>
+            <VerticalStackLayout Grid.Row="2" VerticalOptions="Start" Margin="{OnIdiom Phone='5,0', Default='15,0'}" Spacing="20">
+                <Grid ColumnSpacing="12" ColumnDefinitions="65,*">
+                    <Label Grid.Column="0" HorizontalTextAlignment="End" HeightRequest="44" VerticalTextAlignment="Center" VerticalOptions="Start" Text="To" 
+                        FontSize="14" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" 
+                        TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                    <Border Grid.Column="1" Style="{x:Static resources:Styles.EmailListRoundBorderStyle}" Padding="2,0,0,0" VerticalOptions="Start">
+                        <VerticalStackLayout VerticalOptions="Start">
+                            <ScrollView x:Name="emailSV" MaximumHeightRequest="180" VerticalOptions="Start" VerticalScrollBarVisibility="Never" Orientation="Vertical" >
+                                <FlexLayout x:Name="vstemaillist" Wrap="Wrap" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BackgroundColor="Transparent" Padding="5,0,0,0" Margin="{OnIdiom Phone='3,3,3,2', Default='5,5,5,2'}" VerticalOptions="Center"
+                                                Stroke="LightGray" StrokeThickness="1" StrokeShape="RoundRectangle 5">
+                                                <HorizontalStackLayout Spacing="10">
+                                                    <Label Text="{Binding .}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center"  FontSize="14" Margin="0,2,0,3"
+                                                        LineBreakMode="WordWrap" MaximumWidthRequest="{OnIdiom Phone='150',Default='350'}"/>                                                         
+                                                    <Border BackgroundColor="{x:Static resources:AppColors.LightBordersColor}" Stroke="{x:Static resources:AppColors.LightBordersColor}" StrokeThickness="1"
+                                                        WidthRequest="30" StrokeShape="RoundRectangle 5" VerticalOptions="Fill">
+                                                            <!-- <Label Text="x" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Margin="0,-2,0,0"
+                                                                TextColor="{x:Static resources:AppColors.PrimaryTextColor}" FontSize="14" WidthRequest="30"/> -->
+                                                                <Image HorizontalOptions="Center" VerticalOptions="Center"
+                                                                    Margin="0,-2,0,0" WidthRequest="15" HeightRequest="15" Source="cross_mark" />
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"  CommandParameter="{Binding .}" />
+                                                        </Border.GestureRecognizers>
+                                                    </Border>
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </FlexLayout>
+                            </ScrollView>
+                            <userControls:BorderLessEntry x:Name="txtemail" Placeholder="Enter email" Keyboard="Email" ReturnType="Done"
+                                 Style="{x:Static resources:Styles.FormBigEntryStyle}" HeightRequest="46" Completed="BorderLessEntry_Completed" TextChanged="txtemail_TextChanged"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+                <Grid  ColumnSpacing="12" ColumnDefinitions="65,*" Margin="0,0,0,10">
+                    <Label Grid.Column="0" HorizontalTextAlignment="End" VerticalOptions="Start" Text="Subject" 
+                        FontSize="14" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                    <Label Grid.Column="1" x:Name="txtSubject" HorizontalOptions="Start" Text="Subject" 
+                        FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}"/>
+                </Grid>
+            </VerticalStackLayout>
+            <HorizontalStackLayout Grid.Row="4" HeightRequest="50" Spacing="20" Margin="0,20,0,10" HorizontalOptions="Center">
+                <Button x:Name="btnClose" Text="Cancel"  BackgroundColor="Gray"
+                    Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" WidthRequest="110"
+                    Padding="10,0" Clicked="btnClosed_Clicked" /> 
+                 <Button x:Name="btnContinue" Text="Send" 
+                    Style="{x:Static resources:Styles.PaymentTypeButtonStyle}" WidthRequest="110"
+                    Padding="10,0" Clicked="btnContinue_Clicked"/>  
+            </HorizontalStackLayout>
+        </Grid>
+</local:PopupBasePage>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        x:Class="HikePOS.ProductSortMenuView"
+        xmlns:resources="clr-namespace:HikePOS.Resources"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+        xmlns:model="clr-namespace:HikePOS.ViewModels"
+        x:DataType="model:EnterSaleViewModel"
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS">
+    <ContentView.Content>
+            <StackLayout WidthRequest="260" Spacing="1" BackgroundColor="White">
+            <Button Clicked="CreationTimeOldest_Clicked" Text= "{Localize:Translate CreationTimeOldestText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background ="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='CreationTimeOldest'}"/>
+            <Button Clicked="CreationTimeNewest_Clicked" Text="{Localize:Translate CreationTimeNewestText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='CreationTimeNewest'}"/>
+            <Button Clicked="SKUAtoZ_Clicked" Text="{Localize:Translate SKUAtoZText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='SKUAtoZ'}"/>
+            <Button Clicked="SKUZtoA_Clicked" Text="{Localize:Translate SKUZtoAText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='SKUZtoA'}"/>
+            <Button Clicked="ProductNameAtoZ_Clicked" Text="{Localize:Translate ProductNameAtoZText}"
+                     Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='ProductNameAtoZ'}"/>
+            <Button Clicked="ProductNameZtoA_Clicked" Text="{Localize:Translate ProductNameZtoAText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='ProductNameZtoA'}"/>
+            <Button Clicked="RetailPriceLowToHigh_Clicked" Text="{Localize:Translate RetailPriceLowToHighText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='RetailPriceLowToHigh'}"/>
+            <Button Clicked="RetailPriceHighToLow_Clicked" Text="{Localize:Translate RetailPriceHighToLowText}"
+                    Style="{x:Static resources:Styles.SalesFilterStatusOptionButtonStyle}"
+                    Background="{Binding SelectedSortingMenu, Converter={Helpers:SortToColorConverter}, ConverterParameter='RetailPriceHighToLow'}"/>
+            </StackLayout>
+    </ContentView.Content>
+</ContentView>

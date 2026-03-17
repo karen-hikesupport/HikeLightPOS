@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+        x:Class="HikePOS.ClockInOutPage" 
+        xmlns:local="clr-namespace:HikePOS" 
+        xmlns:resources="clr-namespace:HikePOS.Resources" 
+        xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+        xmlns:userControls="clr-namespace:HikePOS.UserControls"
+        xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:AllUserViewModel"
+        xmlns:model="clr-namespace:HikePOS.Models"
+        x:DataType="vm:AllUserViewModel"
+        xmlns:Helpers="clr-namespace:HikePOS.Helpers" BackgroundColor="{StaticResource PopupBG}">
+       <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                   <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                 </StackLayout>
+                 </OnIdiom.Tablet>
+                  <OnIdiom.Phone>
+                 <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
+                    <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                 </StackLayout>
+                 </OnIdiom.Phone>
+            </OnIdiom>           
+            <Grid RowDefinitions="120,*" Grid.Row="0" Grid.Column="1" BackgroundColor="White" >
+                
+                <Label Grid.Row="0" Text="Clock In Out" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" TextColor="{x:Static resources:AppColors.DarkTextColor}" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" Margin="10,50,10,50" />
+               
+                <ContentView Grid.Row="1" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" VerticalOptions="FillAndExpand" >
+                <CollectionView x:Name="UserListView" 
+                                VerticalOptions="FillAndExpand" 
+                                HorizontalOptions="FillAndExpand"                                
+                                Margin="5,5,5,24"
+                                SelectionChangedCommand="{Binding UserClockInOutSelectedCommand}" 
+                                SelectedItem="{Binding SelectedClockInOutUser}"
+                                ItemsSource="{Binding ClockInOutUsers}"
+                                ItemSizingStrategy = "MeasureFirstItem">
+                         <CollectionView.ItemsLayout>
+                            <GridItemsLayout Orientation="Vertical" Span="3" VerticalItemSpacing="0" HorizontalItemSpacing="5"/> 
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:UserClockActivityDto">
+                                    <ContentView HeightRequest="220">
+                                        <Grid ColumnSpacing="0" BackgroundColor="White" Margin="0,5,0,0" RowSpacing="0" Padding="0.5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="20" />
+                                                <RowDefinition Height="30" />
+                                                <RowDefinition Height="35" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Border StrokeShape="RoundRectangle 45,45,45,45" Grid.Row="0" Margin="0,5,0,0" Grid.Column="0" HorizontalOptions="Center" HeightRequest="90" WidthRequest="90" Stroke="{x:Static resources:AppColors.LightBordersColor}" Padding="0">
+                                                <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                                    <Label Text="{Binding User.DisplayName, Converter={Helpers:StringToAvtarNameConverter}}" TextColor="White" FontSize="30" FontFamily="{x:Static resources:Fonts.HikeLightFont}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+                                                    <Image 
+                                                            Aspect="Fill" 
+                                                            VerticalOptions="FillAndExpand" 
+                                                            HorizontalOptions="FillAndExpand"
+                                                            >
+                                                            <Image.Source>
+                                                                <UriImageSource Uri="{Binding User.ProfilePictureId, Converter={Helpers:GuidToImageConverter}, ConverterParameter=User_Medium}" 
+                                                                    CacheValidity="30" 
+                                                                    CachingEnabled="true"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                </Grid>
+                                            </Border>
+                                            <ContentView Grid.Row="1">
+                                                <Label Text="{Binding User.DisplayNameInCaps}" FontSize="16" TextColor="{x:Static resources:AppColors.HikeColor}" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" HorizontalTextAlignment="Center" Margin="{OnIdiom Phone='6,5,6,2',Default='10,5,10,2'}"  MaxLines="1" LineBreakMode="TailTruncation"/>
+                                            </ContentView>
+                                            
+                                            <Grid Grid.Row="2">
+                                                <Label Text="Clocked Out" IsVisible="{Binding InTime, Converter={Helpers:NullValueInverseBoolConverter}}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="10,0,10,0" VerticalTextAlignment="End" />
+                                                <Label Text="Clocked In" IsVisible="{Binding InTime, Converter={Helpers:NullValueBoolConverter}}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" TextColor="#22eb22" Margin="10,0,10,0" VerticalTextAlignment="End" />
+                                                    <!--<Label.Triggers>
+                                                       <DataTrigger  TargetType="Label" Binding="{Binding DisplayInTime, Converter={Helpers:NullValueBoolConverter}}" Value="True" >
+                                                            <Setter Property="Text" Value="Clocked in" />
+                                                            <Setter Property="TextColor" Value="#22eb22" />
+                                                            <Setter Property="IsVisible" Value="True" />
+                                                       </DataTrigger>
+                                                           
+                                                    </Label.Triggers>-->
+                                            </Grid>
+                                             <Grid Grid.Row="3">
+                                                <Label Text="{Binding DisplayInTime, StringFormat='{0:hh.mmtt - dd MMM}'}" IsVisible="{Binding InTime, Converter={Helpers:NullValueBoolConverter}}" TextColor="Black" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="{OnIdiom Phone='6,5,6,0',Default='10,5,10,0'}" VerticalTextAlignment="Start" />
+                                                <Label Text="{Binding DisplayLastOutTime, StringFormat='{0:hh.mmtt - dd MMM}'}" IsVisible="{Binding InTime, Converter={Helpers:NullValueInverseBoolConverter}}" TextColor="#707070" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Margin="{OnIdiom Phone='6,5,6,0',Default='10,5,10,0'}" VerticalTextAlignment="Start" />
+
+                                            <!--<Label.Triggers>
+                                                <DataTrigger  TargetType="Label" Binding="{Binding DisplayLastOutTime, Converter={Helpers:NullValueBoolConverter}}" Value="True" >
+                                                    <Setter Property="Text" Value="{Binding DisplayLastOutTime, StringFormat='{0:hh.mmtt - dd MMM}'}" />
+                                                    <Setter Property="TextColor" Value="#707070" />
+                                                    <Setter Property="IsVisible" Value="True" />
+                                                </DataTrigger>
+                                            </Label.Triggers>-->
+
+                                        </Grid>
+                                            <Grid Grid.Row="4">
+                                                <Button Text="CLOCK IN" IsVisible="{Binding InTime, Converter={Helpers:NullValueInverseBoolConverter}}" BackgroundColor="Black" TextColor="White" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AllUserViewModel}}, Path=UpdateClockInOutCommand, x:DataType=vm:AllUserViewModel}" CommandParameter="{Binding User}" IsEnabled="{Binding IsEnabled}" Margin="{OnIdiom Phone='6,0',Default='10,0'}" />
+                                                <Button Text="CLOCK OUT" IsVisible="{Binding InTime, Converter={Helpers:NullValueBoolConverter}}" BackgroundColor="Black" TextColor="White" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AllUserViewModel}}, Path=UpdateClockInOutCommand, x:DataType=vm:AllUserViewModel}" CommandParameter="{Binding User}" IsEnabled="{Binding IsEnabled}" Margin="{OnIdiom Phone='6,0',Default='10,0'}" />
+                                            <!--<Button.Triggers>
+                                                <DataTrigger TargetType="Button" Binding="{Binding InTime, Converter={Helpers:NullValueBoolConverter}}" Value="True">
+                                                    <Setter Property="Text" Value="CLOCK OUT" />
+                                                </DataTrigger>
+                                            </Button.Triggers>-->
+                                            </Grid>
+                                        </Grid>
+                                    </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ContentView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>

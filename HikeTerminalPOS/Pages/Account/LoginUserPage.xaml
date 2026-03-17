@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		x:Class="HikePOS.LoginUserPage" xmlns:local="clr-namespace:HikePOS" 
+		xmlns:resources="clr-namespace:HikePOS.Resources" 
+		xmlns:userControls="clr-namespace:HikePOS.UserControls" 
+		xmlns:Helpers="clr-namespace:HikePOS.Helpers" 
+		xmlns:behaviors="clr-namespace:HikePOS.Behaviors"
+		xmlns:vm="clr-namespace:HikePOS.ViewModels"
+        x:TypeArguments="vm:LoginUserViewModel"
+		x:DataType="vm:LoginUserViewModel"
+		xmlns:enums="clr-namespace:HikePOS.Enums" 
+		BackgroundColor="Transparent" Title="{Binding Title}"
+		xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS">
+	<Grid BackgroundColor="{x:Static resources:AppColors.BackgroundColor}">
+		<ScrollView>
+			<Grid>
+				<VerticalStackLayout HorizontalOptions="Center"
+						VerticalOptions="Start">
+					<StackLayout x:Name="stklogo"
+							Orientation="Horizontal"
+							HeightRequest="100"
+							HorizontalOptions="Center"
+							Margin="0,100,0,0">
+						<Image Source="hike_logo_login.png"
+								WidthRequest="{x:OnIdiom Phone='130', Default='180'}"/>
+						<Image Source="arrow_teal.png"
+								WidthRequest="{x:OnIdiom Phone='70', Default='100'}"
+								Margin="{x:OnIdiom Phone='24,0,24,0', Default='50,0,15,0'}"/>
+						<Image Source="dail_hand.png"
+								WidthRequest="{x:OnIdiom Phone='90', Default='150'}"/>
+					</StackLayout>
+					<Label x:Name="lbltxt"
+							Text="Enter PIN to log in"
+							FontFamily="HikeDefaultFont"
+						   Style="{x:Static resources:Styles.FormEntryStyle}"
+						   Margin='24,30,24,0'
+							LineBreakMode="WordWrap"/>
+					<Grid x:Name="pingrid"
+							ColumnDefinitions='*,*,*,*'
+						  Margin='24,30,24,0' HorizontalOptions="Fill">
+						<Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="0"
+								Padding="0" WidthRequest="50">
+							<userControls:BackspaceEntry x:Name="Digit1"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit1_Focused"
+											   Text="{Binding OTPOne} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+											   Style="{x:Static resources:Styles.FormEntryStyle}"/>
+						</Border>
+						<Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="1"
+								Padding="0"
+								WidthRequest="50">
+							<userControls:BackspaceEntry  x:Name="Digit2"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit2_Focused"
+												Text="{Binding OTPTwo} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+												Style="{x:Static resources:Styles.FormEntryStyle}"
+									OnBackspacePressed="Digit_OnBackspacePressed"/>
+						</Border>
+						<Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="2"
+								Padding="0"
+								WidthRequest="50">
+							<userControls:BackspaceEntry x:Name="Digit3"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit3_Focused"
+											   Text="{Binding OTPThree} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+											   Style="{x:Static resources:Styles.FormEntryStyle}"
+									OnBackspacePressed="Digit_OnBackspacePressed"/>
+						</Border>
+						<Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="3"
+								Padding="0"
+								WidthRequest="50">
+							<userControls:BackspaceEntry x:Name="Digit4"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit4_Focused"
+											   Text="{Binding OTPFour} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+											   Style="{x:Static resources:Styles.FormEntryStyle}"
+									OnBackspacePressed="Digit_OnBackspacePressed"/>
+						</Border>
+						<!-- <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="4"
+								Padding="0">
+							<userControls:BackspaceEntry x:Name="Digit5"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit5_Focused"
+											   Text="{Binding OTPFive} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+											   Style="{x:Static resources:Styles.FormEntryStyle}"
+									OnBackspacePressed="Digit_OnBackspacePressed"/>
+						</Border>
+						<Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
+								Grid.Column="5"
+								Padding="0">
+							<userControls:BackspaceEntry x:Name="Digit6"
+									Keyboard="Numeric"
+									TextChanged="OnEntryTextChanged"
+									Focused="Digit6_Focused"
+											   Text="{Binding OTPSix} "
+									HorizontalTextAlignment="Center"
+									FontSize="Large"
+											   Style="{x:Static resources:Styles.FormEntryStyle}"
+									OnBackspacePressed="Digit_OnBackspacePressed"/>
+						</Border> -->
+						<!-- <Button Grid.Column="1" HeightRequest="60" FontSize="Large" Command="{Binding OTPCommand}"
+                                WidthRequest="{x:OnIdiom Phone='100', Default='150'}" Text="Pair" FontAttributes="Bold"
+                                TextColor="White" BackgroundColor="{StaticResource HikeColor}"/> -->
+					</Grid>
+				</VerticalStackLayout>
+			</Grid>
+		</ScrollView>
+	</Grid>
+</local:BaseContentPage>

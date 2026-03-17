@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:Helpers="clr-namespace:HikePOS.Helpers" x:Class="HikePOS.CustomerDeliveryPage" xmlns:local="clr-namespace:HikePOS" 
+    xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" 
+    xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:system="clr-namespace:System;assembly=mscorlib" 
+    xmlns:vm="clr-namespace:HikePOS.ViewModels"
+    x:TypeArguments="vm:CustomerDeliveryViewModel" 
+    x:DataType="vm:CustomerDeliveryViewModel"
+    xmlns:model="clr-namespace:HikePOS.Models"
+    x:Name="adddeliveryrpage" BackgroundColor="{StaticResource PopupBG}">
+   <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+             <OnIdiom x:TypeArguments="View">
+                 <OnIdiom.Tablet>
+                 <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                   <Button Command="{Binding CloseCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                   <Button IsVisible="{Binding IsDeliveryAddressExist,Converter={Helpers:InverseBoolConverter}}" Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                   <Button IsVisible="{Binding IsDeliveryAddressExist,Converter={Helpers:InverseBoolConverter}}" Text="Save And Select" Command="{Binding SaveSelectCommand}"  Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                   <Button IsVisible="{Binding IsDeliveryAddressExist}" Text="Add New" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+                   <Button IsVisible="{Binding IsEditDeliveryAddress}" Text="Delete" Command="{Binding DeleteCommand}"  Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" />
+               </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <ScrollView Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0">
+                        <StackLayout Spacing="20"  Orientation="Horizontal" >
+                           <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                           <Button IsVisible="{Binding IsDeliveryAddressExist,Converter={Helpers:InverseBoolConverter}}" Text="Save" Command="{Binding SaveCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                           <Button IsVisible="{Binding IsDeliveryAddressExist,Converter={Helpers:InverseBoolConverter}}" Text="Save And Select" Command="{Binding SaveSelectCommand}"  Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                           <Button IsVisible="{Binding IsDeliveryAddressExist}" Text="Add New" Command="{Binding AddNewCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                           <Button IsVisible="{Binding IsEditDeliveryAddress}" Text="Delete" Command="{Binding DeleteCommand}"  Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                        </StackLayout>
+                    </ScrollView>
+                 </OnIdiom.Phone>
+                </OnIdiom>
+            <Grid x:Name="rootview" RowDefinitions="Auto,1,*" Grid.Row="0" Grid.Column="1" RowSpacing="0" VerticalOptions="FillAndExpand" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                  <userControls:FixedScrollView IsVisible="{Binding IsDeliveryAddressExist,Converter={Helpers:InverseBoolConverter}}" Grid.Row="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                     <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <Grid RowSpacing="5" ColumnSpacing="30" Margin="{OnIdiom Phone='20,0',Default='30,0'}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="50" />
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="50" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Receiver name *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.ReceiverName}" x:Name="txtReceiverName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+                                 <Label Grid.Row="2" Grid.Column="0" Text="Receiver company name" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="3" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.ReceiverCompanyName}" x:Name="txtReceiverCompanyName" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+                                <Label Grid.Row="2" Grid.Column="1" Text="Receiver phone" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="3" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.ReceiverPhone}" x:Name="txtReceiverPhone" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+
+                                <Label Grid.Row="4" Grid.Column="0" Text="Street Address *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="5" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.Address1}" x:Name="txtStreetAddress" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+                                <Label Grid.Row="4" Grid.Column="1" Text="City / Suburb *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="5" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.City}" x:Name="txtCitySuburb" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+                                <Label Grid.Row="6" Grid.Column="0" Text="State / Territory *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="7" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.State}" x:Name="txtStateTerritory" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Keyboard="Email" />
+                                </Border>
+                                <Label Grid.Row="6" Grid.Column="1" Text="Postal / Zip code *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="7" Grid.Column="1" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <userControls:CustomEntry Text="{Binding DeliveryAddress.PostCode}" x:Name="txtPostalZipCode" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                </Border>
+                                <Label Grid.Row="8" Grid.Column="0" Text="Country *" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalOptions="Start" VerticalOptions="EndAndExpand" />
+                                <Border Grid.Row="9" Grid.Column="0" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Padding="0">
+                                    <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                        <Image Style="{x:Static resources:Styles.DropDownImageStyle}" />
+                                        <userControls:CustomPicker ItemsSource="{Binding CountryList}" DisplayProperty="displayText" SelectedItem="{Binding SelectedCountry}" BackgroundColor="Transparent" x:Name="PickerCountry" HorizontalOptions="FillAndExpand" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                     </StackLayout>
+                  </userControls:FixedScrollView>
+                 <Grid IsVisible="{Binding IsDeliveryAddressExist}" Grid.Row="2" ColumnSpacing="30" Margin="{OnIdiom Phone='20,10,20,0',Default='30,10,30,0'}"
+                       VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                        <CollectionView x:Name="collectionView" ItemsSource="{Binding DeliveryAddressList}">
+                            <CollectionView.ItemsLayout>
+                                <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="10" VerticalItemSpacing="10"/>
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="model:CustomerAddressDto">
+                                <Grid BackgroundColor="White"  HeightRequest="200">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="50" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Row="0" Grid.Column="0" Margin="5" Text="{Binding FullAddress}" />
+                                    <Button Grid.Row="1" Grid.Column="0" Margin="5" Text="Edit" BackgroundColor="White" TextColor="Black" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CustomerDeliveryViewModel}}, Path=EditAddressCommand, x:DataType=vm:CustomerDeliveryViewModel}" CommandParameter="{Binding .}" BorderWidth="1"  />
+                                    <Button IsVisible="{Binding IsSelected,Converter={Helpers:InverseBoolConverter}}" Grid.Row="1" Grid.Column="1" Margin="5" Text="Deliver Here" BackgroundColor="Black" TextColor="White" FontFamily="{x:Static resources:Fonts.HikeBoldFont}" Command="{Binding Source={RelativeSource AncestorType={x:Type vm:CustomerDeliveryViewModel}}, Path=DelivereHereCommand, x:DataType=vm:CustomerDeliveryViewModel}" CommandParameter="{Binding .}"/>
+                                    <ImageButton IsVisible="{Binding IsSelected}" Grid.Row="1" Grid.Column="1" Margin="5" Source="delivery_here" Aspect="AspectFit" />
+                                </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                  </Grid>
+                 <Label Text="{Binding Title}" Margin="0" Padding="40"  Style="{x:Static resources:Styles.PopupTitleLabelStyle}" />
+                 <BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="1" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+
+</local:PopupBasePage>

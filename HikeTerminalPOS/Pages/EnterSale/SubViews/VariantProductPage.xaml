@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<local:PopupBasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="HikePOS.VariantProductPage" xmlns:local="clr-namespace:HikePOS" xmlns:resources="clr-namespace:HikePOS.Resources" xmlns:Localize="clr-namespace:HikePOS;assembly=HikePOS" xmlns:userControls="clr-namespace:HikePOS.UserControls" xmlns:Helpers="clr-namespace:HikePOS.Helpers"
+          xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+          xmlns:vm="clr-namespace:HikePOS.ViewModels" 
+          x:TypeArguments="vm:VariantProductModel" 
+          x:DataType="vm:VariantProductModel" 
+          xmlns:model="clr-namespace:HikePOS.Models"
+          Title="{Binding Title}" x:Name="variantProductPage" BackgroundColor="{StaticResource PopupBG}">
+    <ContentPage.Content>
+        <Grid ColumnSpacing="0" RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="{OnIdiom Phone='60',Default='0'}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <OnIdiom x:TypeArguments="View">
+                <OnIdiom.Tablet>
+                    <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
+                        <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
+                    </StackLayout>
+                </OnIdiom.Tablet>
+                <OnIdiom.Phone>
+                    <StackLayout Spacing="20" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="40,0,40,0">
+                        <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
+                    </StackLayout>
+                </OnIdiom.Phone>
+            </OnIdiom>
+            <Grid RowDefinitions="Auto,Auto,Auto,*" x:Name="rootview" Grid.Row="0" Grid.Column="1" RowSpacing="0"
+                  BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}">
+                <Grid Grid.Row="0" RowSpacing="0" ColumnSpacing="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.1*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="0.1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <BoxView Grid.Row="0" Grid.Column="0" IsVisible="False"/>
+                    <Label Text="{Binding VariantProduct.Name}" FontSize="18" Grid.Row="0" Grid.Column="1" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" HorizontalOptions="Center" VerticalOptions="Start" Margin="40" />
+
+                    <Image Grid.Row="0" Grid.Column="2" WidthRequest="20" HeightRequest="20"
+Margin="10"  IsVisible="false" HorizontalOptions="End" VerticalOptions="Center"  Source="{x:Static resources:AppImages.SettingsIcon}">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SettingCommand}"/>
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                </Grid>
+                <Grid Grid.Row="1" ColumnSpacing="10" RowSpacing="0" Margin="20" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Grid.Column="0" Command="{Binding DecreaseHandleCommand}" FontSize="35" Text="-" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="Red" BorderWidth="0" CornerRadius="5" WidthRequest="50"
+                        HeightRequest="50" BackgroundColor="White" />
+                    <StackLayout Grid.Row="0" Grid.Column="1" Spacing="{OnIdiom Phone='2',Default='5'}" HorizontalOptions="CenterAndExpand">
+                        <Label FontSize="14" Text="Quantity" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryLightTextColor}" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalTextAlignment="Center" />
+                        <userControls:CustomEntry FontSize="28" x:Name="VariantProductQuantity" Text="{Binding StrQuantity}" FontFamily="{x:Static resources:Fonts.HikeLightFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" VerticalOptions="Center" HorizontalTextAlignment="Center" >
+                            <userControls:CustomEntry.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                                EventName="Unfocused"
+                                                Command="{Binding QuantityUnfocusedCommand}" />
+                            </userControls:CustomEntry.Behaviors>
+                        </userControls:CustomEntry>
+                    </StackLayout>
+                    <Button Grid.Row="0" Grid.Column="2" Command="{Binding IncreaseHandleCommand}" FontSize="35" Text="+" FontFamily="{x:Static resources:Fonts.HikeLightFont}"
+                            TextColor="Green" BorderWidth="0" CornerRadius="5" WidthRequest="50"
+                        HeightRequest="50" BackgroundColor="White" />
+                    <Border Grid.Row="0" Grid.Column="3" Style="{x:Static resources:Styles.FormRoundBorderStyle}" Margin="{OnIdiom Phone='5,0,0,0',Default='50,0,0,0'}" HorizontalOptions="FillAndExpand" Padding="0" >
+                        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                            <Image Style="{x:Static resources:Styles.DropDownImageStyle}" Margin="0,0,4,0" />
+                            <userControls:CustomPicker x:Name="orderpicker" BackgroundColor="Transparent"  HorizontalOptions="FillAndExpand"
+                                                       ItemsSource="{Binding OrderList}" SelectedIndex="{Binding SelectedIndex}"
+                                                       TextColor="{x:Static resources:AppColors.PrimaryTextColor}" Margin="{OnIdiom Phone='0,0,22,0',Default='0'}"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+                <BoxView Grid.Row="2" BackgroundColor="{x:Static resources:AppColors.DarkTextColor}" HeightRequest="0.5" VerticalOptions="Start" Margin="20,10,20,10" />
+                <CollectionView Grid.Row="3" x:Name="VariantListVIew" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Margin="20,20,20,0"  ItemsSource="{Binding VariantProduct.ProductAttributes}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" SelectionMode="None">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"  Span="3" VerticalItemSpacing="0" HorizontalItemSpacing="0"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ProductAttributeDto">
+                            <Grid RowSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" HeightRequest="{Binding ProductAtrHeight}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="{OnIdiom Phone='40',Default='30'}" />
+                                    <RowDefinition Height="0.5" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}"
+                                       LineBreakMode="WordWrap" HorizontalOptions="FillAndExpand" VerticalTextAlignment="Center"
+                                       HeightRequest="{OnIdiom Phone='40',Default='40'}" MinimumWidthRequest="30" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" />
+                                <BoxView Grid.Row="1" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" />
+                                <CollectionView Grid.Row="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
+                                     ItemsSource="{Binding ProductAttributeValues}" BackgroundColor="Transparent" SelectionMode="None">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:ProductAttributeValueDto">
+                                                <Border BackgroundColor="White" HeightRequest="50" Stroke="Silver" Padding="0" Margin="5" VerticalOptions="Start">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="4" />
+                                                    </Border.StrokeShape>
+                                                    <Grid RowSpacing="0" ColumnSpacing="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*" />
+                                                        </Grid.RowDefinitions>
+                                                        <Button Grid.Row="0" Grid.Column="0" CommandParameter="{Binding .}" Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:VariantProductModel}}, Path=VariantAttributeSelectCommand,x:DataType=vm:VariantProductModel}" Text="{Binding Value}" IsEnabled="{Binding IsEnable}" FontSize="14" FontFamily="{x:Static resources:Fonts.HikeLightFont}" BorderColor="{x:Static resources:AppColors.LightBordersColor}" BorderWidth="0" >
+                                                            <Button.Triggers>
+                                                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                                                    <Setter Property="Background" Value="{x:Static resources:AppColors.HikeColor}" />
+                                                                    <Setter Property="TextColor" Value="White" />
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="False">
+                                                                    <Setter Property="Background" Value="White" />
+                                                                    <Setter Property="TextColor" Value="{x:Static resources:AppColors.DarkTextColor}" />
+                                                                </DataTrigger>
+                                                                <DataTrigger TargetType="Button" Binding="{Binding IsEnable}" Value="False">
+                                                                    <Setter Property="TextColor" Value="{x:Static resources:AppColors.LightBordersColor}" />
+                                                                </DataTrigger>
+                                                            </Button.Triggers>
+                                                        </Button>
+                                                        <Label Grid.Row="0" Grid.Column="1" BindingContext="{Binding .}" BackgroundColor="{x:Static resources:AppColors.HikeColor}" Text="{Binding Stock}" IsVisible="{Binding IsStockVisible}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="White" WidthRequest="60" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" VerticalTextAlignment="Center" HorizontalTextAlignment="Center">
+                                                            <Label.GestureRecognizers>
+                                                                <TapGestureRecognizer CommandParameter="{Binding .}" Command="{Binding  Source={RelativeSource AncestorType={x:Type vm:VariantProductModel}}, Path=VariantAttributeSelectCommand,x:DataType=vm:VariantProductModel}"/>
+                                                            </Label.GestureRecognizers>
+                                                        </Label>
+                                                    </Grid>
+                                                    <Border.Triggers>
+                                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="Background" Value="{x:Static resources:AppColors.HikeColor}" />
+                                                        </DataTrigger>
+                                                        <DataTrigger TargetType="Border" Binding="{Binding IsSelected}" Value="False">
+                                                            <Setter Property="Background" Value="White" />
+                                                        </DataTrigger>
+                                                    </Border.Triggers>
+                                                </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</local:PopupBasePage>
