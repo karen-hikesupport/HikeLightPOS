@@ -358,7 +358,7 @@ namespace HikePOS.ViewModels
         //#94565
 
         public ObservableCollection<FloorDto> FloorList { get; set; } //#94565
-
+        private CheckOutPage CheckOutPage = null;
         #endregion
 
         #region Constructor
@@ -1230,16 +1230,16 @@ namespace HikePOS.ViewModels
                         if (!HasInitialized)
                         {
                             HasInitialized = true;
-                            if (EnterSalePage != null)
-                                EnterSalePage.Customernamelbl.PropertyChanged += CustomerNameLableChanged;
-                            else
-                                EnterSalePagePhone.Customernamelbl.PropertyChanged += CustomerNameLableChanged;
+                            // if (EnterSalePage != null)
+                            //     EnterSalePage.Customernamelbl.PropertyChanged += CustomerNameLableChanged;
+                            // else
+                            //     EnterSalePagePhone.Customernamelbl.PropertyChanged += CustomerNameLableChanged;
                         }
 
-                        if (EnterSalePage != null && EnterSalePage.InvoiceNote.IsFocused)
-                            EnterSalePage.InvoiceNote.Unfocus();
-                        else if (EnterSalePagePhone != null && EnterSalePagePhone.InvoiceNote.IsFocused)
-                            EnterSalePagePhone.InvoiceNote.Unfocus();
+                        // if (EnterSalePage != null && EnterSalePage.InvoiceNote.IsFocused)
+                        //     EnterSalePage.InvoiceNote.Unfocus();
+                        // else if (EnterSalePagePhone != null && EnterSalePagePhone.InvoiceNote.IsFocused)
+                        //     EnterSalePagePhone.InvoiceNote.Unfocus();
 
                         if (EnterSalePage.PaymentActiveUpdated)
                         {
@@ -1374,16 +1374,16 @@ namespace HikePOS.ViewModels
         {
             if (!Settings.IsTextPrint)
             {
-                if (EnterSalePage != null && EnterSalePage._PrintReceiptSummaryView.Content == null)
-                {
-                    EnterSalePage._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
-                    InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePage._PrintReceiptSummaryView.Content;
-                }
-                else if (EnterSalePagePhone != null && EnterSalePagePhone._PrintReceiptSummaryView.Content == null)
-                {
-                    EnterSalePagePhone._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
-                    InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePagePhone._PrintReceiptSummaryView.Content;
-                }
+                // if (EnterSalePage != null && EnterSalePage._PrintReceiptSummaryView.Content == null)
+                // {
+                //     EnterSalePage._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
+                //     InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePage._PrintReceiptSummaryView.Content;
+                // }
+                // else if (EnterSalePagePhone != null && EnterSalePagePhone._PrintReceiptSummaryView.Content == null)
+                // {
+                //     EnterSalePagePhone._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
+                //     InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePagePhone._PrintReceiptSummaryView.Content;
+                // }
             }
         }
 
@@ -5215,9 +5215,34 @@ namespace HikePOS.ViewModels
             }
         }
         //End #90946 by Pratik
-        private void GoToCart_Click()
+        public async void GoToCart_Click()
         {
-            IsPhoneGridVisible = false;
+            //IsPhoneGridVisible = false;
+            if (CheckOutPage == null)
+            {
+                CheckOutPage = new CheckOutPage();
+
+                CheckOutPage.ViewModel.invoicemodel = invoicemodel;
+                CheckOutPage.ViewModel.productService = productService;
+                CheckOutPage.ViewModel.offerService = offerService;
+                CheckOutPage.ViewModel.paymentService = paymentService;
+                CheckOutPage.ViewModel.outletService = outletService;
+                CheckOutPage.ViewModel.customerService = customerService;
+                CheckOutPage.ViewModel.saleService = saleService;
+                CheckOutPage.ViewModel.userService = userService;
+                CheckOutPage.ViewModel.taxServices = taxServices;
+                CheckOutPage.ViewModel.RestaurantService = RestaurantService;
+                CheckOutPage.ViewModel.EnterSaleItems = EnterSaleItems;
+                CheckOutPage.ViewModel.Categories = Categories;
+                CheckOutPage.ViewModel.SelectedCategory = SelectedCategory;
+                CheckOutPage.ViewModel.AllProducts = AllProducts;
+                CheckOutPage.ViewModel.AllUnitOfMeasures = AllUnitOfMeasures;
+                CheckOutPage.ViewModel.Offers = Offers;
+                CheckOutPage.ViewModel.AllPaymentOptionList = AllPaymentOptionList;
+                CheckOutPage.ViewModel.UpdateCheckOutPage();
+            }
+            await NavigationService.PushAsync(CheckOutPage);
+
         }
 
         //#94565

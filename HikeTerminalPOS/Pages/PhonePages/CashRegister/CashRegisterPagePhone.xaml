@@ -44,7 +44,7 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
+                        <!-- <ColumnDefinition Width="Auto" /> -->
                     </Grid.ColumnDefinitions>
                     <!--<Label Grid.Row="0" Grid.Column="0" Text="{Localize:Translate SummaryText}" Margin="30,0,0,0" Style="{x:Static resources:Styles.PopupTitleLabelStyle}" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" />-->
                     <Button x:Name="PrintButton" Grid.Row="0" Grid.Column="0" WidthRequest="80" IsVisible="{Binding AllowPrint}" Text="{Localize:Translate PrintText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="10,10,0,10" Command="{Binding PrintCommand}" IsEnabled="{Binding EnablePrint}">
@@ -63,10 +63,10 @@
                         VerticalOptions="Center" Padding="8,5" Command="{Binding ShowSendEmailCommand}">
                     </Button>
                     <!--End #92768 Pratik-->
-                    <Button x:Name="AddRemoveCashButton" Grid.Row="0" Grid.Column="2" IsVisible="{Binding AllowAddRemoveCash}" WidthRequest="140" Text="In/Out Cash" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,0,10" Command ="{Binding AddRemoveCashCommand}"/>
+                    <!-- <Button x:Name="AddRemoveCashButton" Grid.Row="0" Grid.Column="2" IsVisible="{Binding AllowAddRemoveCash}" WidthRequest="140" Text="In/Out Cash" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,0,10" Command ="{Binding AddRemoveCashCommand}"/> -->
                     <!--Ticket start:#30341 Tyro payments are not recorded in the register causing discrepancy issue.by rupesh-->
                     <!--Start #91261 iOS:FR counted amount upon closing by Pratik-->
-                    <Button x:Name="OpenCloseRegisterButton" Grid.Row="0" Grid.Column="3" IsVisible="{Binding AllowOpenCloseRegister}" WidthRequest="130" Text="{Localize:Translate CloseRegisterText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,0,10"
+                    <Button x:Name="OpenCloseRegisterButton" Grid.Row="0" Grid.Column="2" IsVisible="{Binding AllowOpenCloseRegister}" WidthRequest="130" Text="{Localize:Translate CloseRegisterText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,0,10"
                          Command="{Binding CloseRegisterCommand}" IsEnabled="{Binding EnableOpenCloseRegister}" TextColor="{Binding EnableOpenCloseRegister, Converter={Helpers:EnableTextColorConverter}}">
                          <!--End #91261 by Pratik-->
                         <Button.Triggers>
@@ -82,7 +82,7 @@
                         </Button.Triggers>
                     </Button>
                     <!--Ticket start:#30341 .by rupesh-->
-                    <Button x:Name="ResetButton" Grid.Row="0" Grid.Column="4" WidthRequest="160" Text="{Localize:Translate ChangeRegisterOutletText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,30,10" Command="{Binding ChangeOutletRegisterCommand}" />
+                    <Button x:Name="ResetButton" Grid.Row="0" Grid.Column="3" WidthRequest="160" Text="{Localize:Translate ChangeRegisterOutletText}" Style="{x:Static resources:Styles.WhiteButtonStyle}" Margin="0,10,30,10" Command="{Binding ChangeOutletRegisterCommand}" />
                 </Grid>
             </ScrollView>
             <Label Text="{Localize:Translate CashRegister_EmptyMsg}" IsVisible="{Binding IsLastOpenRegister,Converter={Helpers:InverseBoolConverter}}" Margin="20,0"  BackgroundColor="White"
@@ -219,14 +219,14 @@
 
                         </userControls:ExpandCollapseView.ContainerContent>
                     </userControls:ExpandCollapseView>
-
+<!-- 
                     <userControls:ExpandCollapseView
                                     Title="Cash in / out"  
                                     Command="{Binding CashInOutCommand}"
                                     IsActive="{Binding IsCashInOut}">
-                        <userControls:ExpandCollapseView.ContainerContent>
+                        <userControls:ExpandCollapseView.ContainerContent> -->
                              <!--Ticket start: #91266 iOS:FR register report by pratik-->
-                            <Grid RowDefinitions="51,*,101" RowSpacing="0">
+                            <!-- <Grid RowDefinitions="51,*,101" RowSpacing="0">
                                 <Grid RowSpacing="0" ColumnSpacing="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*" />
@@ -267,8 +267,8 @@
                                             </Grid>
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
-                                </VerticalStackLayout>
-                                <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="0" HeightRequest="101">
+                                </VerticalStackLayout> -->
+                                <!-- <Grid Grid.Row="2" RowSpacing="0" ColumnSpacing="0" HeightRequest="101">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
@@ -287,10 +287,10 @@
                                         <Label Grid.Row="2" Grid.Column="1"  Text="{Binding Registerclosure.RegisterTotalCashOuts, StringFormat='{}{0:c}'}" FontSize="16" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
                                         <BoxView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"/>
                                     </Grid>
-                            </Grid>
+                            </Grid> -->
                             <!--Ticket end: #91266 by pratik-->
-                        </userControls:ExpandCollapseView.ContainerContent>
-                    </userControls:ExpandCollapseView>
+                        <!-- </userControls:ExpandCollapseView.ContainerContent>
+                    </userControls:ExpandCollapseView> -->
 
                     <userControls:ExpandCollapseView
                                     Title="Payment summary" 
@@ -327,7 +327,7 @@
                         </userControls:ExpandCollapseView.ContainerContent>
                     </userControls:ExpandCollapseView>
 
-                    <userControls:ExpandCollapseView
+                    <!-- <userControls:ExpandCollapseView
                                     Title="Sales summary" 
                                     Command="{Binding SalesSummaryCommand}"
                                     IsActive="{Binding IsSalesSummary}">
@@ -396,9 +396,9 @@
                                     <BoxView Grid.Row="17" Grid.Column="0" Grid.ColumnSpan="2" Color="{x:Static resources:AppColors.LightBordersColor}" HeightRequest="0.5" VerticalOptions="Start"  />
                                 </Grid>
                         </userControls:ExpandCollapseView.ContainerContent>
-                    </userControls:ExpandCollapseView>
+                    </userControls:ExpandCollapseView> -->
 
-                    <userControls:ExpandCollapseView
+                    <!-- <userControls:ExpandCollapseView
                                     Title="Tax Summary" 
                                     Command="{Binding TaxSummaryCommand}"
                                     IsActive="{Binding IsTaxSummary}">
@@ -457,7 +457,7 @@
                                 </Grid>
                             </Grid>
                         </userControls:ExpandCollapseView.ContainerContent>
-                    </userControls:ExpandCollapseView>
+                    </userControls:ExpandCollapseView> -->
 
                 </VerticalStackLayout>
             </ScrollView>

@@ -107,12 +107,12 @@
                                         Padding="0"
                                         Command="{Binding EmailHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}"/>
-                                <Button Text="{Localize:Translate PrintText}"
+                                <!-- <Button Text="{Localize:Translate PrintText}"
                                         Padding="0"
                                         Command="{Binding PrintHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}"
-                                        HorizontalOptions="End"/>
-                                <Button Text="{Localize:Translate GiftReceiptPrintText}"
+                                        HorizontalOptions="End"/> -->
+                                <!-- <Button Text="{Localize:Translate GiftReceiptPrintText}"
                                         Padding="0"
                                         Command="{Binding GiftReceiptPrintHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}"
@@ -123,20 +123,20 @@
                                                      Value="4">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
 
                                         <!--Ticket start:#22406 Quote sale.by rupesh-->
-                                        <DataTrigger TargetType="Button"
+                                        <!-- <DataTrigger TargetType="Button"
                                                      Binding="{Binding Invoice.Status}"
                                                      Value="11">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
                                         <!--Ticket end:#22406 Quote sale.by rupesh-->
 
-                                    </Button.Triggers>
-                                </Button>
-                                <Button Text="{Localize:Translate DeliveryReceiptPrintText}"
+                                    <!-- </Button.Triggers>
+                                </Button> -->
+                                <!-- <Button Text="{Localize:Translate DeliveryReceiptPrintText}"
                                         Padding="0"
                                         Command="{Binding DeliveryDocketReceiptPrintHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}"
@@ -159,18 +159,18 @@
                                                      Value="4">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
 
                                         <!--Ticket start:#22406 Quote sale.by rupesh-->
-                                        <DataTrigger TargetType="Button"
+                                        <!-- <DataTrigger TargetType="Button"
                                                      Binding="{Binding Invoice.Status}"
                                                      Value="11">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
                                         <!--Ticket end:#22406 Quote sale.by rupesh-->
-                                    </Button.Triggers>
-                                </Button>
+                                    <!-- </Button.Triggers>
+                                </Button> -->
 
                                 <Button x:Name="btnRefund"
                                         Text="{Localize:Translate RefundText}"
@@ -323,11 +323,11 @@
                                         Padding="5,0"
                                         Command="{Binding EmailHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
-                                <Button Text="{Localize:Translate PrintText}"
+                                <!-- <Button Text="{Localize:Translate PrintText}"
                                         Padding="5,0"
                                         Command="{Binding PrintHandleClickedCommand}"
-                                        Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
-                                <Button Text="{Localize:Translate GiftReceiptPrintText_Phone}"
+                                        Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/> -->
+                                <!-- <Button Text="{Localize:Translate GiftReceiptPrintText_Phone}"
                                         Padding="5,2"
                                         Command="{Binding GiftReceiptPrintHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
@@ -337,20 +337,20 @@
                                                      Value="4">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
 
                                         <!--Ticket start:#22406 Quote sale.by rupesh-->
-                                        <DataTrigger TargetType="Button"
+                                        <!-- <DataTrigger TargetType="Button"
                                                      Binding="{Binding Invoice.Status}"
                                                      Value="11">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
                                         <!--Ticket end:#22406 Quote sale.by rupesh-->
 
-                                    </Button.Triggers>
-                                </Button>
-                                <Button Text="{Localize:Translate DeliveryReceiptPrintText_Phone}"
+                                    <!-- </Button.Triggers>
+                                </Button> -->
+                                <!-- <Button Text="{Localize:Translate DeliveryReceiptPrintText_Phone}"
                                         Padding="5,2"
                                         Command="{Binding DeliveryDocketReceiptPrintHandleClickedCommand}"
                                         Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}">
@@ -372,18 +372,18 @@
                                                      Value="4">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
 
                                         <!--Ticket start:#22406 Quote sale.by rupesh-->
-                                        <DataTrigger TargetType="Button"
+                                        <!-- <DataTrigger TargetType="Button"
                                                      Binding="{Binding Invoice.Status}"
                                                      Value="11">
                                             <Setter Property="IsVisible"
                                                     Value="false"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
                                         <!--Ticket end:#22406 Quote sale.by rupesh-->
-                                    </Button.Triggers>
-                                </Button>
+                                    <!-- </Button.Triggers>
+                                </Button> -->
 
                                 <Button Text="{Localize:Translate RefundText}"
                                         Padding="5,0"

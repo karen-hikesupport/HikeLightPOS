@@ -455,7 +455,7 @@ namespace HikePOS.ViewModels
             {
                 _IsSuccessPaymentActive = value;
                 SetPropertyChanged(nameof(IsSuccessPaymentActive));
-                EnterSaleViewModel.IsSaleSucceess = IsSuccessPaymentActive;
+                CheckOutViewModel.IsSaleSucceess = IsSuccessPaymentActive;
                 IsDeliveryPrint = false;
                 if (IsSuccessPaymentActive)
                 {
@@ -8115,7 +8115,7 @@ namespace HikePOS.ViewModels
                                             await TextPrintInvoice(false, "invoice", false, false, false);
 
                                         Invoice = null;
-                                        EnterSaleViewModel.IsSaleSucceess = true;
+                                        CheckOutViewModel.IsSaleSucceess = true;
                                         await _navigationService.Navigation.PopAsync();
                                     }
                                 }
@@ -8161,7 +8161,7 @@ namespace HikePOS.ViewModels
                                         }
 
                                         Invoice = null;
-                                        EnterSaleViewModel.IsSaleSucceess = true;
+                                        CheckOutViewModel.IsSaleSucceess = true;
                                         await _navigationService.Navigation.PopAsync();
                                     }
                                 }

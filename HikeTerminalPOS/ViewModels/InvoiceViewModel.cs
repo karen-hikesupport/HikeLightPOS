@@ -710,13 +710,13 @@ namespace HikePOS.ViewModels
                                             // this.promptPopupPage.
                                             Invoice = null;
                                             InvoiceLineItems = new ObservableCollection<InvoiceLineItemDto>();
-                                            if(!Settings.IsTextPrint)
-                                            {
-                                                if (_navigationService.NavigatedPage is EnterSalePagePhone)
-                                                    ((EnterSalePagePhone)_navigationService.NavigatedPage)._PrintReceiptSummaryView.Content = null;
-                                                else
-                                                    ((EnterSalePage)_navigationService.NavigatedPage)._PrintReceiptSummaryView.Content = null;
-                                            }
+                                            // if(!Settings.IsTextPrint)
+                                            // {
+                                            //     if (_navigationService.NavigatedPage is EnterSalePagePhone)
+                                            //         ((EnterSalePagePhone)_navigationService.NavigatedPage)._PrintReceiptSummaryView.Content = null;
+                                            //     else
+                                            //         ((EnterSalePage)_navigationService.NavigatedPage)._PrintReceiptSummaryView.Content = null;
+                                            // }
 
                                         }
                                     }
@@ -790,8 +790,6 @@ namespace HikePOS.ViewModels
                             }
                             if (result)
                             {
-                                var vm = ((BaseContentPage<EnterSaleViewModel>)_navigationService.NavigatedPage).ViewModel;
-                                vm.CancelNadaPayTerminalAnyPendingSale();
                                 using (new Busy(this, true))
                                 {
                                     if (Invoice.Status == InvoiceStatus.initial || Invoice.Status == InvoiceStatus.Pending)
@@ -821,9 +819,9 @@ namespace HikePOS.ViewModels
                         }
                         IsOrdered = Invoice?.InvoiceLineItems == null ? false : Invoice.InvoiceLineItems.Any(); //#94565
                         SendPeerNotification(Invoice);
-                        if (_navigationService.NavigatedPage is BaseContentPage<EnterSaleViewModel>)
+                        if (_navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel>)
                         {
-                            var vm = ((BaseContentPage<EnterSaleViewModel>)_navigationService.NavigatedPage).ViewModel;
+                            var vm = ((BaseContentPage<CheckOutViewModel>)_navigationService.NavigatedPage).ViewModel;
                             vm?.UpdateViews();
                             if (result)
                             {

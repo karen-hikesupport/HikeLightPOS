@@ -1341,9 +1341,12 @@ namespace HikePOS.ViewModels
                 Shell.Current.CurrentItem = Shell.Current.Items[0];
                  _ = Task.Run(() =>
                 {
-                    MainThread.BeginInvokeOnMainThread(async()=> 
-                    { 
+                    MainThread.BeginInvokeOnMainThread(async()=>
+                    {
                         await ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.invoicemodel.ExchangeSaleFromHistory(refundInvoice);
+                        ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.GoToCart_Click();
+
+
                     });
                 });
                 
@@ -1510,9 +1513,11 @@ namespace HikePOS.ViewModels
                         Shell.Current.CurrentItem = Shell.Current.Items[0];
                         _ = Task.Run(() =>
                         {
-                            MainThread.BeginInvokeOnMainThread(async()=> 
-                            { 
+                            MainThread.BeginInvokeOnMainThread(async()=>
+                            {
                                 await ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.invoicemodel.ExchangeSaleFromHistory(refundInvoice);
+                                ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.GoToCart_Click();
+
                             });
                         });
                     }
@@ -1728,9 +1733,11 @@ namespace HikePOS.ViewModels
                              Shell.Current.CurrentItem = Shell.Current.Items[0];
                             _ = Task.Run(() =>
                             {
-                                MainThread.BeginInvokeOnMainThread(async()=> 
-                                { 
-                                    await((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.invoicemodel.RefundSaleFromHistory(refundInvoice);
+                                MainThread.BeginInvokeOnMainThread(async()=>
+                                {
+                                    await ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.invoicemodel.RefundSaleFromHistory(refundInvoice);
+                                    ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.GoToCart_Click();
+
                                 });
                             });
                         }

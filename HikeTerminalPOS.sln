@@ -3,33 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikeTerminalPOS", "HikeTerminalPOS\HikeTerminalPOS", "{F52D2230-D742-49B5-A246-EB832513B2CF}"
-EndProject
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Android_SDK", "Android_SDK", "{06EF9FFF-6365-4BF4-A644-F05B41BF2A9E}"
-EndProject
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SquarePOS", "Android_SDK\SquarePOS\SquarePOS.csproj", "{07E8AC67-CD6D-4002-A05B-7DD152703BE3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ePosSDK", "Android_SDK\ePosSDK\ePosSDK.csproj", "{6F25F385-CE30-42B3-8A40-FC32CD945FBC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TyroAndroid", "Android_SDK\TyroAndroid\TyroAndroid.csproj", "{826E5EF6-B058-4545-A21A-EE402E06888F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarIO", "Android_SDK\StarIO\StarIO.csproj", "{DCD3E92D-DA22-448D-A760-42C447F1E144}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarIOExtension", "Android_SDK\StarIOExtension\StarIOExtension.csproj", "{0B304CCB-BDB6-4262-9449-20B52ECFF167}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilistenChat", "Android_SDK\MobilistenChat\MobilistenChat.csproj", "{5361B93D-5311-47A8-AE35-A0586BF21973}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobilisten", "Android_SDK\Mobilisten\Mobilisten.csproj", "{06248E39-D758-4937-B613-03DF03456FFF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloverConnectorAndroid", "Android_SDK\CloverConnectorAndroid\CloverConnectorAndroid.csproj", "{9063782E-E219-4711-A11F-C14ED116E105}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TyroTapToPayAndroid", "Android_SDK\TyroTapToPayAndroid\TyroTapToPayAndroid.csproj", "{4143C8EB-AD97-4032-AFA6-3020F7D8860D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iZettleNewSDK", "Android_SDK\iZettleNewSDK\iZettleNewSDK.csproj", "{0314BFCB-DD72-4595-AF52-F89DB60AF93A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iMinPrinter", "Android_SDK\iMinPrinter\iMinPrinter.csproj", "{AB09DAB4-CD5C-4125-BCA2-4D03290D93BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikeTerminalPOS", "HikeTerminalPOS\HikePOS.csproj", "{F52D2230-D742-49B5-A246-EB832513B2CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

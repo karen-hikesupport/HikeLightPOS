@@ -113,6 +113,7 @@ namespace HikePOS.ViewModels
 
 		public LoginUserViewModel()
 		{
+			EnterSalePage.DataUpdated = true;
 			OTPCommand = new Command(async () => await ValidateOTP(this));
 
 		}
