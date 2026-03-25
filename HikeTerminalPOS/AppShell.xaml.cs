@@ -28,6 +28,7 @@ public partial class AppShell : Shell
    public AppShell()
 	{
 		InitializeComponent();
+        Routing.RegisterRoute(nameof(CheckOutPage), typeof(CheckOutPage));
         Routing.RegisterRoute(nameof(PaymentPage), typeof(PaymentPage));
 		profileService = new ProfileServices(profileApiService);
 		userService = new UserServices(userApiService);

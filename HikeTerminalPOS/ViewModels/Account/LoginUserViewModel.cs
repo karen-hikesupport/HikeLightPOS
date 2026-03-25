@@ -5,6 +5,7 @@ using HikePOS.Helpers;
 using HikePOS.Models;
 using Fusillade;
 using System.Collections.ObjectModel;
+using System.Web;
 
 namespace HikePOS.ViewModels
 {
@@ -30,6 +31,8 @@ namespace HikePOS.ViewModels
 
 		ApiService<ICustomerApi> customerApiService = new ApiService<ICustomerApi>();
 		CustomerServices customerService;
+		ApiService<IAccountApi> accountApiService = new ApiService<IAccountApi>();
+		AccountServices accountService;
 
 		public Entry DigitOne { get; set; }
 		private string _oTPEntry;
@@ -115,9 +118,14 @@ namespace HikePOS.ViewModels
 		{
 			EnterSalePage.DataUpdated = true;
 			OTPCommand = new Command(async () => await ValidateOTP(this));
+			accountService = new AccountServices(accountApiService);
 
 		}
-
+		public override void OnAppearing()
+		{
+			base.OnAppearing();
+			GetMerchantCode();
+		}
 		private async Task ValidateOTP(BaseViewModel viewmodel)
 		{
 			try
@@ -175,7 +183,7 @@ namespace HikePOS.ViewModels
 						userService = new UserServices(userApiService);
 						customerService = new CustomerServices(customerApiService);
 						saleService = new SaleServices(saleApiService);
-
+                       
 						await Login(this, "hikefash", "admin", "123qwe", subscriptionSevice, saleService, customerService, shopService, outletService, userService);
 
 					}
@@ -264,8 +272,6 @@ namespace HikePOS.ViewModels
 					NotificationToken = App.Instance.NotificationToken
 				};
 
-				var accountApiService = new ApiService<IAccountApi>();
-				var accountService = new AccountServices(accountApiService);
 				ResponseModel<string> LoginResponse = new ResponseModel<string>
 				{
 					success = false,
@@ -675,6 +681,19 @@ namespace HikePOS.ViewModels
 			{
 				ex.Track();
 			}
+		}
+		private async void GetMerchantCode()
+		{
+			var terminalId = "AMS1-000168232403847";
+			var response = await DependencyService.Get<INadaPayTerminalLocalAppService>().DiagnosisRequestToTerminal(terminalId);
+			if (response?.PaymentStatusSuccess == true)
+			{
+				string additionalResponse = response.AdditonalResponse;
+				var parsed = HttpUtility.ParseQueryString(additionalResponse);
+				string merchantCode = parsed["merchantAccount"];
+				var merchantInfo = await accountService.GetTenantInfo(merchantCode, terminalId);
+			}
+
 		}
 	}
 

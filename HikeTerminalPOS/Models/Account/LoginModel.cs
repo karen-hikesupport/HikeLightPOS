@@ -70,5 +70,9 @@ namespace HikePOS.Models
         public double? maximumDiscount { get; set; }
         public int id { get; set; }
     }
-
+    public class TenantInfoResponse
+    {
+        public int TenantId { get; set; }
+        public string StoreId { get; set; }
+    }
 }

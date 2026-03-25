@@ -25,9 +25,54 @@ using Android.Widget;
 
 namespace HikePOS.ViewModels
 {
-    public class CheckOutViewModel : BaseViewModel
+    public class CheckOutViewModel : BaseViewModel, IQueryAttributable
     {
 
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.ContainsKey("InvoiceModel"))
+                invoicemodel = query["InvoiceModel"] as InvoiceViewModel;
+            if (query.ContainsKey("ProductService"))
+                productService = query["ProductService"] as ProductServices;
+            if (query.ContainsKey("OfferService"))
+                offerService = query["OfferService"] as OfferServices;
+            if (query.ContainsKey("PaymentService"))
+                paymentService = query["PaymentService"] as PaymentServices;
+            if (query.ContainsKey("OutletService"))
+                outletService = query["OutletService"] as OutletServices;
+            if (query.ContainsKey("CustomerService"))
+                customerService = query["CustomerService"] as CustomerServices;
+            if (query.ContainsKey("SaleService"))
+                saleService = query["SaleService"] as SaleServices;
+            if (query.ContainsKey("UserService"))
+                userService = query["UserService"] as UserServices;
+            if (query.ContainsKey("TaxServices"))
+                taxServices = query["TaxServices"] as TaxServices;
+            if (query.ContainsKey("RestaurantService"))
+                RestaurantService = query["RestaurantService"] as RestaurantService;
+            if (query.ContainsKey("EnterSaleItems"))
+                EnterSaleItems = query["EnterSaleItems"] as ObservableCollection<EnterSaleItemDto>;
+
+            if (query.ContainsKey("Categories"))
+                Categories = query["Categories"] as ObservableCollection<CategoryDto>;
+
+            if (query.ContainsKey("SelectedCategory"))
+                SelectedCategory = query["SelectedCategory"] as CategoryDto;
+
+            if (query.ContainsKey("AllProducts"))
+                AllProducts = query["AllProducts"] as ObservableCollection<ProductDto_POS>;
+
+            if (query.ContainsKey("AllUnitOfMeasures"))
+                AllUnitOfMeasures = query["AllUnitOfMeasures"] as ObservableCollection<ProductUnitOfMeasureDto>;
+
+            if (query.ContainsKey("Offers"))
+                Offers = query["Offers"] as ObservableCollection<OfferDto>;
+
+            if (query.ContainsKey("AllPaymentOptionList"))
+                AllPaymentOptionList = query["AllPaymentOptionList"] as IEnumerable<PaymentOptionDto>;
+
+            UpdateCheckOutPage();
+        }
         public static bool IsSaleSucceess;
 
 
@@ -1901,7 +1946,8 @@ namespace HikePOS.ViewModels
 
         private void BackToEnterSale_Click()
         {
-            NavigationService.PopAsync(true);
+            if(invoicemodel?.Invoice?.Status != InvoiceStatus.Refunded)
+              NavigationService.PopAsync(true);
         }
         
     

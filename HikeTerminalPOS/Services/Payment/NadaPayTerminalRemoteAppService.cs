@@ -602,5 +602,10 @@ namespace HikePOS.Services
                 return hikePayTerminalResponse?.result;
             }
         }
+
+        public Task<HikePayTerminalResponse> DiagnosisRequestToTerminal(string terminalId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

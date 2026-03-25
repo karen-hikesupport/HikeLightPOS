@@ -217,6 +217,24 @@ namespace HikePOS.Services
                 return ShowError(ex.Message);
             }
         }
+        public async Task<HikePayTerminalResponse> DiagnosisRequestToTerminal(string terminalId)
+        {
+            if (!HasInternet())
+                return ShowError("NoInternetMessage");
+
+            try
+            {
+                _adyenClient.Config.LocalTerminalApiEndpoint = $"https://192.168.1.33:8443/nexo/";
+                var request = PrepareDiagnosisRequest(terminalId);
+                var result = await ExecuteAsync(request, new CancellationToken());
+                return HandleResponse(result);
+            }
+            catch (Exception ex)
+            {
+                return ShowError(ex.Message);
+            }
+        }
+
 
         #endregion
 
@@ -385,6 +403,27 @@ namespace HikePOS.Services
                     }
 
                 }
+                return responseModel;
+
+            }
+            else if (response?.MessagePayload is Adyen.Model.TerminalApi.DiagnosisResponse diagnosisResponse)
+            {
+                var json = JsonConvert.SerializeObject(diagnosisResponse);
+                Debug.WriteLine(json);
+                string additionResponse = diagnosisResponse.Response.AdditionalResponse;
+                var responseModel = new ResponseModel<HikePayTerminalResponse>
+                {
+                    result = new HikePayTerminalResponse
+                    {
+                        PaymentStatusSuccess = diagnosisResponse.Response.Result == ResultType.Success,
+                        AdditonalResponse = additionResponse,
+                        IsTaskCanceledException = false,
+                        IsInProgress = false,
+                        ErrorConditionType = diagnosisResponse.Response.ErrorCondition.HasValue ? (HikePOS.Models.Payment.ErrorConditionType)diagnosisResponse.Response.ErrorCondition.Value : HikePOS.Models.Payment.ErrorConditionType.Aborted // or default value
+                    },
+                    success = diagnosisResponse.Response.Result == ResultType.Success
+
+                };
                 return responseModel;
 
             }
@@ -579,6 +618,25 @@ namespace HikePOS.Services
                         ServiceID = lastServiceId,
                         MessageCategory = Adyen.Model.TerminalApi.MessageCategoryType.Payment
                     }
+                }
+            };
+        }
+        private Adyen.Model.TerminalApi.Message.SaleToPOIRequest PrepareDiagnosisRequest(string terminalId)
+        {
+            return new Adyen.Model.TerminalApi.Message.SaleToPOIRequest
+            {
+                MessageHeader = new Adyen.Model.TerminalApi.MessageHeader
+                {
+                    MessageClass = Adyen.Model.TerminalApi.MessageClassType.Service,
+                    MessageCategory = Adyen.Model.TerminalApi.MessageCategoryType.Diagnosis,
+                    MessageType = MessageType.Request,
+                    ServiceID = CommonMethods.Generate10CharsId(),
+                    SaleID = $"Hike_{Settings.TenantId}_{Guid.NewGuid()}",
+                    POIID = terminalId
+                },
+                MessagePayload = new DiagnosisRequest
+                {
+                    HostDiagnosisFlag = true
                 }
             };
         }

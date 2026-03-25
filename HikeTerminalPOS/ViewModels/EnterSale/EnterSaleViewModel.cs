@@ -2491,10 +2491,11 @@ namespace HikePOS.ViewModels
                                     RegisterName = Settings.CurrentRegister.Name
                                 }
                             },
-                            ConfigurationDetails = $"{{\"paymentType\":49,\"ipAddress\":\"127.0.0.1\",\"balanceAccountId\":\"BA3293B22322B75NX94W87295\",\"terminalId\":\"{terminalId}\"}}" 
+                            ConfigurationDetails = $"{{\"paymentType\":49,\"ipAddress\":\"127.0.0.1\",\"balanceAccountId\":\"BA3293B22322B75NX94W87295\",\"terminalId\":\"{terminalId}\"}}"
                           }
 
                 };
+
             }
             catch (Exception ex)
             {
@@ -5218,30 +5219,52 @@ namespace HikePOS.ViewModels
         public async void GoToCart_Click()
         {
             //IsPhoneGridVisible = false;
-            if (CheckOutPage == null)
-            {
-                CheckOutPage = new CheckOutPage();
+            // if (CheckOutPage == null)
+            // {
+            //     CheckOutPage = new CheckOutPage();
 
-                CheckOutPage.ViewModel.invoicemodel = invoicemodel;
-                CheckOutPage.ViewModel.productService = productService;
-                CheckOutPage.ViewModel.offerService = offerService;
-                CheckOutPage.ViewModel.paymentService = paymentService;
-                CheckOutPage.ViewModel.outletService = outletService;
-                CheckOutPage.ViewModel.customerService = customerService;
-                CheckOutPage.ViewModel.saleService = saleService;
-                CheckOutPage.ViewModel.userService = userService;
-                CheckOutPage.ViewModel.taxServices = taxServices;
-                CheckOutPage.ViewModel.RestaurantService = RestaurantService;
-                CheckOutPage.ViewModel.EnterSaleItems = EnterSaleItems;
-                CheckOutPage.ViewModel.Categories = Categories;
-                CheckOutPage.ViewModel.SelectedCategory = SelectedCategory;
-                CheckOutPage.ViewModel.AllProducts = AllProducts;
-                CheckOutPage.ViewModel.AllUnitOfMeasures = AllUnitOfMeasures;
-                CheckOutPage.ViewModel.Offers = Offers;
-                CheckOutPage.ViewModel.AllPaymentOptionList = AllPaymentOptionList;
-                CheckOutPage.ViewModel.UpdateCheckOutPage();
-            }
-            await NavigationService.PushAsync(CheckOutPage);
+            //     CheckOutPage.ViewModel.invoicemodel = invoicemodel;
+            //     CheckOutPage.ViewModel.productService = productService;
+            //     CheckOutPage.ViewModel.offerService = offerService;
+            //     CheckOutPage.ViewModel.paymentService = paymentService;
+            //     CheckOutPage.ViewModel.outletService = outletService;
+            //     CheckOutPage.ViewModel.customerService = customerService;
+            //     CheckOutPage.ViewModel.saleService = saleService;
+            //     CheckOutPage.ViewModel.userService = userService;
+            //     CheckOutPage.ViewModel.taxServices = taxServices;
+            //     CheckOutPage.ViewModel.RestaurantService = RestaurantService;
+            //     CheckOutPage.ViewModel.EnterSaleItems = EnterSaleItems;
+            //     CheckOutPage.ViewModel.Categories = Categories;
+            //     CheckOutPage.ViewModel.SelectedCategory = SelectedCategory;
+            //     CheckOutPage.ViewModel.AllProducts = AllProducts;
+            //     CheckOutPage.ViewModel.AllUnitOfMeasures = AllUnitOfMeasures;
+            //     CheckOutPage.ViewModel.Offers = Offers;
+            //     CheckOutPage.ViewModel.AllPaymentOptionList = AllPaymentOptionList;
+            //     CheckOutPage.ViewModel.UpdateCheckOutPage();
+            // }
+            //await NavigationService.PushAsync(CheckOutPage);
+            var parameters = new Dictionary<string, object>
+            {
+                { "InvoiceModel", invoicemodel },
+                { "ProductService", productService },
+                { "OfferService", offerService },
+                { "PaymentService", paymentService },
+                { "OutletService", outletService },
+                { "CustomerService", customerService },
+                { "SaleService", saleService },
+                { "UserService", userService },
+                { "TaxServices", taxServices },
+                { "RestaurantService", RestaurantService },
+                { "EnterSaleItems", EnterSaleItems },
+                { "Categories", Categories },
+                { "SelectedCategory", SelectedCategory },
+                { "AllProducts", AllProducts },
+                { "AllUnitOfMeasures", AllUnitOfMeasures },
+                { "Offers", Offers },
+                { "AllPaymentOptionList", AllPaymentOptionList }
+            };
+
+            await Shell.Current.GoToAsync("CheckOutPage", parameters);
 
         }
 

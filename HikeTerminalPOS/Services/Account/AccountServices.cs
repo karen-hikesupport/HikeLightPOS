@@ -395,16 +395,16 @@ namespace HikePOS.Services
                         switch (priority)
                         {
                             case Priority.Background:
-                                sendPasswordResetLinkTask = _apiService.Background.VerifySecurityCode(verifySecurityCodeDto,Settings.AccessToken);                                
+                                sendPasswordResetLinkTask = _apiService.Background.VerifySecurityCode(verifySecurityCodeDto, Settings.AccessToken);
                                 break;
                             case Priority.UserInitiated:
-                                sendPasswordResetLinkTask = _apiService.UserInitiated.VerifySecurityCode(verifySecurityCodeDto,Settings.AccessToken);
+                                sendPasswordResetLinkTask = _apiService.UserInitiated.VerifySecurityCode(verifySecurityCodeDto, Settings.AccessToken);
                                 break;
                             case Priority.Speculative:
-                                sendPasswordResetLinkTask = _apiService.Speculative.VerifySecurityCode(verifySecurityCodeDto,Settings.AccessToken);
+                                sendPasswordResetLinkTask = _apiService.Speculative.VerifySecurityCode(verifySecurityCodeDto, Settings.AccessToken);
                                 break;
                             default:
-                                sendPasswordResetLinkTask = _apiService.UserInitiated.VerifySecurityCode(verifySecurityCodeDto,Settings.AccessToken);
+                                sendPasswordResetLinkTask = _apiService.UserInitiated.VerifySecurityCode(verifySecurityCodeDto, Settings.AccessToken);
                                 break;
                         }
 
@@ -736,7 +736,27 @@ namespace HikePOS.Services
 
             return loginInformationResponse;
         }
-
+        public async Task<TenantInfoResponse> GetTenantInfo(string merchantCode, string terminalId)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    string baseUrl = "http://nadapayapi-dev.us-west-2.elasticbeanstalk.com/GetTenantFromTerminal";
+                    string url = $"{baseUrl}?MerchantCode={merchantCode}&TerminalSerialNumber={terminalId}";
+                    var response = await client.GetAsync(url);
+                    string json = await response.Content.ReadAsStringAsync();
+                    var tenantInfo = JsonConvert.DeserializeObject<TenantInfoResponse>(json);
+                    return tenantInfo;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Track();
+                return null;
+            }
+            
+        }
 
     }
 }

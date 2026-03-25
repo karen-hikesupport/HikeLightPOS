@@ -1338,7 +1338,8 @@ namespace HikePOS.ViewModels
                // var mainpage = (MainPage)_navigationService.MainPage;
                 await detailpage.ViewModel.Close();
                 //mainpage.ChangePage("EnterSalePage");
-                Shell.Current.CurrentItem = Shell.Current.Items[0];
+                // Shell.Current.CurrentItem = Shell.Current.Items[0];
+                await Shell.Current.GoToAsync("//EnterSalePagePhone");
                  _ = Task.Run(() =>
                 {
                     MainThread.BeginInvokeOnMainThread(async()=>
@@ -1510,7 +1511,8 @@ namespace HikePOS.ViewModels
                         //var mainpage = (MainPage)_navigationService.MainPage;
                         await detailpage.ViewModel.Close();
                         //mainpage.ChangePage("EnterSalePage");
-                        Shell.Current.CurrentItem = Shell.Current.Items[0];
+                        // Shell.Current.CurrentItem = Shell.Current.Items[0];
+                        await Shell.Current.GoToAsync("//EnterSalePagePhone");
                         _ = Task.Run(() =>
                         {
                             MainThread.BeginInvokeOnMainThread(async()=>
@@ -1730,7 +1732,8 @@ namespace HikePOS.ViewModels
                             //var mainpage = (MainPage)_navigationService.MainPage;
                             await detailpage.ViewModel.Close();
                             //mainpage.ChangePage("EnterSalePage");
-                             Shell.Current.CurrentItem = Shell.Current.Items[0];
+                             //Shell.Current.CurrentItem = Shell.Current.Items[0];
+                            await Shell.Current.GoToAsync("//EnterSalePagePhone");
                             _ = Task.Run(() =>
                             {
                                 MainThread.BeginInvokeOnMainThread(async()=>
@@ -1884,7 +1887,8 @@ namespace HikePOS.ViewModels
                // var mainpage = (MainPage)_navigationService.MainPage;
                 await detailpage.ViewModel.Close();
                 //mainpage.ChangePage("EnterSalePage");
-                 Shell.Current.CurrentItem = Shell.Current.Items[0];
+                //Shell.Current.CurrentItem = Shell.Current.Items[0];
+                await Shell.Current.GoToAsync("//EnterSalePagePhone");
                 await ((BaseContentPage<EnterSaleViewModel>)_navigationService.CurrentPage).ViewModel.invoicemodel.RefundSaleFromHistory(refundInvoice);
             }
             else
