@@ -89,7 +89,6 @@ namespace HikePOS.ViewModels
 				SetPropertyChanged(nameof(OTPFour));
 			}
 		}
-
 		// private string _oTPFive;
 		// public string OTPFive
 		// {
@@ -119,7 +118,18 @@ namespace HikePOS.ViewModels
 			EnterSalePage.DataUpdated = true;
 			OTPCommand = new Command(async () => await ValidateOTP(this));
 			accountService = new AccountServices(accountApiService);
-
+			if (true)
+			{
+				Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.ASYTest;
+				Settings.AccessTokenClientId = ServiceConfiguration.ASYAccessToken_Client_Id;
+				Settings.AccessTokenClientSecretId = ServiceConfiguration.ASYAccessToken_Client_Secret;
+			}
+			else
+			{
+				Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.Live;
+				Settings.AccessTokenClientId = ServiceConfiguration.AccessToken_Client_Id;
+				Settings.AccessTokenClientSecretId = ServiceConfiguration.AccessToken_Client_Secret;
+			}
 		}
 		public override void OnAppearing()
 		{
@@ -135,7 +145,7 @@ namespace HikePOS.ViewModels
 					OTPEntry = OTPEntry?.Trim();
 					if (!string.IsNullOrEmpty(OTPEntry))
 					{
-						int pin = Convert.ToInt32(OTPEntry);
+						//int pin = Convert.ToInt32(OTPEntry);
 						/*if (!string.IsNullOrEmpty(Settings.TempTenantId))
 						{
 
@@ -184,7 +194,7 @@ namespace HikePOS.ViewModels
 						customerService = new CustomerServices(customerApiService);
 						saleService = new SaleServices(saleApiService);
                        
-						await Login(this, "hikefash", "admin", "123qwe", subscriptionSevice, saleService, customerService, shopService, outletService, userService);
+						await Login(this, OTPEntry, subscriptionSevice, saleService, customerService, shopService, outletService, userService);
 
 					}
 					else
@@ -217,59 +227,34 @@ namespace HikePOS.ViewModels
 			// OTPSix = string.Empty;
 		}
 
-		public async Task Login(BaseViewModel viewmodel, string StoreWebAddress, string Email, string Password, SubscriptionSevice subscriptionSevice, SaleServices saleService, CustomerServices customerService, ShopServices shopService, OutletServices outletService, UserServices userService)
+		public async Task Login(BaseViewModel viewmodel, string userPin, SubscriptionSevice subscriptionSevice, SaleServices saleService, CustomerServices customerService, ShopServices shopService, OutletServices outletService, UserServices userService)
 		{
 
 			using (new Busy(viewmodel, true))
 			{
+				#region Login_Validation
 
-				if (StoreWebAddress == "HikeTest")
+				if (!App.Instance.IsInternetConnected)
 				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.Test;
-					Settings.AccessTokenClientId = ServiceConfiguration.ASYAccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.ASYAccessToken_Client_Secret;
+					//Application.Current.MainPage.DisplayAlert("Warning!!", "Please enter store name!", "Ok");
+					App.Instance.Hud.DisplayToast(LanguageExtension.Localize("NoInternetMessage"), Colors.Red, Colors.White);
+					return;
 				}
-				else if (StoreWebAddress.StartsWith("HikeAsyTest", StringComparison.OrdinalIgnoreCase)
-					|| StoreWebAddress.StartsWith("HikeAsyTest0", StringComparison.OrdinalIgnoreCase))
-
+				if (Settings.TenantId == 0)
 				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.ASYTest;
-					Settings.AccessTokenClientId = ServiceConfiguration.ASYAccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.ASYAccessToken_Client_Secret;
+					//Application.Current.MainPage.DisplayAlert("Warning!!", "Please enter password!", "Ok");
+					App.Instance.Hud.DisplayToast(LanguageExtension.Localize("Verify that your store is registered with HikePay"));
+					return;
 				}
-				else if (StoreWebAddress == "HikeBenTest")
-				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.DesignerTest;
-					Settings.AccessTokenClientId = ServiceConfiguration.ASYAccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.ASYAccessToken_Client_Secret;
-				}
-				else if (StoreWebAddress.StartsWith("HikeHConnect", StringComparison.OrdinalIgnoreCase))
-				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.HConnectTest;
-					Settings.AccessTokenClientId = ServiceConfiguration.AccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.AccessToken_Client_Secret;
-				}
-				else if (StoreWebAddress.StartsWith("HikeStaging", StringComparison.OrdinalIgnoreCase))
-				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.StagingTest;
-					Settings.AccessTokenClientId = ServiceConfiguration.AccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.AccessToken_Client_Secret;
-				}
-				else
-				{
-					Settings.AppEnvironment = (int)Models.Enum.AppEnvironment.Live;
-					Settings.AccessTokenClientId = ServiceConfiguration.AccessToken_Client_Id;
-					Settings.AccessTokenClientSecretId = ServiceConfiguration.AccessToken_Client_Secret;
-				}
+				#endregion
 
 
 				//Request model object
-				LoginModel loginRequestObject = new LoginModel()
+				LoginByPinModel loginByPinModel = new LoginByPinModel()
 				{
-					TenancyName = StoreWebAddress,
-					UsernameOrEmailAddress = Email,
-					Password = Password,
-					NotificationToken = App.Instance.NotificationToken
+					TenantId = Settings.TenantId,
+					UserPin = userPin,
+					VerifyKey = ServiceConfiguration.ASY_To_GetAccessToken_VerifyKey
 				};
 
 				ResponseModel<string> LoginResponse = new ResponseModel<string>
@@ -281,7 +266,7 @@ namespace HikePOS.ViewModels
 				try
 				{
 
-					LoginResponse = await accountService.Login(Fusillade.Priority.UserInitiated, loginRequestObject);
+					LoginResponse = await accountService.LoginByPin(Fusillade.Priority.UserInitiated, loginByPinModel);
 
 					if (LoginResponse != null)
 					{
@@ -306,7 +291,7 @@ namespace HikePOS.ViewModels
 								return;
 							}
 
-							var UserDetail = await userService.GetRemoteUserByUserNameOrEmail(Priority.UserInitiated, Email, true);
+							var UserDetail = await userService.GetRemoteUserByUserPin(Priority.UserInitiated, userPin, true);
 							if (UserDetail == null || UserDetail.Id < 1 || string.IsNullOrEmpty(UserDetail.EmailAddress))
 							{
 								return;
@@ -318,8 +303,7 @@ namespace HikePOS.ViewModels
 								Settings.CurrentDatabaseType = loginInformation.result.tenant.databaseType;
 							}
 
-							//if (Settings.TenantName.ToLower() != StoreWebAddress.ToLower())
-							if ((!UserDetail.Outlets.Any(x => x.OutletId == Settings.SelectedOutletId)) || (Settings.TenantName.ToLower() != StoreWebAddress.ToLower()))
+							if ((!UserDetail.Outlets.Any(x => x.OutletId == Settings.SelectedOutletId)) || (Settings.LoginUserPin == userPin))
 							{
 								var tmpInvoices = saleService.GetOfflineInvoices();
 								var tmpCustomer = customerService.GetUnSyncCustomer();
@@ -341,7 +325,6 @@ namespace HikePOS.ViewModels
 										return;
 								}
 
-								Settings.TenantName = StoreWebAddress?.Trim();
 								var realm = RealmService.GetRealm();
 								realm.Write(() =>
 								{
@@ -357,6 +340,7 @@ namespace HikePOS.ViewModels
 								//Settings.TyroIntegrationkey= string.Empty;
 								Settings.CurrentUser = UserDetail;
 								await GetOutlets(shopService, outletService, true);
+								Settings.LoginUserPin = userPin;
 							}
 							else
 							{
@@ -386,10 +370,10 @@ namespace HikePOS.ViewModels
 				}
 				finally
 				{
-					loginRequestObject = null;
+					loginByPinModel = null;
 					LoginResponse = null;
-					accountApiService = null;
-					accountService = null;
+					// accountApiService = null;
+					// accountService = null;
 				}
 
 			}
@@ -684,14 +668,45 @@ namespace HikePOS.ViewModels
 		}
 		private async void GetMerchantCode()
 		{
-			var terminalId = "AMS1-000168232403847";
-			var response = await DependencyService.Get<INadaPayTerminalLocalAppService>().DiagnosisRequestToTerminal(terminalId);
-			if (response?.PaymentStatusSuccess == true)
+			try
 			{
-				string additionalResponse = response.AdditonalResponse;
-				var parsed = HttpUtility.ParseQueryString(additionalResponse);
-				string merchantCode = parsed["merchantAccount"];
-				var merchantInfo = await accountService.GetTenantInfo(merchantCode, terminalId);
+				try
+				{
+					var context = Android.App.Application.Context;
+
+					string deviceName = Android.Provider.Settings.Global.GetString(
+						context.ContentResolver,
+						Android.Provider.Settings.Global.DeviceName
+					);
+					HikePOS.Helpers.Settings.TerminalId = deviceName;
+
+				}
+				catch (Exception ex)
+				{
+					SentrySdk.CaptureException(ex);
+
+				}
+			
+				var terminalId = Settings.TerminalId;// "AMS1-000168232403847";
+				Settings.TenantId = 8008;
+
+				// var response = await DependencyService.Get<INadaPayTerminalLocalAppService>().DiagnosisRequestToTerminal(terminalId);
+				// if (response?.PaymentStatusSuccess == true)
+				// {
+				// 	string additionalResponse = response.AdditonalResponse;
+				// 	var parsed = HttpUtility.ParseQueryString(additionalResponse);
+				// 	string merchantCode = parsed["merchantAccount"];
+				// 	var merchantInfo = await accountService.GetTenantInfo(merchantCode, terminalId);
+				// 	if (merchantInfo != null)
+				// 		Settings.TenantId = merchantInfo.TenantId;
+				// }
+
+			}
+			catch (Exception ex)
+			{
+				ex.Track();
+				SentrySdk.CaptureException(ex);
+
 			}
 
 		}

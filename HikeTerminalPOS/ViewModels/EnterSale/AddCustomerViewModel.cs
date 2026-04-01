@@ -1081,73 +1081,7 @@ namespace HikePOS.ViewModels
             }
         }
 
-        //Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik
-        public async Task<bool> PrintInvoice(CreditNoteReceipt GiftOrDocketReceiptView)
-        {
-            try
-            {
-                if (Settings.GetCachePrinters != null && Settings.GetCachePrinters.Count > 0)
-                {
-                    var print = DependencyService.Get<IPrint>();
-                    ObservableCollection<Printer> AvailablePrinter;
-
-                    AvailablePrinter = new ObservableCollection<Printer>(Settings.GetCachePrinters.Where(x => (x.PrimaryReceiptPrint || x.ActiveDocketPrint)).ToList());
-                    if (NewCustomer != null && print != null && AvailablePrinter.Count > 0)
-                    {
-                        CurrentRegister = Settings.CurrentRegister;
-
-                        var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                        //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                        var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                        //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.CloseService();
-                        }
-
-                        await GiftOrDocketReceiptView.UpdateData(CurrentRegister.ReceiptTemplate, NewCustomer);
-
-                        foreach (Printer objPrinter in AvailablePrinter)
-                        {
-                            double height = 0;
-                            if (objPrinter.PrimaryReceiptPrint && GiftOrDocketReceiptView != null)
-                            {
-                                Settings.CurrentPrinter = objPrinter;
-                                Settings.IsPrintSKU = CurrentRegister.ReceiptTemplate.PrintSKU;
-                                GiftOrDocketReceiptView.Content.WidthRequest = objPrinter.width;
-                                GiftOrDocketReceiptView.WidthRequest = objPrinter.width;
-                                await Task.Delay(10);
-                                GiftOrDocketReceiptView.ForceLayout();
-                                height = GiftOrDocketReceiptView.Content.Height;
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            print.PrintViews2(GiftOrDocketReceiptView, height, false, objPrinter);
-                            await Task.Delay(100);
-                        }
-
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.StartService();
-                        }
-
-                    }
-                }
-                else
-                {
-                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                }
-
-                return true;
-
-            }
-            catch (Exception ex)
-            {
-                ex.Track();
-            }
-            return true;
-        }
-        //End Ticket #74631 by pratik
+    
 
         #endregion
     }

@@ -977,6 +977,13 @@ namespace HikePOS.Helpers
             get { return AppSettings.Get(TerminalIdKey, string.Empty); }
             set { AppSettings.Set(TerminalIdKey, value); }
         }
+        public static string LoginUserPin
+        {
+            get { return AppSettings.Get<string>(nameof(LoginUserPin), null); }
+            set { AppSettings.Set(nameof(LoginUserPin), value); }
+
+        }
+
 
     }
 }

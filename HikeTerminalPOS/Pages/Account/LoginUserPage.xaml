@@ -91,7 +91,7 @@
 									HorizontalTextAlignment="Center"
 									FontSize="Large"
 											   Style="{x:Static resources:Styles.FormEntryStyle}"
-									OnBackspacePressed="Digit_OnBackspacePressed"/>
+									OnBackspacePressed="Digit_OnBackspacePressed" Completed="Digit4_Completed"/>
 						</Border>
 						<!-- <Border Style="{x:Static resources:Styles.FormRoundBorderStyle}"
 								Grid.Column="4"

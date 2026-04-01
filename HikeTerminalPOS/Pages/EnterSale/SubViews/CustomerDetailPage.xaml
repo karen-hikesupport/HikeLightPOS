@@ -18,16 +18,12 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
              <!--Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik-->
-            <local:CreditNoteReceipt x:Name="CreditNoteView" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Start" Scale="0" />
             <!--End Ticket #74631 by pratik-->
               <OnIdiom x:TypeArguments="View">
                  <OnIdiom.Tablet>
                  <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">
                     <Button Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpCloseButtonStyle}" />
                     <Button Text="Edit" Command="{Binding EditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" IsVisible="{Binding EditCustomerVisible}"/>
-                    <!--Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik-->
-                    <Button x:Name="btnPrintCustomer" IsVisible="false" Text="Print" Clicked="PrintHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
-                    <!--End Ticket #74631 by pratik-->
                    <Button Text="{Localize:Translate StoreCredit_ButtonText}" IsVisible="{Binding HasStoreCreditPermission}" Command="{Binding StoreCreditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStyle}" HorizontalOptions="End" />
             </StackLayout>
                 </OnIdiom.Tablet>
@@ -35,10 +31,6 @@
                     <StackLayout Spacing="10" Grid.Row="1" Grid.Column="1" Orientation="Horizontal" BackgroundColor="{x:Static resources:AppColors.MainBackgroundColor}" Padding="20,0,20,0">
                    <Button Text="Close" Command="{Binding ClosePopupCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}" />
                     <Button Text="Edit" Command="{Binding EditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"  IsVisible="{Binding EditCustomerVisible}"/>
-                    <!--Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik-->
-                    <Button IsVisible="{Binding Source={x:Reference btnPrintCustomer},
-                              Path=IsVisible}" Text="Print" Clicked="PrintHandle_Clicked" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"  />
-                    <!--End Ticket #74631 by pratik-->
                    <Button Text="{Localize:Translate StoreCredit_ButtonText}" IsVisible="{Binding HasStoreCreditPermission}" Command="{Binding StoreCreditCommand}" Style="{x:Static resources:Styles.PopUpTextMenuButtonStylePhone}"/>
                     </StackLayout>
                  </OnIdiom.Phone>

@@ -33,7 +33,6 @@
                 </HorizontalStackLayout>
             </Grid>
             <BoxView Grid.Row="1" HeightRequest="2" Color="{x:Static resources:AppColors.HeaderSepratorColor}" />
-            <local:CloseRegisterReceipt x:Name="closeRegisterReceipt" Scale="0" Grid.Row="2" HorizontalOptions="Start" IsVisible="{Binding IsLastOpenRegister}"/>
             <Grid Grid.Row="2" ColumnSpacing="0" IsVisible="{Binding IsLastOpenRegister}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />

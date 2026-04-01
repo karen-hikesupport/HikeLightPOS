@@ -32,24 +32,24 @@ public static class MauiProgram
             .UseMauiCompatibility()
             .UseBarcodeReader()
             .UseBarcodeScanning()
-            // .UseSentry(options =>
-            // {
-            //    // The DSN is the only required setting.
-            //     #if ANDROID
-            //         //options.Dsn = "https://7b96a54350b6a1a379e64e490e0da7bd@o4509037939589120.ingest.us.sentry.io/4509053891313664";       
-            //         options.Dsn = "https://07f50b86b8b24dcf9c5244b93812451b@o4508567046389760.ingest.us.sentry.io/4509982709841920";
-            //     #elif IOS
-            //         options.Dsn = "https://8e86c95a13e2ba4c416d7c1f7335c4a8@o4509037939589120.ingest.us.sentry.io/4509037994442752";
-            //     #endif
+            .UseSentry(options =>
+            {
+               // The DSN is the only required setting.
+                #if ANDROID
+                    //options.Dsn = "https://7b96a54350b6a1a379e64e490e0da7bd@o4509037939589120.ingest.us.sentry.io/4509053891313664";       
+                    options.Dsn = "https://07f50b86b8b24dcf9c5244b93812451b@o4508567046389760.ingest.us.sentry.io/4509982709841920";
+                // #elif IOS
+                //     options.Dsn = "https://8e86c95a13e2ba4c416d7c1f7335c4a8@o4509037939589120.ingest.us.sentry.io/4509037994442752";
+                #endif
 
-            //    // Use debug mode if you want to see what the SDK is doing.
-            //    // Debug messages are written to stdout with Console.Writeline,
-            //    // and are viewable in your IDE's debug console or with 'adb logcat', etc.
-            //    // This option is not recommended when deploying your application.
-            // //    options.Debug = true;
-            // //     // Attach screenshots on errors
-            // //    options.AttachScreenshot = true;
-            // })
+               // Use debug mode if you want to see what the SDK is doing.
+               // Debug messages are written to stdout with Console.Writeline,
+               // and are viewable in your IDE's debug console or with 'adb logcat', etc.
+               // This option is not recommended when deploying your application.
+            //    options.Debug = true;
+            //     // Attach screenshots on errors
+            //    options.AttachScreenshot = true;
+            })
             .ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

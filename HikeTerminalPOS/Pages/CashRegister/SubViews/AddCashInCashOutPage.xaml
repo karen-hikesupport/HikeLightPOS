@@ -16,9 +16,6 @@
                 <ColumnDefinition Width="{OnIdiom Phone='0',Default='*'}" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <!--Ticket start:#40099,#62808 Print Receipt black out issue in latest Form 5.0.by Rupesh-->            
-            <local:CashInOutReceipt x:Name="CashInOutReceiptView" Scale="0" Grid.ColumnSpan="2" HorizontalOptions="Start"/>
-             <!--Ticket end:#40099,#62808 .by Rupesh-->
             <OnIdiom x:TypeArguments="View">
                 <OnIdiom.Tablet>
                     <StackLayout Spacing="20" Grid.Row="0" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" TranslationX="-20" TranslationY="20">

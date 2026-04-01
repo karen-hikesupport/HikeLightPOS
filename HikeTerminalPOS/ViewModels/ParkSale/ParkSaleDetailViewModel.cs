@@ -43,9 +43,6 @@ namespace HikePOS.ViewModels
         ApiService<IPaymentApi> paymentApiService = new ApiService<IPaymentApi>();
         PaymentServices paymentService;
 
-        ApiService<IClearantPaymentService> clearantPaymentApi = new ApiService<IClearantPaymentService>();
-        public ClearantPaymentService clearantPaymentService;
-
         ApiService<IProductApi> ProductApiService = new ApiService<IProductApi>();
         ProductServices productService;
 
@@ -66,19 +63,6 @@ namespace HikePOS.ViewModels
         private bool _isFulfilmentDisplay;
         public bool IsFulfilmentDisplay { get { return _isFulfilmentDisplay; } set { _isFulfilmentDisplay = value; SetPropertyChanged(nameof(IsFulfilmentDisplay)); } }
 
-        private PickAndPackPrint _pickAndPackPrint;
-        public PickAndPackPrint PickAndPackPrint
-        {
-            get
-            {
-                return _pickAndPackPrint;
-            }
-            set
-            {
-                _pickAndPackPrint = value;
-                SetPropertyChanged(nameof(PickAndPackPrint));
-            }
-        }
         //End #84293 by Pratik
 
         //start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik
@@ -86,45 +70,7 @@ namespace HikePOS.ViewModels
         public bool IsServedBy { get { return _isServedBy; } set { _isServedBy = value; SetPropertyChanged(nameof(IsServedBy)); } }
         //end #84287 .by Pratik
 
-        private InvoiceReceiptView _printReceiptSummaryView;
-        public InvoiceReceiptView PrintReceiptSummaryView
-        {
-            get
-            {
-                return _printReceiptSummaryView;
-            }
-            set
-            {
-                _printReceiptSummaryView = value;
-                SetPropertyChanged(nameof(PrintReceiptSummaryView));
-            }
-        }
-        private GiftReceipt _giftReceipt;
-        public GiftReceipt GiftReceiptView
-        {
-            get
-            {
-                return _giftReceipt;
-            }
-            set
-            {
-                _giftReceipt = value;
-                SetPropertyChanged(nameof(GiftReceiptView));
-            }
-        }
-        private DeliveryDocketReceipt _deliveryDocketReceipt;
-        public DeliveryDocketReceipt DeliveryDocketReceiptView
-        {
-            get
-            {
-                return _deliveryDocketReceipt;
-            }
-            set
-            {
-                _deliveryDocketReceipt = value;
-                SetPropertyChanged(nameof(DeliveryDocketReceiptView));
-            }
-        }
+      
 
         public ParkSaleDetailPage parkSaleDetailPage => (ParkSaleDetailPage)NavigationService.ModalStack.FirstOrDefault();
         public bool inPorgress { get; set; } = false;
@@ -197,20 +143,6 @@ namespace HikePOS.ViewModels
                 //End ticket #76208 by Pratik
             }
         }
-        ReceiptTemplateDto _currentReceiptTemplate { get; set; }
-        public ReceiptTemplateDto CurrentReceiptTemplate
-        {
-            get
-            {
-                return _currentReceiptTemplate;
-            }
-            set
-            {
-                _currentReceiptTemplate = value;
-                SetPropertyChanged(nameof(CurrentReceiptTemplate));
-            }
-        }
-
         public bool IsInvoiceReopen
         {
             get
@@ -748,9 +680,6 @@ namespace HikePOS.ViewModels
         public ICommand EmailHandleClickedCommand => new Command(emailHandle_Clicked);
         public ICommand CloseEmailViewCommand => new Command(CloseEmailView_Clicked);
         public ICommand BackgroundHandleTappedCommand => new Command(backgroundHandle_Tapped);
-        public ICommand PrintHandleClickedCommand => new Command(printHandle_Clicked);
-        public ICommand GiftReceiptPrintHandleClickedCommand => new Command(giftReceiptPrintHandle_Clicked);
-        public ICommand DeliveryDocketReceiptPrintHandleClickedCommand => new Command(deliveryDocketReceiptPrintHandle_Clicked);
         public ICommand EditNoteHandleClickedCommand => new Command(editNoteHandle_Clicked);
         //Ticket:start:#90938 IOS:FR Age varification.by rupesh
         public ICommand OpenEligibilityProofCommand => new Command(OpenEligibilityProof);
@@ -781,7 +710,6 @@ namespace HikePOS.ViewModels
             paymentService = new PaymentServices(paymentApiService);
             userService = new UserServices(userApiService);
             //clearant paymentservice
-            clearantPaymentService = new ClearantPaymentService(clearantPaymentApi);
 
             productService = new ProductServices(ProductApiService);
             RemovePaymentCommand = new Command<InvoicePaymentDto>(async (obj) => await removePayment(obj));
@@ -1254,71 +1182,6 @@ namespace HikePOS.ViewModels
         //Start #84293 iOS - Feature:- Expand Pick & Pack & Order Full fill from multiple location by Pratik
         private async Task InvoiceFulfillmentClick(InvoiceFulfillmentDto arg)
         {
-            using (new BaseViewModel.Busy(this, true))
-            {
-
-                if (Invoice == null)
-                {
-                    return;
-                }
-
-                if (Settings.GetCachePrinters != null)
-                {
-                     if(!Settings.IsTextPrint)
-                     {
-                        if (this.PickAndPackPrint == null)
-                            this.PickAndPackPrint = new PickAndPackPrint();
-                     }
-
-                     if ((PickAndPackPrint?.Content != null && !Settings.IsTextPrint) || Settings.IsTextPrint)
-                     {
-                        await Task.Delay(1);
-                        var print = DependencyService.Get<IPrint>();
-                        List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-
-                        if (print != null && AvailablePrinter != null && AvailablePrinter.Count > 0)
-                        {
-                            var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                            //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                            var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                            //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                            //Ticket end #70775.by rupesh
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.CloseService();
-                            }
-                            foreach (var objprinter in AvailablePrinter)
-                            {
-                                Settings.CurrentPrinter = objprinter;
-                                if(!Settings.IsTextPrint)
-                                {
-                                    Settings.IsPrintSKU = Settings.CurrentRegister.ReceiptTemplate.PrintSKU;
-                                    PickAndPackPrint.Content.WidthRequest = objprinter.width;
-                                    PickAndPackPrint.WidthRequest = objprinter.width;
-                                    PickAndPackPrint.UpdateHtmlHeaderFooter(Settings.CurrentRegister.ReceiptTemplate, arg, objprinter);
-                                    await Task.Delay(10);
-                                    PickAndPackPrint.InvalidateMeasure();
-
-                                    var ViewHeight = PickAndPackPrint.Content.Height;
-                                    print.PrintViews2(PickAndPackPrint, ViewHeight, false, objprinter);
-                                }
-                                else
-                                    print.DoTextPrint(Invoice,Settings.CurrentRegister.ReceiptTemplate,Settings.SelectedOutlet,GeneralShopDto, objprinter,null,false,"ppp",arg);
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.StartService();
-                            }
-                        }
-                        else
-                        {
-                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                        }
-                    }
-                }
-            }
         }
         //End #84293 by Pratik
 
@@ -1836,7 +1699,6 @@ namespace HikePOS.ViewModels
                             pickAndPackPage.ViewModel.CopyInvoiceLineItems = pickAndPackPage.ViewModel.InvoiceLineItems.Copy();
                             //End #84293 by Pratik
                             pickAndPackPage.ViewModel.CurrentOutlet = CurrentOutlet;
-                            pickAndPackPage.ViewModel.CurrentReceiptTemplate = CurrentReceiptTemplate;
                             pickAndPackPage.ViewModel.CurrentRegister = CurrentRegister;
                             pickAndPackPage.ViewModel.GeneralShopDto = GeneralShopDto;
                             pickAndPackPage.ViewModel.Subscription = Subscription;
@@ -2127,26 +1989,6 @@ namespace HikePOS.ViewModels
                     tempInvoiceDto.IsCustomerChange = false;
                     tempInvoiceDto.isSync = false;
 
-                    if (payment.PaymentOptionType == PaymentOptionType.Clearent)
-                    {
-                        var paymentOption = paymentService.GetLocalPaymentOption(payment.PaymentOptionId);
-                        var clearantConfigurationData = JsonConvert.DeserializeObject<ClearantConfiguration>(paymentOption.ConfigurationDetails);
-                        var clearantPayvalue = JsonConvert.DeserializeObject<ClearantResponse>(payment.InvoicePaymentDetails[0].Value);
-
-                        ClearantRequest clearantRequest = new ClearantRequest()
-                        {
-                            type = "VOID",
-                            SoftwareType = "hikepos",
-                            id = clearantPayvalue.payload.transaction.id
-                        };
-
-                        var clearantResponse = await clearantPaymentService.SendClearentVoidRequest(Priority.UserInitiated, clearantConfigurationData.ApiKey, clearantRequest, Settings.AccessToken);
-                        if (!(clearantResponse.code == "200" && clearantResponse.payload != null && clearantResponse.payload.transaction != null && clearantResponse.payload.transaction.ResultCode == "036"))
-                        {
-                            App.Instance.Hud.DisplayToast(" Something went wrong!");
-                            return;
-                        }
-                    }
 
                     //Start Ticket #63876 iOS: FR : On Account calculation on print receipt by Pratik
                     if (tempInvoiceDto.Status == InvoiceStatus.OnAccount && tempInvoiceDto.CustomerDetail != null)
@@ -2277,142 +2119,6 @@ namespace HikePOS.ViewModels
             }
         }
 
-        public void calculateInvoiceHeight(string printerType = "")
-        {
-            var tmp = (ObservableCollection<InvoiceLineItemDto>)(Invoice.InvoiceLineItems);
-
-            int skuCount = 0;
-            if (CurrentReceiptTemplate != null && CurrentReceiptTemplate.PrintSKU)
-                skuCount = tmp.Count(x => !string.IsNullOrEmpty(x.SKUWithLabel));
-            int barcodeCount = 0;
-            if (CurrentReceiptTemplate != null && CurrentReceiptTemplate.ShowItemBarCode)
-                barcodeCount = tmp.Count(x => !string.IsNullOrEmpty(x.BarcodeWithLabel));
-            int offercount = 0;
-            offercount = tmp.Count(x => !string.IsNullOrEmpty(x.OffersNote));
-
-            int descriptionHeight = 0;
-            tmp.ForEach(x =>
-            {
-                var desc = x.Description;
-                if (!string.IsNullOrEmpty(desc))
-                {
-                    if (desc.Length > 40)
-                        descriptionHeight += ((desc.Length / 40) * 40);
-                    else descriptionHeight += 40;
-
-                    var newLineCount = Regex.Matches(desc, "\n").Count;
-                    descriptionHeight += (newLineCount * 15);
-                }
-            });
-
-            double retailAmountHeight = 0;
-            int retailAmountCount = 0;
-            retailAmountCount = tmp.Count(x => (x.IsTotalReatilAmountVisible && (ShopGeneralRule.DisplayLineItemDiscountOnReceipt)));
-            retailAmountHeight = retailAmountCount * 30;
-
-            int serialNumberCount = serialNumberCount = tmp.Count(x => !string.IsNullOrEmpty(x.SerialNumber));
-
-            double lineItemPadding = tmp.Count() * 10;
-            double listheight = 0;
-            foreach (var item in tmp)
-            {
-                var title = item.ProductTitleWithQuantity;
-                if (printerType.Contains("POP"))
-                    listheight += 22 * ((title.Length / 29) + 1) + 11;
-                else
-                    listheight += 22 * ((title.Length / 50) + 1) + 11;
-            }
-            double groupHeaderHeight = 0;
-            if (Settings.StoreGeneralRule.ShowGroupProductsByCategory)
-            {
-
-                var groupInvoiceLineItemsConverter = new GroupInvoiceLineItemsConverter();
-                var groupInvoiceLineItems = (ObservableCollection<InvoiceLineiItemGroup>)groupInvoiceLineItemsConverter.Convert(Invoice.InvoiceLineItems, null, null, null);
-                groupHeaderHeight = 25 * groupInvoiceLineItems.Count;
-            }
-            SaleItemListHeight = listheight + (skuCount * 23) + (barcodeCount * 23) + (offercount * 23) + (serialNumberCount * 23) + descriptionHeight
-                + retailAmountHeight + lineItemPadding + groupHeaderHeight;
-        }
-
-        public void CalculateDeliveryDocketPrintHeight(string printerType = "")
-        {
-            var tmp = Invoice.InvoiceLineItems.Where(x => x.InvoiceItemType != InvoiceItemType.Discount);
-            int descriptionHeight = 0;
-            tmp.ForEach(x =>
-            {
-                var desc = x.Description ?? "";
-                if (!string.IsNullOrEmpty(desc))
-                {
-
-                    if (desc.Length > 40)
-                        descriptionHeight += ((desc.Length / 40) * 20);
-                    else descriptionHeight += 20;
-
-                    var newLineCount = Regex.Matches(desc, "\n").Count;
-                    descriptionHeight += (newLineCount * 15);
-                }
-                else
-                {
-                    descriptionHeight += 15;
-                }
-            });
-            int serialNumberHeight = 0;
-            tmp.ForEach(x =>
-            {
-                var serialNumber = x.SerialNumber;
-                if (!string.IsNullOrEmpty(serialNumber))
-                {
-                    if (serialNumber.Length > 40)
-                        serialNumberHeight += ((serialNumber.Length / 40) * 22);
-                    else serialNumberHeight += 22;
-
-                }
-            });
-
-            double itemHeight = 0;
-            foreach (var item in tmp)
-            {
-                var title = item.ProductTitleWithSku;
-                if (printerType.Contains("POP"))
-                    itemHeight += 22 * ((title.Length / 20) + 1) + 2;
-                else
-                    itemHeight += 22 * ((title.Length / 45) + 1) + 2;
-            }
-            double groupHeaderHeight = 0;
-            if (Settings.StoreGeneralRule.ShowGroupProductsByCategory)
-            {
-
-                var groupInvoiceLineItemsConverter = new GroupInvoiceLineItemsConverter();
-                var groupInvoiceLineItems = (ObservableCollection<InvoiceLineiItemGroup>)groupInvoiceLineItemsConverter.Convert(Invoice.InvoiceLineItems, null, "Discount", null);
-                groupHeaderHeight = 25 * groupInvoiceLineItems.Count;
-            }
-            DeliveryDocketPrintItemListHeight = itemHeight + descriptionHeight + serialNumberHeight + groupHeaderHeight;
-        }
-
-        public void CalculateGiftPrintHeight(string printerType = "")
-        {
-            var tmp = Invoice.InvoiceLineItems.Where(x => x.InvoiceItemType != InvoiceItemType.Discount);
-            double itemHeight = 0;
-
-
-            foreach (var item in tmp)
-            {
-                var title = item.ProductTitleWithSku;
-                if (printerType.Contains("POP"))
-                    itemHeight += 22 * ((title.Length / 32) + 1) + 1;
-                else
-                    itemHeight += 22 * ((title.Length / 50) + 1) + 1;
-            }
-            double groupHeaderHeight = 0;
-            if (Settings.StoreGeneralRule.ShowGroupProductsByCategory)
-            {
-
-                var groupInvoiceLineItemsConverter = new GroupInvoiceLineItemsConverter();
-                var groupInvoiceLineItems = (ObservableCollection<InvoiceLineiItemGroup>)groupInvoiceLineItemsConverter.Convert(Invoice.InvoiceLineItems, null, "Discount", null);
-                groupHeaderHeight = 25 * groupInvoiceLineItems.Count;
-            }
-            GiftPrintPrintItemListHeight = itemHeight + groupHeaderHeight;// - tmp.Count*28;
-        }
 
         private void backgroundHandle_Tapped()
         {
@@ -2422,385 +2128,6 @@ namespace HikePOS.ViewModels
             }
         }
 
-        private async void printHandle_Clicked()
-        {
-            if (EventCallRunning)
-                return;
-            EventCallRunning = true;
-            _ = Task.Run(() =>
-            {
-                Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? AppFeatures.AndroidMSecond : AppFeatures.IOSMSecond).Wait();
-                EventCallRunning = false;
-            });
-            try
-            {
-                using (new BaseViewModel.Busy(this, true))
-                {
-                    if (Invoice == null) return;
-
-                    if (Invoice.Status == InvoiceStatus.Parked)
-                        CurrentReceiptTemplate = CurrentRegister.ParkOrderReceiptTemplate;
-                    else if (Invoice.Status == InvoiceStatus.LayBy)
-                        CurrentReceiptTemplate = CurrentRegister.LayByReceiptTemplate;
-                    else if (Invoice.Status == InvoiceStatus.Quote)
-                        CurrentReceiptTemplate = CurrentRegister.QuoteReceiptTemplate;
-                    else if (Invoice.Status == InvoiceStatus.OnAccount)
-                        CurrentReceiptTemplate = CurrentRegister.OnAccountReceiptTemplate;
-                    else if (Invoice.Status == InvoiceStatus.BackOrder)
-                        CurrentReceiptTemplate = CurrentRegister.BackOrderReceiptTemplate;
-                    else
-                        CurrentReceiptTemplate = CurrentRegister.ReceiptTemplate;
-
-                    await Task.Delay(1);
-                    if (Settings.GetCachePrinters != null)
-                    {
-                        if(!Settings.IsTextPrint)
-                        {
-                            if (this.PrintReceiptSummaryView == null)
-                                this.PrintReceiptSummaryView = new InvoiceReceiptView();
-                        }
-
-                        List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-                        var print = DependencyService.Get<IPrint>();
-                        if (print != null && AvailablePrinter != null && AvailablePrinter.Count > 0)
-                        {
-
-                            var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                            //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                            var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                            //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                            //Ticket end #70775.by rupesh
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.CloseService();
-                            }
-
-                            var ReceiptData = new List<string>();
-
-                            var assemblypayments = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.AssemblyPayment);
-                            if (assemblypayments != null)
-                            {
-                                foreach (var payment in assemblypayments)
-                                {
-                                    var data = payment.InvoicePaymentDetails.FirstOrDefault(x => x.Key == InvoicePaymentKey.MerchantCopy);
-
-                                    if (data != null && !string.IsNullOrEmpty(data.Value))
-                                    {
-                                        ReceiptData.Add(data.Value);
-                                    }
-                                }
-                            }
-
-                            var eConduitPayments = Invoice.InvoicePayments?.Where(x => Extensions.IseConduitPayment(x.PaymentOptionType));
-                            if (eConduitPayments != null)
-                            {
-                                foreach (var payment in eConduitPayments)
-                                {
-                                    var eConduitPaymentDetails = payment.InvoicePaymentDetails.FirstOrDefault(x => !string.IsNullOrEmpty(x.Value)).Value;
-
-                                    if (!string.IsNullOrEmpty(eConduitPaymentDetails))
-                                        ReceiptData.Add(eConduitPaymentDetails);
-                                }
-                            }
-
-
-                            var linklyReceipt = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.Linkly);
-                            if (linklyReceipt != null)
-                            {
-                                foreach (var payment in linklyReceipt)
-                                {
-                                    var data = payment.InvoicePaymentDetails.LastOrDefault();
-                                    if (data != null && !string.IsNullOrEmpty(data.Value))
-                                    {
-                                        ReceiptData.Add(data.Value);
-                                    }
-                                }
-                            }
-
-                            var windcaveRecipt = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.Windcave);
-                            if (windcaveRecipt != null)
-                            {
-                                foreach (var payment in windcaveRecipt)
-                                {
-                                    var data = payment.InvoicePaymentDetails.FirstOrDefault(x => x.Key == InvoicePaymentKey.CustomerCopy);
-                                    ReceiptData.Add(data.Value);
-                                }
-                            }
-
-                            string VantivCloudInvoiceDetail = string.Empty;
-                            var vantivCloudpayments = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.VantivCloud);
-                            if (vantivCloudpayments != null)
-                            {
-                                foreach (var payment in vantivCloudpayments)
-                                {
-                                    Debug.WriteLine("vantiv receipt : " + payment.InvoicePaymentDetails.Count());
-                                    foreach (var item in payment.InvoicePaymentDetails)
-                                    {
-                                        VantivCloudInvoiceDetail = item.Value;
-                                    }
-
-                                    if (!string.IsNullOrEmpty(VantivCloudInvoiceDetail))
-                                        ReceiptData.Add(VantivCloudInvoiceDetail);
-                                }
-                            }
-                            string tapToPayReceiptDetail = string.Empty;
-                            var tyroTapToPayPayments = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.TyroTapToPay);
-                            if (tyroTapToPayPayments != null)
-                            {
-                                foreach (var payment in tyroTapToPayPayments)
-                                {
-                                    Debug.WriteLine("tyroTapToPay receipt : " + payment.InvoicePaymentDetails.Count());
-                                    var tyroTapToPayPaymentResponse = JsonConvert.DeserializeObject<TyroTapToPayPaymentResponse>(payment.InvoicePaymentDetails.FirstOrDefault()?.Value);
-                                    tapToPayReceiptDetail = tyroTapToPayPaymentResponse.customerReceipt;
-
-                                    if (!string.IsNullOrEmpty(tapToPayReceiptDetail))
-                                        ReceiptData.Add(tapToPayReceiptDetail);
-                                }
-                            }
-                            var nadapay = Invoice.InvoicePayments?.Where(x => x.PaymentOptionType == PaymentOptionType.HikePayTapToPay || x.PaymentOptionType == PaymentOptionType.HikePay);
-                            if (nadapay != null)
-                            {
-                                foreach (var payment in nadapay)
-                                {
-                                    Debug.WriteLine("HikePayTapToPay receipt : " + payment.InvoicePaymentDetails.Count());
-                                    // var nadaTapToPayDtoResponse = JsonConvert.DeserializeObject<NadaTapToPayDto>(payment.InvoicePaymentDetails.FirstOrDefault()?.Value);
-                                    // foreach (var doc in nadaTapToPayDtoResponse?.SaleToPOIResponse?.TransactionResponse?.PaymentReceipt)
-                                    // {
-                                    //     var strReceipt = CommonMethods.HikePayReceiptBuilder.BuildReceipt(doc);
-                                    //     ReceiptData.Add(strReceipt);
-                                    // }
-                                    var paymentOption = paymentService.GetLocalPaymentOption(payment.PaymentOptionId);
-                                    var nadaPayConfigurationData = JsonConvert.DeserializeObject<NadaPayConfigurationDto>(paymentOption.ConfigurationDetails);
-                                    // Defaults when config is null
-                                    bool printMerchant = nadaPayConfigurationData?.IsPrintMerchantReceipt ?? false;
-                                    bool printCustomer = nadaPayConfigurationData?.IsPrintCustomerReceipt ?? false;
-
-                                    foreach (var detail in payment.InvoicePaymentDetails)
-                                    {
-                                        if (printMerchant &&
-                                            detail.Key == InvoicePaymentKey.hikePayMerchantPrint &&
-                                            detail.Value != null)
-                                        {
-                                            ReceiptData.Add(detail.Value);
-                                        }
-
-                                        if (printCustomer &&
-                                            detail.Key == InvoicePaymentKey.hikePayCustomerPrint &&
-                                            detail.Value != null)
-                                        {
-                                            ReceiptData.Add(detail.Value);
-                                        }
-                                    }
-                                }
-                            }
-
-                            //Ticket #10303 Start : In the invoice, company name should be displayed first and customer name below it. By Nikhil
-                            if(!Settings.IsTextPrint)
-                                PrintReceiptSummaryView.UpdateDataFromSaleHistory(CurrentReceiptTemplate, Invoice.CustomerDetail);
-
-                            foreach (Printer objPrinter in AvailablePrinter)
-                            {
-                                Settings.CurrentPrinter = objPrinter;
-                                if(!Settings.IsTextPrint)
-                                {
-                                    Settings.IsPrintSKU = CurrentReceiptTemplate.PrintSKU;
-                                    PrintReceiptSummaryView.Content.WidthRequest = objPrinter.width;
-                                    PrintReceiptSummaryView.WidthRequest = objPrinter.width;
-                                    PrintReceiptSummaryView.UpdateHtmlHeaderFooter(CurrentReceiptTemplate, objPrinter);
-                                    await Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? 500 : 100);
-                                    PrintReceiptSummaryView.InvalidateMeasure();
-                                    double InvoiceHeight = PrintReceiptSummaryView.Content.Height;
-                                    await print.DoPrint(PrintReceiptSummaryView, null, null, null, InvoiceHeight, 0, 0, 0, false, objPrinter, null, null, ReceiptData);
-                                }
-                                else
-                                    await print.DoTextPrint(Invoice,CurrentReceiptTemplate,Settings.SelectedOutlet,GeneralShopDto, objPrinter,ReceiptData,false,"invoice");
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.StartService();
-                            }
-                        }
-                        else
-                        {
-                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                        }
-                    }
-                    else
-                    {
-                        App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.Track();
-            }
-        }
-
-        private async void giftReceiptPrintHandle_Clicked()
-        {
-            if (EventCallRunning)
-                return;
-            EventCallRunning = true;
-            _ = Task.Run(() =>
-            {
-                Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? AppFeatures.AndroidMSecond : AppFeatures.IOSMSecond).Wait();
-                EventCallRunning = false;
-            });
-
-            try
-            {
-
-            using (new BaseViewModel.Busy(this, true))
-            {
-                if(Invoice == null ) return;
-
-                if (Settings.GetCachePrinters != null)
-                {
-                    if(!Settings.IsTextPrint)
-                    {
-                        if (this.GiftReceiptView == null)
-                            this.GiftReceiptView = new GiftReceipt();
-                    }
-                  
-
-                    if ((GiftReceiptView?.Content != null && !Settings.IsTextPrint) || Settings.IsTextPrint)
-                    {
-
-                        await Task.Delay(1);
-                        var print = DependencyService.Get<IPrint>();
-                       
-                        List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-
-                        if (print != null && AvailablePrinter != null && AvailablePrinter.Count > 0)
-                        {
-                            var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                            //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                            var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                            //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                            //Ticket end #70775.by rupesh
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.CloseService();
-                            }
-                            foreach (var objprinter in AvailablePrinter)
-                            {
-                                Settings.CurrentPrinter = objprinter;
-                                if(!Settings.IsTextPrint)
-                                {
-                                    Settings.IsPrintSKU = Settings.CurrentRegister.GiftReceiptTemplate.PrintSKU;
-                                    GiftReceiptView.Content.WidthRequest = objprinter.width;
-                                    GiftReceiptView.WidthRequest = objprinter.width;
-                                    GiftReceiptView.UpdateHtmlHeaderFooter(Settings.CurrentRegister.GiftReceiptTemplate, objprinter);
-                                    await Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? 500 : 100);
-                                    GiftReceiptView.InvalidateMeasure();
-
-                                    var ViewHeight = GiftReceiptView.Content.Height;
-                                    print.PrintViews2(GiftReceiptView, ViewHeight, false, objprinter);
-                                }
-                                else
-                                    print.DoTextPrint(Invoice,Settings.CurrentRegister.GiftReceiptTemplate,Settings.SelectedOutlet,GeneralShopDto,objprinter,null,false,"giftcard");
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.StartService();
-                            }
-                        }
-                        else
-                        {
-                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                        }
-                    }
-                }
-                else
-                {
-                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                }
-            }
-            }
-            catch(Exception ex)
-            {
-                ex.Track();
-            }
-        }
-
-        private async void deliveryDocketReceiptPrintHandle_Clicked()
-        {
-            if (EventCallRunning)
-                return;
-            EventCallRunning = true;
-            _ = Task.Run(() =>
-            {
-                Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? AppFeatures.AndroidMSecond : AppFeatures.IOSMSecond).Wait();
-                EventCallRunning = false;
-            });
-
-            using (new BaseViewModel.Busy(this, true))
-            {
-                if(Invoice == null ) return;
-                if (Settings.GetCachePrinters != null)
-                {
-                    if(!Settings.IsTextPrint)
-                    {    
-                        if (this.DeliveryDocketReceiptView == null)
-                            this.DeliveryDocketReceiptView = new DeliveryDocketReceipt();
-                    }
-
-                    if ((DeliveryDocketReceiptView?.Content != null && !Settings.IsTextPrint) || Settings.IsTextPrint)
-                    {
-                        await Task.Delay(1);
-                        var print = DependencyService.Get<IPrint>();
-                        List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-
-                        if (print != null && AvailablePrinter != null && AvailablePrinter.Count > 0)
-                        {
-                            var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                            var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => !string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP"));
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.CloseService();
-                            }
-                            foreach (var objprinter in AvailablePrinter)
-                            {
-                                Settings.CurrentPrinter = objprinter;
-                                if(!Settings.IsTextPrint)
-                                {
-                                    Settings.IsPrintSKU = Settings.CurrentRegister.DocketReceiptTemplate.PrintSKU;
-                                    DeliveryDocketReceiptView.Content.WidthRequest = objprinter.width;
-                                    DeliveryDocketReceiptView.WidthRequest = objprinter.width;
-                                    DeliveryDocketReceiptView.UpdateData(Settings.CurrentRegister.DocketReceiptTemplate, Invoice);
-                                    DeliveryDocketReceiptView.UpdateHtmlHeaderFooter(Settings.CurrentRegister.DocketReceiptTemplate, objprinter);
-                                    await Task.Delay(DeviceInfo.Platform == DevicePlatform.Android ? 500 : 100);
-                                    DeliveryDocketReceiptView.InvalidateMeasure();
-                                    var contentHeight = DeliveryDocketReceiptView.Content.Height;
-                                    print.PrintViews2(DeliveryDocketReceiptView, contentHeight, false, objprinter);
-                                }
-                                else
-                                    print.DoTextPrint(Invoice,Settings.CurrentRegister.DocketReceiptTemplate,Settings.SelectedOutlet,GeneralShopDto, objprinter,null,false,"dd");
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.StartService();
-                            }
-                        }
-                        else
-                        {
-                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                        }
-                    }
-                }
-                else
-                {
-                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                }
-            }
-        }
 
         private void editNoteHandle_Clicked()
         {

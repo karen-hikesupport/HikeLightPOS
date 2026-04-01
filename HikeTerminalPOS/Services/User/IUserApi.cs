@@ -26,5 +26,8 @@ namespace HikePOS.Services
         [Post("/api/services/app/userClockActivity/GetUserActivities")]
         Task<ResponseListModel<UserClockActivityDto>> GetClockUserActivities([Header("Authorization")] string accessToken);
 
+		[Post("/api/services/app/user/GetByUserPin")]
+		Task<ResponseModel<UserListDto>> GetByUserPin([Header("Authorization")] string accessToken, [AliasAs("userPin")] string userPin);
+
 	}
 }

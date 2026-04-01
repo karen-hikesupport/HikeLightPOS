@@ -11,17 +11,10 @@ namespace HikePOS
 {
     public partial class PickAndPackPage : PopupBasePage<PickAndPackViewModel>
     {
-        public PickAndPackReceipt _PickAndPackReceiptView { get; private set; }
 
         public PickAndPackPage()
         {
             InitializeComponent();
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                await Task.Delay(500);
-                PickAndPackReceiptView.Content = new PickAndPackReceipt();
-                _PickAndPackReceiptView = (PickAndPackReceipt)PickAndPackReceiptView.Content;
-            });
             ViewModel.PickAndPackPage = this;
         }
         //Ticket start:#71299 iPad - Feature: Adding the stock items manually in Pick and Pack.by rupesh

@@ -521,7 +521,6 @@ public partial class App : Application
     {
         DependencyService.Register<IKeyboardHelper>();
         DependencyService.Register<IScanApiService, ScanApiService>();
-        DependencyService.Register<INadaPayTerminalRemoteAppService, NadaPayTerminalRemoteAppService>();
         DependencyService.Register<INadaPayTerminalLocalAppService, NadaPayTerminalLocalAppService>();
 #if ANDROID
         DependencyService.Register<IMultilingual, MultilingualImplementation>();

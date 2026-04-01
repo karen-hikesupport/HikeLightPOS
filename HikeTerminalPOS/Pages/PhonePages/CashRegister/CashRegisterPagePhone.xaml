@@ -27,7 +27,6 @@
                 <Label Text="{Binding Registerclosure.RegisterName}" Grid.Column="1" Grid.Row="0" Style="{x:Static resources:Styles.PageTitleLabelStyle}" VerticalOptions="Center" HorizontalTextAlignment="Start"/>
             </Grid>
             <BoxView Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"  Color="{x:Static resources:AppColors.HeaderSepratorColor}" />
-            <local:CloseRegisterReceipt x:Name="closeRegisterReceipt" Scale="0" Grid.Row="2" Grid.RowSpan="3" HorizontalOptions="Start" IsVisible="{Binding IsLastOpenRegister}"/>
 
             <StackLayout Grid.Row="2" Spacing="0" IsVisible="{Binding IsLastOpenRegister}" Margin="0,10,0,10"  BackgroundColor="White">
                 <!--<Label FontSize="16" Text="{Binding Registerclosure.RegisterName}" Margin="0,30,0,2" FontFamily="{x:Static resources:Fonts.HikeDefaultFont}" TextColor="{x:Static resources:AppColors.PrimaryTextColor}" HorizontalTextAlignment="Center" VerticalOptions="Start" HorizontalOptions="FillAndExpand" />

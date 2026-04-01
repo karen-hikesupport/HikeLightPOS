@@ -60,7 +60,6 @@ public class MainActivity : MauiAppCompatActivity
             Toast.MakeText(this, "Error: " + e.Message, ToastLength.Long).Show();
 
         }
-        GetDeviceName();
     }
 
     void ShowScreenResolution()
@@ -216,22 +215,24 @@ public class MainActivity : MauiAppCompatActivity
 
         });
     }
-    public void GetDeviceName()
-    {
-        try
-        {
-            var context = Android.App.Application.Context;
+    // public void GetDeviceName()
+    // {
+    //     try
+    //     {
+    //         var context = Android.App.Application.Context;
 
-            string deviceName = Android.Provider.Settings.Global.GetString(
-                context.ContentResolver,
-                Android.Provider.Settings.Global.DeviceName
-            );
-            HikePOS.Helpers.Settings.TerminalId = deviceName;
-        }
-        catch (Exception ex)
-        {
+    //         string deviceName = Android.Provider.Settings.Global.GetString(
+    //             context.ContentResolver,
+    //             Android.Provider.Settings.Global.DeviceName
+    //         );
+    //         HikePOS.Helpers.Settings.TerminalId = deviceName;
 
-        }
-    }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         SentrySdk.CaptureException(ex);
+
+    //     }
+    // }
 
 }

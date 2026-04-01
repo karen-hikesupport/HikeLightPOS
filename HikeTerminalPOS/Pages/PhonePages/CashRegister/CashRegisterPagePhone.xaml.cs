@@ -19,7 +19,6 @@ namespace HikePOS
             {
                 InitializeComponent();
                 ViewModel.cashRegisterPage = this;
-                ViewModel.CloseRegisterReceiptView = closeRegisterReceipt;
             }
             catch (Exception ex)
             {

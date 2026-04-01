@@ -19,7 +19,6 @@ namespace HikePOS.ViewModels
     public class InvoiceViewModel : BaseViewModel
     {
 
-        PeerCommunicatorViewModel peerCommunicatorViewModel;
 
         #region Declare services 
         private readonly INavigationService _navigationService = ServiceLocator.Get<INavigationService>();
@@ -62,7 +61,6 @@ namespace HikePOS.ViewModels
             {
                 _Invoice = value;
                 SetPropertyChanged(nameof(Invoice));
-                SendPeerNotification(Invoice);
                 SetPropertyChanged(nameof(IsRestaurantPOS));
                 IsOrdered = Invoice?.InvoiceLineItems == null ? false : Invoice.InvoiceLineItems.Any(); //#94565
             }
@@ -109,7 +107,7 @@ namespace HikePOS.ViewModels
             {
                 _IsOpenDiscountPopUp = value;
                 SetPropertyChanged(nameof(IsOpenDiscountPopUp));
-                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<EnterSaleViewModel> baseContentPage)
+                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel> baseContentPage)
                 {
                     if (baseContentPage?.ViewModel != null)
                         baseContentPage.ViewModel.IsOpenBackground = value;
@@ -146,7 +144,7 @@ namespace HikePOS.ViewModels
             {
                 _IsOpenTaxViewPopUp = value;
                 SetPropertyChanged(nameof(IsOpenTaxViewPopUp));
-                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<EnterSaleViewModel> baseContentPage)
+                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel> baseContentPage)
                 {
                     if (baseContentPage?.ViewModel != null)
                         baseContentPage.ViewModel.IsOpenBackground = value;
@@ -174,7 +172,7 @@ namespace HikePOS.ViewModels
             {
                 _IsOpenOptionPopUp = value;
                 SetPropertyChanged(nameof(IsOpenOptionPopUp));
-                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<EnterSaleViewModel> baseContentPage)
+                if (_navigationService?.NavigatedPage != null && _navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel> baseContentPage)
                 {
                     if (baseContentPage?.ViewModel != null)
                         baseContentPage.ViewModel.IsOpenBackground = value;
@@ -699,13 +697,6 @@ namespace HikePOS.ViewModels
                                             var vm = ((BaseContentPage<EnterSaleViewModel>)_navigationService.NavigatedPage).ViewModel;
                                             vm.PrepareInvoiceRecipt();
                                             var paymentpage = vm.ParkPayment();
-                                            if(!Settings.IsTextPrint)
-                                            {
-                                                vm.InvocePrintReceiptSummaryView.BindingContext = paymentpage.ViewModel;
-                                                await paymentpage.ViewModel.PrintInvoice(false, vm.InvocePrintReceiptSummaryView, null, null, null);
-                                            }
-                                            else
-                                                await paymentpage.ViewModel.TextPrintInvoice(false,"invoice",false,false,false);
 
                                             // this.promptPopupPage.
                                             Invoice = null;
@@ -818,7 +809,6 @@ namespace HikePOS.ViewModels
                             Table = null; //#94565
                         }
                         IsOrdered = Invoice?.InvoiceLineItems == null ? false : Invoice.InvoiceLineItems.Any(); //#94565
-                        SendPeerNotification(Invoice);
                         if (_navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel>)
                         {
                             var vm = ((BaseContentPage<CheckOutViewModel>)_navigationService.NavigatedPage).ViewModel;
@@ -898,7 +888,6 @@ namespace HikePOS.ViewModels
                         }
                         break;
                     case "OpenCashDrawer":
-                        await OpenCashDrawerManual();
                         break;
 
                     //Ticket start:#22406 Quote sale.by rupesh .
@@ -1007,72 +996,7 @@ namespace HikePOS.ViewModels
         //End #45654 - Pratik
 
 
-        public async Task<bool> OpenCashDrawerManual()
-        {
-            try
-            {
-                // using (new Busy(this, true))
-                // {
-                //await Task.Delay(1);
-
-
-                // Note: Zoho ticket 7702
-                //if (Settings.GetCachePrinters != null && Settings.GetCachePrinters.Any(x => (x.PrimaryReceiptPrint || x.ActiveDocketPrint) && x.EnableCashDrawer == true))
-                if (Settings.GetCachePrinters != null && Settings.GetCachePrinters.Any(x => (x.PrimaryReceiptPrint || x.ActiveDocketPrint)))
-                {
-                    var print = DependencyService.Get<IPrint>();
-
-                    ObservableCollection<Printer> AvailablePrinter;
-
-                    // Note: Zoho ticket 7702
-                    //AvailablePrinter = new ObservableCollection<Printer>(Settings.GetCachePrinters.Where(x => (x.PrimaryReceiptPrint || x.ActiveDocketPrint) && x.EnableCashDrawer == true).ToList());
-                    AvailablePrinter = new ObservableCollection<Printer>(Settings.GetCachePrinters.Where(x => (x.PrimaryReceiptPrint || x.ActiveDocketPrint)).ToList());
-                    if (AvailablePrinter != null && AvailablePrinter.Count > 0)
-                    {
-                        var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                        //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                        var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                        //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                        //Ticket end #70775.by rupesh
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.CloseService();
-                        }
-
-                        foreach (Printer objPrinter in AvailablePrinter)
-                        {
-                            await print.DoPrint(null, null, null, null, 0, 0, 0, 0, true, objPrinter, null, null, null);
-                        }
-
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.StartService();
-                        }
-                        var CashDrawerLogInput = new CashDrawerLogInput()
-                        {
-                            openTime = DateTime.UtcNow,
-                            outletId = Settings.CurrentRegister.OutletID,
-                            registerId = Settings.CurrentRegister.Id,
-                            registerClosureId = Settings.CurrentRegister.Registerclosure.Id,
-                            openedFrom = DeviceInfo.Platform == DevicePlatform.iOS ? InvoiceFrom.iPad : InvoiceFrom.Android
-                        };
-                        await saleService.AddCashDrawerLog(Fusillade.Priority.Background, true, CashDrawerLogInput);
-                    }
-                }
-                else
-                {
-                    //await Application.Current.MainPage.DisplayAlert("Alert", "Please select printer in setting menu", "Ok");
-                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                }
-                return true;
-                // }
-            }
-            catch (Exception ex)
-            {
-                ex.Track();
-            }
-            return true;
-        }
+    
 
         #region Customer group methods
         public ObservableCollection<CustomerGroupDto> getCustomerGroups()
@@ -1123,7 +1047,6 @@ namespace HikePOS.ViewModels
                 await InvoiceCalculations.CustomerOnSelectAsync(customer, Invoice, offers, productService, taxServices);
                 // });
                 InvoiceLineItems = Invoice.InvoiceLineItems;
-                SendPeerNotification(Invoice);
             }
             catch (Exception ex)
             {
@@ -1299,7 +1222,6 @@ namespace HikePOS.ViewModels
                         }
                     }
 
-                    SendPeerNotification(Invoice);
                     //Ticket #9624 Start: Extra product line item not showing on web issue. Following code commented to stop rearranging lineitems after editing.        By Nikhil.
                     //Invoice.InvoiceLineItems.Remove(Invoice.InvoiceLineItems.First(x => x.InvoiceItemValue == sellInvoiceitem.InvoiceItemValue && x.InvoiceItemType == sellInvoiceitem.InvoiceItemType && x.InvoiceExtraItemValueParent == sellInvoiceitem.InvoiceExtraItemValueParent && x.Sequence == sellInvoiceitem.Sequence));
                     //Invoice.InvoiceLineItems.Add(item);
@@ -1611,7 +1533,6 @@ namespace HikePOS.ViewModels
             finally
             {
                 IsOrdered = Invoice?.InvoiceLineItems == null ? false : Invoice.InvoiceLineItems.Any(); //#94565
-                SendPeerNotification(Invoice);
                 IsLoad = false;
             }
         }
@@ -2459,10 +2380,6 @@ namespace HikePOS.ViewModels
                         var productsLength = Invoice.InvoiceLineItems.Count();
                         var sequence = productsLength + 1;
                         await InvoiceCalculations.CheckstockAndaddToCart(Invoice, offers, product, 1, productService, taxServices, null, sequence);
-                        _ = Task.Run(() =>
-                        {
-                            SendPeerNotification(Invoice);
-                        });
                         InvoiceLineItems = Invoice.InvoiceLineItems;
 
                     }
@@ -2598,7 +2515,6 @@ namespace HikePOS.ViewModels
 
                                     InvoiceLineItems = Invoice.InvoiceLineItems;
                                     //Ticket end:#63489 .by rupesh
-                                    SendPeerNotification(Invoice);
 
                                     await extraproductpage.Close();
 
@@ -2653,7 +2569,6 @@ namespace HikePOS.ViewModels
                                 Invoice = await InvoiceCalculations.CheckstockAndaddToCart(Invoice, offers, product, 1, productService, taxServices, null, sequence);
 
                                 InvoiceLineItems = Invoice.InvoiceLineItems;
-                                SendPeerNotification(Invoice);
 
                                 //Ticket:start:#90938,#94423 IOS:FR Age varification.by rupesh
                                 if (AgeVerificationProofData != null && Invoice?.InvoiceLineItems?.Where(x => x.InvoiceLineItemDetails != null).SelectMany(x => x.InvoiceLineItemDetails.Select(subItem => subItem.Value)).FirstOrDefault() == null)
@@ -2706,7 +2621,6 @@ namespace HikePOS.ViewModels
                 var productsLength = Invoice.InvoiceLineItems.Count();
                 var sequence = productsLength + 1;
                 Invoice = await InvoiceCalculations.CheckstockAndaddToCart(Invoice, offers, product, quantity, productService, taxServices, null, sequence);
-                SendPeerNotification(Invoice);
                 InvoiceLineItems = Invoice.InvoiceLineItems;
 
             }
@@ -3622,19 +3536,7 @@ namespace HikePOS.ViewModels
         #endregion
         //Ticket end:#26664 .by rupesh
 
-        public void SendPeerNotification(InvoiceDto invoice)
-        {
-            if (DeviceInfo.Platform == DevicePlatform.iOS && !string.IsNullOrEmpty(Settings.CustomerAppConfigFrom) && Settings.CustomerAppConfigFrom == Models.Enum.CustomerDisplayConfigureType.ActivateForIPad.ToString())
-            {
-                if (peerCommunicatorViewModel == null)
-                    peerCommunicatorViewModel = new PeerCommunicatorViewModel(saleService);
-                peerCommunicatorViewModel.StartPeerConnection();
-
-                Debug.WriteLine("Peer Invoice : " + Newtonsoft.Json.JsonConvert.SerializeObject(invoice));
-                peerCommunicatorViewModel.SendPeerNotification(Invoice, offers);
-            }
-
-        }
+      
 
         public bool CheckForSerialNo()
         {

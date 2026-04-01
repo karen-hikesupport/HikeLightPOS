@@ -1,3 +1,3 @@
 Keystore Password :- 123456
-Alias :- AndroidMAUI
+Alias :- HikeLitePOS
 Alias Password :- 123456

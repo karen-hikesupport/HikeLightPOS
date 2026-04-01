@@ -35,7 +35,6 @@ namespace HikePOS.ViewModels
         //Start ticket #60456 Pratik
         public PaymentPage paymentpage;
         public PaymentPagePhone paymentpagePhone;
-        public InvoiceReceiptView InvocePrintReceiptSummaryView { get; set; }
         public EnterSalePage EnterSalePage;
         public EnterSalePagePhone EnterSalePagePhone;
         //End ticket #60456 Pratik
@@ -330,8 +329,6 @@ namespace HikePOS.ViewModels
         ProductDetailPage productdetail;
         OpenRegisterPage openRegisterPage;
 
-        IMPOPStarBarcode mPOPStarBarcode;
-        IScanApiService scanApiService;
 
         //Ticket start:#37205 iOS - Sorting Products on Process Sale Page.by rupesh
         string _SelectedSortingMenu { get; set; } = "ProductNameAtoZ";
@@ -358,7 +355,7 @@ namespace HikePOS.ViewModels
         //#94565
 
         public ObservableCollection<FloorDto> FloorList { get; set; } //#94565
-        private CheckOutPage CheckOutPage = null;
+        
         #endregion
 
         #region Constructor
@@ -1372,19 +1369,6 @@ namespace HikePOS.ViewModels
 
         public void PrepareInvoiceRecipt()
         {
-            if (!Settings.IsTextPrint)
-            {
-                // if (EnterSalePage != null && EnterSalePage._PrintReceiptSummaryView.Content == null)
-                // {
-                //     EnterSalePage._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
-                //     InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePage._PrintReceiptSummaryView.Content;
-                // }
-                // else if (EnterSalePagePhone != null && EnterSalePagePhone._PrintReceiptSummaryView.Content == null)
-                // {
-                //     EnterSalePagePhone._PrintReceiptSummaryView.Content = new InvoiceReceiptView();
-                //     InvocePrintReceiptSummaryView = (InvoiceReceiptView)EnterSalePagePhone._PrintReceiptSummaryView.Content;
-                // }
-            }
         }
 
 
@@ -2222,262 +2206,21 @@ namespace HikePOS.ViewModels
         {
             try
             {
+                 var paymentOptions = paymentService.GetLocalPaymentOptions();
 
-                // int registerId = 0;
-                // var register = Settings.CurrentRegister;
-                // if (register != null)
-                // {
-                //     registerId = register.Id;
-                // }
-                // var TempPaymentOptions = paymentService.GetLocalPaymentOptions();
-                // if (TempPaymentOptions != null)
-                // {
-                // Ticket #9696: Elavon payment type should not be display in iPad
-
-                // TempPaymentOptions = new ObservableCollection<PaymentOptionDto>(TempPaymentOptions.Where(x =>
-                //  (x.PaymentOptionType != PaymentOptionType.Elavon
-                //&& x.PaymentOptionType != PaymentOptionType.Fiska
-                //&& x.PaymentOptionType != PaymentOptionType.Square
-                //  )));//Temp. removed fiska from payment list
-
-
-                // TempPaymentOptions.Where(x => x.PaymentOptionType == Enums.PaymentOptionType.PayPal
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.PayPalhere
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.Tyro
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.Mint
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.VantivIpad
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.VantivCloud
-                //                          || x.PaymentOptionType == Enums.PaymentOptionType.AssemblyPayment
-                //                          || x.PaymentOptionType == PaymentOptionType.EVOPayment
-                //                          || x.PaymentOptionType == PaymentOptionType.VerifonePaymark
-                //                          || x.PaymentOptionType == PaymentOptionType.PayJunction
-                //                          || x.PaymentOptionType == PaymentOptionType.eConduit
-                //                          || x.PaymentOptionType == PaymentOptionType.Moneris
-                //                          || x.PaymentOptionType == PaymentOptionType.NorthAmericanBankcard
-                //                          || x.PaymentOptionType == PaymentOptionType.TD
-                //                          || x.PaymentOptionType == PaymentOptionType.Square
-                //                          || x.PaymentOptionType == PaymentOptionType.Elavon
-                //                          || x.PaymentOptionType == PaymentOptionType.Linkly
-                //                          || x.PaymentOptionType == PaymentOptionType.NAB
-                //                          || x.PaymentOptionType == PaymentOptionType.Fiserv
-                //                          || x.PaymentOptionType == PaymentOptionType.Bendigo
-                //                          || x.PaymentOptionType == PaymentOptionType.ANZ
-                //                          || x.PaymentOptionType == PaymentOptionType.CustomPayment
-                //                          || x.PaymentOptionType == PaymentOptionType.VerifoneVcloud
-                //                          || x.PaymentOptionType == PaymentOptionType.Castle
-                //                          || x.PaymentOptionType == PaymentOptionType.Clover
-                //                          || x.PaymentOptionType == PaymentOptionType.TyroTapToPay
-                //                          || x.PaymentOptionType == PaymentOptionType.HikePayTapToPay
-                //                          || x.PaymentOptionType == PaymentOptionType.HikePay
-                //                          )
-                //                   .All(x =>
-                //                   {
-                //                       //Ticket start:#12743 iOS - Payment Having Not Been Configured Appearing on Payment Page by rupesh
-
-                //                       if (!string.IsNullOrEmpty(x.ConfigurationDetails) && x.PaymentOptionType == Enums.PaymentOptionType.AssemblyPayment)
-                //                       //Ticket end: #12743
-                //                       {
-                //                           x.IsConfigered = true;
-                //                       }
-                //                       //Ticket start: #12744 iOS - Configuration Not Saved on Server by rupesh
-                //                       else if (x.PaymentOptionType == Enums.PaymentOptionType.TD || x.PaymentOptionType == Enums.PaymentOptionType.Elavon)
-                //                       {
-                //                           x.IsConfigered = true;
-                //                       }
-
-                //                       else if (x.PaymentOptionType == Enums.PaymentOptionType.NAB || x.PaymentOptionType == Enums.PaymentOptionType.Fiserv)
-                //                       {
-                //                           x.IsConfigered = true;
-                //                       }
-                //                       //Ticket end: #12744  
-                //                       //Ticket start:#51270 The Sales are not working with tyro via iPads.by rupesh
-                //                       if (string.IsNullOrEmpty(x.ConfigurationDetails) && x.PaymentOptionType == Enums.PaymentOptionType.Tyro)
-                //                       {
-                //                           x.IsConfigered = false;
-                //                       }
-
-                //                       //Ticket end:#51270 .by rupesh
-                //                       return true;
-                //                   });
-
-                /*   var paymenttypes = TempPaymentOptions?.Where(x => !x.IsDeleted &&
-                              ((x.PaymentOptionType != Enums.PaymentOptionType.Tyro
-                               && x.PaymentOptionType != Enums.PaymentOptionType.PayPal
-                               && x.PaymentOptionType != Enums.PaymentOptionType.PayPalhere
-                               && x.PaymentOptionType != Enums.PaymentOptionType.iZettle
-                               && x.PaymentOptionType != Enums.PaymentOptionType.Mint
-                               && x.PaymentOptionType != Enums.PaymentOptionType.VantivCloud
-                               && x.PaymentOptionType != Enums.PaymentOptionType.VantivIpad
-                               && x.PaymentOptionType != Enums.PaymentOptionType.AssemblyPayment
-                               && x.PaymentOptionType != Enums.PaymentOptionType.TD
-                               && x.PaymentOptionType != PaymentOptionType.Square
-                               && x.PaymentOptionType != PaymentOptionType.Elavon
-                               && x.PaymentOptionType != PaymentOptionType.Linkly
-                               && x.PaymentOptionType != PaymentOptionType.NAB
-                               && x.PaymentOptionType != PaymentOptionType.Fiserv
-                               && x.PaymentOptionType != PaymentOptionType.Bendigo
-                               && x.PaymentOptionType != PaymentOptionType.ANZ
-                               && x.PaymentOptionType != PaymentOptionType.CustomPayment
-                               && x.PaymentOptionType != PaymentOptionType.VerifoneVcloud
-                               && x.PaymentOptionType != PaymentOptionType.Castle
-                               && x.PaymentOptionType != PaymentOptionType.Clover
-                               && x.PaymentOptionType != PaymentOptionType.TyroTapToPay
-                               && x.PaymentOptionType != PaymentOptionType.HikePayTapToPay
-                               )
-                               || (x.RegisterPaymentOptions == null || x.RegisterPaymentOptions.Count < 1 || x.RegisterPaymentOptions.Any(y => y.RegisterId == Settings.CurrentRegister.Id))));*/
-
-                // var paymenttypes = TempPaymentOptions?
-                // .Where(x => !x.IsDeleted &&
-                //             Enum.IsDefined(typeof(PaymentOptionType), x.PaymentOptionType) &&
-                //             (x.RegisterPaymentOptions == null ||
-                //             x.RegisterPaymentOptions.Count < 1 ||
-                //             x.RegisterPaymentOptions.Any(y => y.RegisterId == Settings.CurrentRegister.Id)));
-
-                // if (paymenttypes == null)
-                // {
-                //     paymenttypes = new ObservableCollection<PaymentOptionDto>();
-                // }
-                // paymenttypes = paymenttypes.Where(x => x.PaymentOptionType != PaymentOptionType.Windcave);
-
-
-
-                //  Note : below code for remove linkly related payment
-
-                //paymenttypes = paymenttypes.Where(x => x.PaymentOptionType != PaymentOptionType.Linkly
-                //&& x.PaymentOptionType != PaymentOptionType.NAB
-                //&& x.PaymentOptionType != PaymentOptionType.Fiserv
-                //&& x.PaymentOptionType != PaymentOptionType.Bendigo
-                //&& x.PaymentOptionType != PaymentOptionType.ANZ);
-
-                //  Note : below code for remove Tap To Pay related payment
-                // paymenttypes = paymenttypes.Where(x => !(x.PaymentOptionType == PaymentOptionType.TyroTapToPay && (Settings.TyroTapToPayConfiguration == null || x.Id != Settings.TyroTapToPayConfiguration.Id)));
-                // paymenttypes = paymenttypes.Where(x =>
-                // {
-                //     if (x.PaymentOptionType != PaymentOptionType.HikePayTapToPay)
-                //         return true;
-
-                //     if (x.ConfigurationDetails == null)
-                //         return false;
-
-                //     var config = JsonConvert.DeserializeObject<NadaPayConfigurationDto>(x.ConfigurationDetails);
-                //     if (config == null)
-                //         return false;
-
-                //     return config.OutletId == Settings.SelectedOutletId;
-                // });
-                // if (DeviceInfo.Platform == DevicePlatform.Android)
-                // {
-                //     paymenttypes = paymenttypes.Where(x => x.PaymentOptionType != PaymentOptionType.TD
-                //     && x.PaymentOptionType != PaymentOptionType.Elavon);
-                // }
-                // var tdBank = paymenttypes.Where(x => x.PaymentOptionType == PaymentOptionType.TD);
-
-                // if (tdBank != null)
-                // {
-
-
-                //     foreach (var item in tdBank)
-                //     {
-                //         tdConfiguration = item.ConfigurationDetails;
-                //         // tdConfiguration = JsonConvert.DeserializeObject<TDConfigurationDTO>(item.ConfigurationDetails);
-                //     }
-
-                //     //Note : below code is configure fiska sdk if require
-                //     if (!string.IsNullOrEmpty(tdConfiguration))
-                //     {
-                //         var configuration = JsonConvert.DeserializeObject<TDConfigurationDTO>(tdConfiguration);
-
-                //         DependencyService.Get<IFiska>().ConfigureSDK(configuration.MerchantId, configuration.RegisterID);
-                //     }
-                // }
-
-
-
-                // var elavon = paymenttypes.Where(x => x.PaymentOptionType == PaymentOptionType.Elavon);
-
-                // if (elavon != null)
-                // {
-
-
-                //     foreach (var item in elavon)
-                //     {
-                //         tdConfiguration = item.ConfigurationDetails;
-                //         // tdConfiguration = JsonConvert.DeserializeObject<TDConfigurationDTO>(item.ConfigurationDetails);
-                //     }
-
-                //     if (!string.IsNullOrEmpty(tdConfiguration))
-                //     {
-                //         var configuration = JsonConvert.DeserializeObject<TDConfigurationDTO>(tdConfiguration);
-
-                //         DependencyService.Get<IFiska>().ConfigureSDK(configuration.MerchantId, Settings.CurrentRegister.Id.ToString());
-                //     }
-                // }
-                // var hikePayPayment = paymenttypes
-                //     .FirstOrDefault(x => x.PaymentOptionType == PaymentOptionType.HikePayTapToPay
-                //                          && !string.IsNullOrEmpty(x.ConfigurationDetails));
-                // if (hikePayPayment != null)
-                // {
-                //     try
-                //     {
-                //         Task.Run(async () =>
-                //             {
-                //                 var nadaTapToPay = DependencyService.Get<INadaTapToPay>();
-                //                 // Deserialize config
-                //                 var config = JsonConvert.DeserializeObject<NadaPayConfigurationDto>(hikePayPayment.ConfigurationDetails);
-                //                 var newStoreId = config.StoreId;
-                //                 if (string.IsNullOrEmpty(Settings.HikePayStoreId))
-                //                     Settings.HikePayStoreId = newStoreId;
-                //                 var currentStoreId = Settings.HikePayStoreId;
-                //                 // Determine if we need to reauthorize
-                //                 bool storeChanged = currentStoreId != newStoreId;
-                //                 // Always authorize if store changed or SDK not initialized
-                //                 if (storeChanged || !nadaTapToPay.IsInitialized)
-                //                 {
-                //                     nadaTapToPay.AuthorizeSdk(newStoreId);
-                //                 }
-                //                 // If still not initialized → try manual initialization
-                //                 if (!nadaTapToPay.IsInitialized)
-                //                 {
-                //                     var intializeResponse = await nadaTapToPay.InitializeSdkManually();
-                //                     if (!nadaTapToPay.IsInitialized)
-                //                     {
-                //                         App.Instance.Hud.DisplayToast(intializeResponse.SaleToPOIResponse.TransactionResponse.Response.ErrorMessage, Colors.Red, Colors.White);
-                //                         return;
-                //                     }
-                //                     // var diagnosisResponse = await nadaTapToPay.Diagnosis();
-                //                     //  Debug.WriteLine(diagnosisResponse);
-
-                //                 }
-                //                 // If store changed → clear previous session & save new store
-                //                 if (storeChanged)
-                //                 {
-                //                     nadaTapToPay.ClearSession();
-                //                     Settings.HikePayStoreId = newStoreId;
-                //                 }
-
-                //             });
-                //     }
-                //     catch (Exception ex)
-                //     {
-                //         App.Instance.Hud.DisplayToast($"HikePay initialization failed: {ex.Message}", Colors.Red, Colors.White);
-                //     }
-                // }
-                // else
-                // {
-                //     Settings.HikePayStoreId = string.Empty;
-                // }
-
-                // AllPaymentOptionList = paymenttypes;
-                //}
-                // else
-                // {
-                //     AllPaymentOptionList = new ObservableCollection<PaymentOptionDto>();
-                // }
+                var filteredPaymentOption = paymentOptions
+                    .FirstOrDefault(x => x.PaymentOptionType == HikePOS.Enums.PaymentOptionType.HikePay &&
+                           (x.RegisterPaymentOptions == null ||
+                            x.RegisterPaymentOptions.Count < 1 ||
+                            x.RegisterPaymentOptions.Any(y => y.RegisterId == Settings.CurrentRegister.Id)));
                 var terminalId = Settings.TerminalId;
-                AllPaymentOptionList = new ObservableCollection<PaymentOptionDto>()
+                if (filteredPaymentOption != null)
+                {
+                    AllPaymentOptionList = new ObservableCollection<PaymentOptionDto>()
                 {
                          new PaymentOptionDto()
                         {
+                            Id =filteredPaymentOption.Id,
                             CanBeConfigered = true,
                             IsActive = true,
                             IsConfigered = true,
@@ -2495,6 +2238,7 @@ namespace HikePOS.ViewModels
                           }
 
                 };
+                }
 
             }
             catch (Exception ex)
@@ -5201,12 +4945,7 @@ namespace HikePOS.ViewModels
                         invoiceLineItemDto.SerialNumber = string.Empty;
                         App.Instance.Hud.DisplayToast(LanguageExtension.Localize("SerialNumberSold"), Colors.Red, Colors.White);
                     }
-                    else if (invoicemodel?.Invoice != null)
-                    {
-                        invoicemodel.SendPeerNotification(invoicemodel.Invoice);
-                    }
                 }
-                ;
             }
             catch (Exception ex)
             {

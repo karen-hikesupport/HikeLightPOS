@@ -142,11 +142,6 @@ namespace HikePOS.Messenger
         public SquarePaymentResultMessenger(SquarePaymentResult value) : base(value) { }
     }
 
-    public class VantivTransactionCompleteCallbackMessenger : ValueChangedMessage<VantivReceiptPrintModel>
-    {
-        public VantivTransactionCompleteCallbackMessenger(VantivReceiptPrintModel value) : base(value) { }
-    }
-
     public class TyroTransactionCompleteMessenger : ValueChangedMessage<PaymentResult>
     {
         public TyroTransactionCompleteMessenger(PaymentResult value) : base(value) { }

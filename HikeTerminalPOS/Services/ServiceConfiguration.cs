@@ -113,6 +113,9 @@ namespace HikePOS.Services
         // for asy server
         public const string ASYAccessToken_Client_Id = "IpadStagingApp-0d77edb54b";
         public const string ASYAccessToken_Client_Secret = "beefe07feec94cd1a20eda113af11e0e";
+
+        public const string ASY_To_GetAccessToken_VerifyKey = "aad836f57ece258774c6178a24805162";
+
         //#37229 iPad: Login session expired
 
         //Simple payment integration key

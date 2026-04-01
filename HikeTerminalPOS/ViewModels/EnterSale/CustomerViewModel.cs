@@ -56,9 +56,9 @@ namespace HikePOS
 				{
 					if (!IsFromSalesHistoryPage && _navigationService?.NavigatedPage != null)
 					{
-						if (_navigationService.NavigatedPage is BaseContentPage<EnterSaleViewModel>)
+						if (_navigationService.NavigatedPage is BaseContentPage<CheckOutViewModel>)
 						{
-							((BaseContentPage<EnterSaleViewModel>)_navigationService.NavigatedPage).ViewModel.IsOpenBackground = value;
+							((BaseContentPage<CheckOutViewModel>)_navigationService.NavigatedPage).ViewModel.IsOpenBackground = value;
 						}
 						else if (_navigationService.NavigatedPage is BaseContentPage<PaymentViewModel>)
 						{

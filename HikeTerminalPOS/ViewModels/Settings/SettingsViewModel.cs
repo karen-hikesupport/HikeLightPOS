@@ -26,12 +26,6 @@ namespace HikePOS.ViewModels
         #region Declaration
         private readonly INavigationService _navigationService = ServiceLocator.Get<INavigationService>();
         paymentConfigurationPage configurationpage;
-        MintConfigurationPage mintConfigurationPage;
-        VantivConfigurationPage vantivConfigurationPage;
-        AssemblyPaymentConfigurationPage assemblyPaymentConfigurationPage;
-        CloverConfigurationPage cloverConfigurationPage;
-        CastlesConfigurationPage castlesConfigurationPage;
-        TyroTapToPayConfiguration tyroTapToPayConfigurationPage;
         HikePayConfigurationPage hikePayConfigurationPage;
 
 
@@ -43,9 +37,7 @@ namespace HikePOS.ViewModels
         //End #61832 Pratik
 
         IPrintService printService;
-        IAllReceiptRegistration iAllReceiptRegistration;
 
-        PeerCommunicatorViewModel peerCommunicatorViewModel;
 
         #endregion
 
@@ -162,7 +154,6 @@ namespace HikePOS.ViewModels
         {
 
             Title = "Settings";
-            peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
             paymentService = new PaymentServices(paymentApiService);
             //Ticket Start #61832 iPad:Create text file for invoice log by: Pratik
             logService = new SubmitLogServices(logApiService);
@@ -256,8 +247,6 @@ namespace HikePOS.ViewModels
                         ActivePrinter = PrinterList.Any();
                     }
 
-                    if (DeviceInfo.Platform == DevicePlatform.iOS)
-                        CheckDisplayAppAvailablity();
                     if (!HasInitialized)
                     {
                         HasInitialized = true;
@@ -342,7 +331,6 @@ namespace HikePOS.ViewModels
         public ICommand ShareLogCommand => new Command<View>(ShareLog);
         public ICommand SliderMenuCommand => new Command(SliderMenuTapped);
         public ICommand BackHandleCommand => new Command(BackHandleTapped);
-        public ICommand ConfigCommand => new Command(ConfigTapped);
         public ICommand PaymentDescriptionLinkCommand => new Command(PaymentDescriptionLink);
         public ICommand PrinterDescriptionLinkCommand => new Command(PrinterDescriptionLink);
         public ICommand AllReceiptDescriptionLinkCommand => new Command(AllReceiptDescriptionLink);
@@ -350,7 +338,6 @@ namespace HikePOS.ViewModels
         public ICommand SyncDataCommand => new Command(SyncDataTapped);
         public ICommand MarkAsPaidSwitchToggleCommand => new Command(MarkAsPaidSwitchToggle);
         public ICommand ActiveCustomerQueueDocketPrintCommand => new Command(ActiveCustomerQueueDocketPrintToggled);
-        public ICommand AllCloudReceiptCommand => new Command(AllCloudReceiptToggled);
         public ICommand ActivePrinterToggleCommand => new Command(ActivePrinterToggle);
         public ICommand UpdatePrinterToggledCommand => new Command(UpdatePrinterToggled);
         // public ICommand DisplayAppSwitchCommand { get; set; }
@@ -358,18 +345,6 @@ namespace HikePOS.ViewModels
         #endregion
 
         #region Command Execution
-
-        private void AllCloudReceiptToggled(object obj)
-        {
-            if (ActiveAllCoudReceipt && !Settings.IsAllReceiptRegisterActive)
-            {
-                AllReceiptLogin();
-            }
-            else if (!ActiveAllCoudReceipt)
-            {
-                Settings.IsAllReceiptRegisterActive = ActiveAllCoudReceipt;
-            }
-        }
 
         private void UpdatePrinterToggled(object obj)
         {
@@ -428,19 +403,6 @@ namespace HikePOS.ViewModels
 
         }
 
-        public async void ConfigTapped()
-        {
-            var rejected = await App.Alert.ShowAlert("Disconnect Customer Display?", "This action will disconnect the customer display app if it's connected. After disconnection, please restart both the Customer Display and Hike POS apps.", "Yes", "No");
-            if (rejected)
-            {
-                if (peerCommunicatorViewModel == null)
-                    peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
-                peerCommunicatorViewModel.DisconnectCustomerDisplay();
-                App.Instance.Hud.DisplayToast("Disconnected successfully!!", Colors.Green, Colors.White);
-                await Task.Delay(2000);
-                peerCommunicatorViewModel.StartPeerConnection();
-            }
-        }
 
         private void SliderMenuTapped()
         {
@@ -476,12 +438,6 @@ namespace HikePOS.ViewModels
                 //Start Ticket #72507 iPad:- Ability to Change Sequence of POS Screen Payment Types By: Pratik
                 App.Instance.Issync = true;
                 //End Ticket #72507 By: Pratik
-                if (!string.IsNullOrEmpty(Settings.CustomerAppConfigFrom) && Settings.CustomerAppConfigFrom == CustomerDisplayConfigureType.ActivateForIPad.ToString())
-                {
-                    if (peerCommunicatorViewModel == null)
-                        peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
-                    peerCommunicatorViewModel.UpdateAdvertise();
-                }
                 await ClearAndSyncData();
 
                 App.Instance.Hud.DisplayToast(LanguageExtension.Localize("DataSyncSuccess"), Colors.Green, Colors.White);
@@ -499,12 +455,6 @@ namespace HikePOS.ViewModels
                 //Start Ticket #72507 iPad:- Ability to Change Sequence of POS Screen Payment Types By: Pratik
                 App.Instance.Issync = true;
                 //End Ticket #72507 By: Pratik
-                if (!string.IsNullOrEmpty(Settings.CustomerAppConfigFrom) && Settings.CustomerAppConfigFrom == CustomerDisplayConfigureType.ActivateForIPad.ToString())
-                {
-                    if (peerCommunicatorViewModel == null)
-                        peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
-                    peerCommunicatorViewModel.UpdateAdvertise();
-                }
                 await SyncData();
 
                 App.Instance.Hud.DisplayToast(LanguageExtension.Localize("DataSyncSuccess"), Colors.Green, Colors.White);
@@ -592,33 +542,6 @@ namespace HikePOS.ViewModels
 
         }
         #endregion
-
-
-        //#30495 iOS -Change in Register API for display app option
-        private void CheckDisplayAppAvailablity()
-        {
-
-
-            if (!string.IsNullOrEmpty(Settings.CustomerAppConfigFrom) && Settings.CustomerAppConfigFrom == CustomerDisplayConfigureType.ActivateForIPad.ToString())
-            {
-                CustomerAppCode = Settings.CustomerAppPin;
-                ActivecustomerDisplay = true;
-
-                if (peerCommunicatorViewModel == null)
-                    peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
-                peerCommunicatorViewModel.StartPeerConnection();
-            }
-            else
-            {
-                ActivecustomerDisplay = false;
-                CustomerAppCode = string.Empty;
-                return;
-
-            }
-
-
-        }
-        //#30495 iOS -Change in Register API for display app option
 
 
         void InitializeConfigurationpage()
@@ -988,25 +911,6 @@ namespace HikePOS.ViewModels
                 Settings.PrintCustomerCurrentNumber = 1;
                 Settings.PrintCustomerStartingNumber = 1;
                 Settings.PrintCustomerEndingNumber = (int)autolockdata.Value;
-            }
-
-        }
-
-        public void AllReceiptLogin()
-        {
-            try
-            {
-
-                if (iAllReceiptRegistration == null)
-                {
-                    iAllReceiptRegistration = DependencyService.Get<IAllReceiptRegistration>();
-                }
-                iAllReceiptRegistration.ShowRegistrationView();
-
-            }
-            catch (Exception ex)
-            {
-                ex.Track();
             }
 
         }
@@ -2252,39 +2156,7 @@ namespace HikePOS.ViewModels
                     {
                         paymentoption.ConfigurationDetails = null;
                     }
-
-                    else if (paymentoption.PaymentOptionType == PaymentOptionType.iZettle)
-                    {
-                        try
-                        {
-                            if (DeviceInfo.Platform == DevicePlatform.Android)
-                            {
-                                IiZettle iZettle = DependencyService.Get<IiZettle>();
-                                iZettle.Login(false);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.Track();
-                        }
-                    }
-
-                    else if (paymentoption.PaymentOptionType == PaymentOptionType.Clover)
-                    {
-                        try
-                        {
-                            Settings.Cloversettings = null;
-                            IClover iClover = DependencyService.Get<IClover>();
-                            iClover.Cancel();
-                            iClover.Dispose();
-                            
-                        }
-                        catch (Exception ex)
-                        {
-                            ex.Track();
-                        }
-                    }
-
+                   
                     else if (paymentoption.PaymentOptionType == PaymentOptionType.Castle)
                     {
                         try
@@ -2364,253 +2236,7 @@ namespace HikePOS.ViewModels
                     ex.Track();
                 }
             }
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.iZettle)
-            {
-                try
-                {
-                    var lastReference = Guid.NewGuid().ToString();
-                    IiZettle iZettle = DependencyService.Get<IiZettle>();
-                    if (DeviceInfo.Platform == DevicePlatform.iOS)
-                        iZettle.ChargeAmount(0, null, lastReference, _navigationService.RootPage);
-                    else if (DeviceInfo.Platform == DevicePlatform.Android)
-                        iZettle.Login(true);
-                    //SelectedPaymentoptionForConfiguration.IsConfigered = true;
-                    //PaymentActiveChanged(SelectedPaymentoptionForConfiguration);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.VantivIpad)
-            {
-
-                try
-                {
-                    if (vantivConfigurationPage == null)
-                    {
-                        vantivConfigurationPage = new VantivConfigurationPage();
-                        vantivConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, VantivConfigurationDto configurationModel) =>
-                        {
-                            if (configurationModel != null && CurrentConfigurePaymentOption != null && CurrentConfigurePaymentOption.PaymentOptionType == PaymentOptionType.VantivIpad)
-                            {
-
-
-
-                                if (string.IsNullOrEmpty(configurationModel.AcceptorId) || string.IsNullOrEmpty(configurationModel.AccountId) || string.IsNullOrEmpty(configurationModel.AccountToken) || string.IsNullOrEmpty(configurationModel.TerminalId))
-                                {
-                                    CurrentConfigurePaymentOption.IsConfigered = false;
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                }
-                                else
-                                {
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = JsonConvert.SerializeObject(configurationModel);
-                                    CurrentConfigurePaymentOption.IsConfigered = true;
-                                }
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            await vantivConfigurationPage.ViewModel.Close();
-                        };
-                    }
-                    await NavigationService.PushModalAsync(vantivConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.Mint)
-            {
-                try
-                {
-                    if (mintConfigurationPage == null)
-                    {
-                        mintConfigurationPage = new MintConfigurationPage();
-                        mintConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, string e) =>
-                        {
-                            if (!string.IsNullOrEmpty(e) && CurrentConfigurePaymentOption != null && CurrentConfigurePaymentOption.PaymentOptionType == PaymentOptionType.Mint)
-                            {
-
-                                MintConfigurationDto mintConfiguration = new MintConfigurationDto()
-                                {
-                                    AccessToken = e
-                                };
-                                if (string.IsNullOrEmpty(e))
-                                {
-                                    CurrentConfigurePaymentOption.IsConfigered = false;
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                }
-                                else
-                                {
-                                    CurrentConfigurePaymentOption.IsConfigered = true;
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = JsonConvert.SerializeObject(mintConfiguration);
-                                }
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            await mintConfigurationPage.ViewModel.Close();
-                        };
-                    }
-                    await NavigationService.PushModalAsync(mintConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.AssemblyPayment)
-            {
-                try
-                {
-                    if (assemblyPaymentConfigurationPage == null)
-                    {
-                        assemblyPaymentConfigurationPage = new AssemblyPaymentConfigurationPage();
-                        if (!string.IsNullOrEmpty(CurrentConfigurePaymentOption.ConfigurationDetails))
-                        {
-                            assemblyPaymentConfigurationPage.ViewModel.ConfigurationModel = JsonConvert.DeserializeObject<AssemblyPaymentConfigurationDto>(CurrentConfigurePaymentOption.ConfigurationDetails);
-                        }
-                        assemblyPaymentConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, AssemblyPaymentConfigurationDto configurationModel) =>
-                        {
-                            if (configurationModel != null && CurrentConfigurePaymentOption != null && CurrentConfigurePaymentOption.PaymentOptionType == PaymentOptionType.AssemblyPayment)
-                            {
-                                //Ticket start:#39923.by rupesh
-                                assemblyPaymentConfigurationPage.ViewModel.ConfigurationModel = configurationModel;
-                                //Ticket end:#39923.by rupesh
-                                if (string.IsNullOrEmpty(configurationModel.PosId) || string.IsNullOrEmpty(configurationModel.EftposAddress) || string.IsNullOrEmpty(configurationModel.EncKey) || string.IsNullOrEmpty(configurationModel.HmacKey))
-                                {
-                                    CurrentConfigurePaymentOption.IsConfigered = false;
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                }
-                                else
-                                {
-                                    CurrentConfigurePaymentOption.ConfigurationDetails = JsonConvert.SerializeObject(configurationModel);
-                                    CurrentConfigurePaymentOption.IsConfigered = true;
-                                }
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            else
-                            {
-                                CurrentConfigurePaymentOption.IsConfigered = false;
-                                CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            //await assemblyPaymentConfigurationPage.Close();
-                        };
-                    }
-                    await NavigationService.PushModalAsync(assemblyPaymentConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.Clover)
-            {
-                try
-                {
-                    if (cloverConfigurationPage == null)
-                    {
-                        cloverConfigurationPage = new CloverConfigurationPage();
-                        if (!string.IsNullOrEmpty(CurrentConfigurePaymentOption.ConfigurationDetails))
-                        {
-                            cloverConfigurationPage.ViewModel.ConfigurationModel = JsonConvert.DeserializeObject<CloverConfigurationDto>(CurrentConfigurePaymentOption.ConfigurationDetails);
-                        }
-                        cloverConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, CloverConfigurationDto configurationModel) =>
-                        {
-                            if (configurationModel != null && CurrentConfigurePaymentOption != null && CurrentConfigurePaymentOption.PaymentOptionType == PaymentOptionType.Clover)
-                            {
-                                   CurrentConfigurePaymentOption.ConfigurationDetails = JsonConvert.SerializeObject(configurationModel);
-                                   CurrentConfigurePaymentOption.IsConfigered = true;
-                                   await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            else
-                            {
-                                CurrentConfigurePaymentOption.IsConfigered = false;
-                                CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                        };
-                    }
-                    if (!paymentoption.IsConfigered && cloverConfigurationPage?.ViewModel?.ConfigurationModel != null)
-                    {
-                        cloverConfigurationPage.ViewModel.ConfigurationModel.AuthToken = string.Empty;
-                    }
-                    await NavigationService.PushModalAsync(cloverConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.Castle)
-            {
-                try
-                {
-                    if (castlesConfigurationPage == null)
-                    {
-                        castlesConfigurationPage = new CastlesConfigurationPage();
-                        if (!string.IsNullOrEmpty(CurrentConfigurePaymentOption.ConfigurationDetails))
-                        {
-                            castlesConfigurationPage.ViewModel.ConfigurationModel = JsonConvert.DeserializeObject<CastlesConfigurationDto>(CurrentConfigurePaymentOption.ConfigurationDetails);
-                        }
-                        castlesConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, CastlesConfigurationDto configurationModel) =>
-                        {
-                            if (configurationModel != null && CurrentConfigurePaymentOption != null && CurrentConfigurePaymentOption.PaymentOptionType == PaymentOptionType.Castle)
-                            {
-                                   CurrentConfigurePaymentOption.ConfigurationDetails = JsonConvert.SerializeObject(configurationModel);
-                                   CurrentConfigurePaymentOption.IsConfigered = true;
-                                   await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                            else
-                            {
-                                CurrentConfigurePaymentOption.IsConfigered = false;
-                                CurrentConfigurePaymentOption.ConfigurationDetails = null;
-                                await PaymentActiveChanged(CurrentConfigurePaymentOption);
-                            }
-                        };
-                    }
-                    if (!paymentoption.IsConfigered && castlesConfigurationPage?.ViewModel?.ConfigurationModel != null)
-                    {
-                        castlesConfigurationPage.ViewModel.ConfigurationModel.AuthToken = string.Empty;
-                    }
-                    await NavigationService.PushModalAsync(castlesConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
-
-
-            else if (paymentoption.PaymentOptionType == PaymentOptionType.TyroTapToPay)
-            {
-                try
-                {
-                    if (tyroTapToPayConfigurationPage == null)
-                    {
-                        tyroTapToPayConfigurationPage = new TyroTapToPayConfiguration();
-                        tyroTapToPayConfigurationPage.ViewModel.ConfigurationSuccessed += async (object sender, TyroTapToPayConfigurationDto configurationModel) =>
-                        {
-                               IntegratedPaymentOptionList = new ObservableCollection<PaymentOptionDto>(IntegratedPaymentOptionList.Where(x=>!(x.PaymentOptionType == PaymentOptionType.TyroTapToPay && (Settings.TyroTapToPayConfiguration == null || x.Id != Settings.TyroTapToPayConfiguration.Id))));
-                               EnterSalePage.PaymentActiveUpdated = true;
-
-                        };
-                    }
-                   tyroTapToPayConfigurationPage.ViewModel.PaymentOption = CurrentConfigurePaymentOption;
-                   if (!string.IsNullOrEmpty(CurrentConfigurePaymentOption.ConfigurationDetails))
-                   {
-                             tyroTapToPayConfigurationPage.ViewModel.ConfigurationModel = JsonConvert.DeserializeObject<TyroTapToPayConfigurationDto>(CurrentConfigurePaymentOption.ConfigurationDetails);
-                   }
-                    await NavigationService.PushModalAsync(tyroTapToPayConfigurationPage);
-                }
-                catch (Exception ex)
-                {
-                    ex.Track();
-                }
-            }
+            
             else if (paymentoption.PaymentOptionType == PaymentOptionType.HikePay)
             {
                 try
@@ -2761,40 +2387,6 @@ namespace HikePOS.ViewModels
 
         }
 
-        public async void SendPeerInvitation()
-        {
-
-            try
-            {
-                if (peerCommunicatorViewModel == null)
-                    peerCommunicatorViewModel = new PeerCommunicatorViewModel(null);
-                peerCommunicatorViewModel.StartPeerConnection();
-                if (ActivecustomerDisplay)
-                {
-                    Settings.IsCustomerAppActive = ActivecustomerDisplay;
-
-
-                    var result = await CreateOrUpdateCustomerDisplayCode(GenerateCustomerAppCode());
-
-                    if (result.id >= 1)
-                    {
-                        Settings.IsCustomerAppActive = true;
-                    }
-                    else
-                    {
-                        Settings.IsCustomerAppActive = false;
-                    }
-                }
-                else
-                {
-                    Settings.IsCustomerAppActive = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                 Debug.WriteLine(ex.Message);
-            }
-        }
 
         private string GenerateCustomerAppCode()
         {

@@ -18,8 +18,6 @@ namespace HikePOS.ViewModels
         #region Properties
         public EventHandler<bool> CashInCashOutAdded;
 
-        public CashInOutReceipt CashInOutReceiptView { get; set; }
-
         private string _note { get; set; }
         public string Note { get { return _note; } set { _note = value; SetPropertyChanged(nameof(Note)); } }
 
@@ -170,8 +168,6 @@ namespace HikePOS.ViewModels
                     registerCashInOutDto.RegisterCashType = RegisterCashType;
 
                     result = await outletServices.AddCashInOutRegister(Fusillade.Priority.UserInitiated, registerCashInOutDto);
-                    if (result != null)
-                        await PrintCashInOutReceipt(RegisterCashType, registerCashInOutDto.Amount, Note);
                 }
                 catch(Exception ex)
                 {
@@ -189,64 +185,5 @@ namespace HikePOS.ViewModels
 
 		}
 
-       async Task PrintCashInOutReceipt(Enums.RegisterCashType CashType, decimal Amount, string Note)
-        {
-            try
-            {
-                var print = DependencyService.Get<IPrint>();
-                if (print != null)
-                {
-                    //Ticket start: #62808 iPad:Print Receipt spacing issues.by rupesh
-                    List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-                    if (AvailablePrinter != null && AvailablePrinter.Count > 0)
-                    {
-                        var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                        //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                        var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                        //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                        //Ticket ends #70775.by rupesh
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.CloseService();
-                        }
-
-                        foreach (Printer objPrinter in AvailablePrinter)
-                        {
-
-                            //Ticket start:#62808 iPad:Print Receipt spacing issues. by pratik
-                            CashInOutReceiptView.Content.WidthRequest = objPrinter.width;
-                            CashInOutReceiptView.WidthRequest = objPrinter.width;
-                            CashInOutReceiptView.UpdateCashInOut(CashType.ToString(), Amount, Note);
-                            CashInOutReceiptView.ForceLayout();
-                            //Ticket end:#62808 by pratik
-                            await Task.Delay(50);
-                            var ViewHeight = CashInOutReceiptView.Content.Height;
-                            print.PrintViews2(CashInOutReceiptView, ViewHeight, true, objPrinter);
-                            //Ticket end:#14410.by rupesh
-
-                        }
-                        if (mPOPPrinterConfigure)
-                        {
-                            mPOPStarBarcode.StartService();
-                        }
-
-                        //Ticket  end:#18093 by rupesh
-                        //Ticket end:#14410.by rupesh
-
-                    }
-                    else
-                    {
-                        App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                    }
-
-                    //print.PrintViews(CashInOutReceiptView, true);
-                    //Ticket end: #62808 .by rupesh
-                }
-			}
-            catch (Exception ex)
-            {
-                ex.Track();
-            }
-        }
     }
 }

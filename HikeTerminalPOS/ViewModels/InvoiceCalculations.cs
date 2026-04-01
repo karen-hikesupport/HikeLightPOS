@@ -37,7 +37,6 @@ namespace HikePOS.ViewModels
         static OfferServices offerServices;
         //End #84438 by Pratik
 
-        static PeerCommunicatorViewModel peerCommunicatorViewModel;
         //Ticket start:#30959 iPad - New feature request :: Rule for discount offers when there are more than one offers applicable.by rupesh
         public  static ObservableCollection<OfferDto> OffersToSelectManually = null;
         public static InvoiceLineItemDto PreviousInvoiceLineItem = null;
@@ -8399,8 +8398,6 @@ namespace HikePOS.ViewModels
                 Invoice.IscallFromPayment = true;
             }
 
-            _= Task.Run(()=> SendPeerNotification(Invoice, offers));
-
             // Changes by jigar Ticket 8360
             if (InvoiceBackOrder != null)
             {
@@ -8412,22 +8409,6 @@ namespace HikePOS.ViewModels
             }
             // End 8360
 
-        }
-
-
-        public static void SendPeerNotification(InvoiceDto invoice, ObservableCollection<OfferDto> offers)
-        {
-
-
-            if (DeviceInfo.Platform == DevicePlatform.iOS)
-            {
-                if (peerCommunicatorViewModel == null)
-                    peerCommunicatorViewModel = new PeerCommunicatorViewModel(saleService);
-
-                peerCommunicatorViewModel.SendPeerNotification(invoice, offers);
-                //peerCommunicatorViewModel.Offers = offers;
-                //peerCommunicatorViewModel.HikePeer_SendMessage(Invoice);
-            }
         }
 
 

@@ -16,7 +16,6 @@ namespace HikePOS
 		public AddCashInCashOutPage()
 		{
 			InitializeComponent();
-            ViewModel.CashInOutReceiptView = CashInOutReceiptView;
         }
 
         protected override void OnAppearing()

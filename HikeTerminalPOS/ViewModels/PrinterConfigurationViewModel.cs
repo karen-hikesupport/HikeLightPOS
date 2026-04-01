@@ -12,7 +12,6 @@ namespace HikePOS.ViewModels
 {
 	public class PrinterConfigurationViewModel : BaseViewModel
 	{
-		IAllReceiptRegistration iAllReceiptRegistration;
 		public PrinterConfigurationViewModel()
 		{
 		}
@@ -34,22 +33,6 @@ namespace HikePOS.ViewModels
 			}
 			//GetAllPrinter = new ObservableCollection<Printer>(GetAllPrinter.Where(x => x.ModelName == SelectedPrinter.ModelName)
 			//                                                  .Select(s => { s = SelectedPrinter; return s; }));
-		}
-		public void AllReceiptLogin()
-		{
-			try
-			{
-				if (iAllReceiptRegistration == null)
-				{
-					iAllReceiptRegistration = DependencyService.Get<IAllReceiptRegistration>();
-				}
-				iAllReceiptRegistration.ShowRegistrationView();
-			}
-			catch (Exception ex)
-			{
-				ex.Track();
-			}
-
 		}
 	}
 }

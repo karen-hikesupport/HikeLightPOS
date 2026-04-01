@@ -9,7 +9,7 @@
 		<!-- Display name -->
 		<ApplicationTitle>HikePOS</ApplicationTitle>
 		<!-- App Identifier -->
-		<ApplicationId>com.hikeup</ApplicationId>
+		<ApplicationId>com.litepos.hike</ApplicationId>
 		<ApplicationIdGuid>86379d64-fb85-4f6b-86bf-7dae963ab2ea</ApplicationIdGuid>
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -31,7 +31,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 		<JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
-		<!-- <RuntimeIdentifiers>android-arm</RuntimeIdentifiers>  -->
+		<RuntimeIdentifiers>android-arm</RuntimeIdentifiers> 
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->
@@ -89,7 +89,7 @@
 		<PackageReference Include="BarcodeScanning.Native.Maui" Version="2.2.1" />
 		<PackageReference Include="SocketMobile.Capture" Version="1.7.83.246" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<!-- <PackageReference Include="Sentry.Maui" Version="5.4.0" /> -->
+		<PackageReference Include="Sentry.Maui" Version="5.4.0" />
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Remove="Platforms\iOS\DependencyServices\MintPayment.cs" />

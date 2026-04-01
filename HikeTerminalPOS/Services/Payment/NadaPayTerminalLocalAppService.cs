@@ -53,7 +53,7 @@ namespace HikePOS.Services
         {
             KeyVersion = 1,
             AdyenCryptoVersion = 1,
-            KeyIdentifier = IsLiveEnvironment ? "hikepaylocal" : "hikepaylocal",
+            KeyIdentifier = IsLiveEnvironment ? "hikepaylive" : "hikepaylocal",
             Password = IsLiveEnvironment ? "123456789012!Aa" : "123456789012!Aa"
         };
 
@@ -64,7 +64,7 @@ namespace HikePOS.Services
 
         private static readonly Config _config = new Config
         {
-            Environment = IsLiveEnvironment ? Adyen.Model.Environment.Test : Adyen.Model.Environment.Test,
+            Environment = IsLiveEnvironment ? Adyen.Model.Environment.Live : Adyen.Model.Environment.Test,
             LocalTerminalApiEndpoint = @"https://192.168.1.5:8443/nexo/"
         };
 
@@ -224,13 +224,15 @@ namespace HikePOS.Services
 
             try
             {
-                _adyenClient.Config.LocalTerminalApiEndpoint = $"https://192.168.1.33:8443/nexo/";
+                _adyenClient.Config.LocalTerminalApiEndpoint = $"https://127.0.0.1:8443/nexo/";
                 var request = PrepareDiagnosisRequest(terminalId);
                 var result = await ExecuteAsync(request, new CancellationToken());
+                SentrySdk.CaptureMessage(result.result.AdditonalResponse);
                 return HandleResponse(result);
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 return ShowError(ex.Message);
             }
         }

@@ -10,6 +10,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System.Diagnostics;
+using HikePOS.Models.Enum;
 
 namespace HikePOS.Services
 {
@@ -46,6 +47,78 @@ namespace HikePOS.Services
                                 break;
                             default:
                                 loginTask = _apiService.UserInitiated.Login(loginmodel);
+                                break;
+                        }
+
+                        loginresponse = await Policy
+                            .Handle<Exception>()
+                            .RetryAsync(retryCount: ServiceConfiguration.retryCount)
+                            .WrapAsync(Policy.TimeoutAsync(ServiceConfiguration.ServiceTimeoutSeconds))
+                            .ExecuteAsync(async () => await loginTask);
+                    }
+                    catch (ApiException ex)
+                    {
+                        loginresponse = await ex.GetContentAsAsync<ResponseModel<string>>();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message == "An error occurred while sending the request")
+                        {
+                            bool isReachable = await CommonMethods.ReachableCheck(_apiService.ApiBaseAddress);
+                            if (!isReachable)
+                            {
+                                App.Instance.Hud.DisplayToast(LanguageExtension.Localize("NoInternetMessage"), Colors.Red, Colors.White);
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            //Need to log this error to backend
+                            ex.Track();
+                            //Application.Current.MainPage.DisplayAlert("Error", "Sorry, Something went wrong..", "Ok");
+                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("SomethingWrong"), Colors.Red, Colors.White);
+                        }
+                        return null;
+                    }
+                }
+                else
+                {
+                    //Application.Current.MainPage.DisplayAlert("Internet Connectivity", "Sorry, Internet is not connected", "Ok");
+                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("NoInternetMessage"), Colors.Red, Colors.White);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.Track();
+            }
+
+            return loginresponse;
+        }
+        public async Task<ResponseModel<string>> LoginByPin(Priority priority, LoginByPinModel loginmodel)
+        {
+
+            ResponseModel<string> loginresponse = null;
+            try
+            {
+                if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+                {
+                    Task<ResponseModel<string>> loginTask;
+                    try
+                    {
+                        switch (priority)
+                        {
+                            case Priority.Background:
+                                loginTask = _apiService.Background.LoginByPin(loginmodel);
+                                break;
+                            case Priority.UserInitiated:
+                                loginTask = _apiService.UserInitiated.LoginByPin(loginmodel);
+                                break;
+                            case Priority.Speculative:
+                                loginTask = _apiService.Speculative.LoginByPin(loginmodel);
+                                break;
+                            default:
+                                loginTask = _apiService.UserInitiated.LoginByPin(loginmodel);
                                 break;
                         }
 
@@ -742,7 +815,7 @@ namespace HikePOS.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    string baseUrl = "http://nadapayapi-dev.us-west-2.elasticbeanstalk.com/GetTenantFromTerminal";
+                    string baseUrl = Settings.AppEnvironment == (int)AppEnvironment.Live ? "http://api.nadapayhq.com/GetTenantFromTerminal" : "http://nadapayapi-dev.us-west-2.elasticbeanstalk.com/GetTenantFromTerminal"; 
                     string url = $"{baseUrl}?MerchantCode={merchantCode}&TerminalSerialNumber={terminalId}";
                     var response = await client.GetAsync(url);
                     string json = await response.Content.ReadAsStringAsync();

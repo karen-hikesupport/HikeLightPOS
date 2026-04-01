@@ -160,6 +160,18 @@ namespace HikePOS
                 ViewModel.OTPCommand.Execute(null);
             }
         }
+
+        private void Digit4_Completed(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(Digit1.Text) && !string.IsNullOrEmpty(Digit2.Text) && !string.IsNullOrEmpty(Digit3.Text) && !string.IsNullOrEmpty(Digit4.Text))
+            {
+                ViewModel.OTPEntry = Digit1.Text + Digit2.Text + Digit3.Text + Digit4.Text;
+                Digit4.Unfocus();
+                ViewModel.OTPCommand.Execute(null);
+            }
+
+
+        }
     }
 
 

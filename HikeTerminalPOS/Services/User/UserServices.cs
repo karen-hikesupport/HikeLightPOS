@@ -270,6 +270,110 @@ namespace HikePOS.Services
                 return null;
             }
         }
+        public async Task<UserListDto> GetRemoteUserByUserPin(Priority priority, string userPin, bool syncLocal)
+        {
+            ResponseModel<UserListDto> userResponse = null;
+
+            Task<ResponseModel<UserListDto>> userTask;
+        Retry:
+            switch (priority)
+            {
+                case Priority.Background:
+                    userTask = _apiService.Background.GetByUserPin(Settings.AccessToken, userPin);
+                    break;
+                case Priority.UserInitiated:
+                    userTask = _apiService.UserInitiated.GetByUserPin(Settings.AccessToken, userPin);
+                    break;
+                case Priority.Speculative:
+                    userTask = _apiService.Speculative.GetByUserPin(Settings.AccessToken, userPin);
+                    break;
+                default:
+                    userTask = _apiService.UserInitiated.GetByUserPin(Settings.AccessToken, userPin);
+                    break;
+            }
+
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    userResponse = await Policy
+                        .Handle<Exception>()
+                        .RetryAsync(retryCount: ServiceConfiguration.retryCount)
+                        .WrapAsync(Policy.TimeoutAsync(ServiceConfiguration.ServiceTimeoutSeconds))
+                        .ExecuteAsync(async () => await userTask);
+                }
+                catch (ApiException ex)
+                {
+                    //Get Exception content
+                    userResponse = await ex.GetContentAsAsync<ResponseModel<UserListDto>>();
+                    if (userResponse != null && userResponse.unAuthorizedRequest && ex != null && ex.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        bool res = await accountService.GetRenewAccessToken(priority);
+                        if (res)
+                        {
+                            goto Retry;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.Track();
+                    if (priority != Priority.Background)
+                    {
+                        if (ex.Message == "An error occurred while sending the request")
+                        {
+                            bool isReachable = await CommonMethods.ReachableCheck(_apiService.ApiBaseAddress);
+                            if (!isReachable)
+                            {
+                                App.Instance.Hud.DisplayToast(LanguageExtension.Localize("NoInternetMessage"), Colors.Red, Colors.White);
+                                return null;
+                            }
+                        }
+                        else
+                        {
+                            Extensions.SomethingWentWrong("Getting user by userPin.", ex);
+                        }
+                    }
+                    return null;
+                }
+            }
+            else
+            {
+                if (priority != Priority.Background)
+                {
+                    App.Instance.Hud.DisplayToast(LanguageExtension.Localize("NoInternetMessage"), Colors.Red, Colors.White);
+                }
+                return null;
+            }
+
+            if (userResponse != null && userResponse.success)
+            {
+                if (syncLocal && userResponse.result != null)
+                {
+                    UpdateLocalUser(userResponse.result);
+                }
+
+                if (userResponse.result != null)
+                {
+                    if (Settings.CurrentUser != null)
+                    {
+                        Settings.CurrentUser = userResponse.result;
+                        if (userResponse.result.GrantedPermissionNames != null && userResponse.result.GrantedPermissionNames.Count > 0)
+                            Settings.GrantedPermissionNames = userResponse.result.GrantedPermissionNames;
+                    }
+                }
+                return userResponse.result;
+            }
+            else
+            {
+                if (priority != Priority.Background && userResponse != null && userResponse.error != null && userResponse.error.message != null)
+                {
+                    App.Instance.Hud.DisplayToast(userResponse.error.message, Colors.Red, Colors.White);
+                }
+                return null;
+            }
+        }
+
 
         public bool UpdateLocalUser(UserListDto user)
         {

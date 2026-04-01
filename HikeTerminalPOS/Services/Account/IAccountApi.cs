@@ -39,6 +39,9 @@ namespace HikePOS.Services
         [Post("/Account/VerifySecurityCode")]
         Task<ResponseModel<object>> VerifySecurityCode([Body] VerifySecurityCodeDto input, [Header("Authorization")] string accessToken);
 
+        [Post("/api/v1/login/LoginByPin")]
+        Task<ResponseModel<string>> LoginByPin([Body] LoginByPinModel user);
+
     }
 
 }

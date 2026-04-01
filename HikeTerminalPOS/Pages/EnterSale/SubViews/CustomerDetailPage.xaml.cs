@@ -39,12 +39,6 @@ namespace HikePOS
 
 				}
 
-                //Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik
-                bool result = false;
-                var myPropInfo = Settings.ShopFeatures.GetType().GetProperty("HikeCreditNotePrintFeature");
-                bool tempResult = Boolean.TryParse(Convert.ToString(myPropInfo.GetValue(Settings.ShopFeatures)), out result);
-                btnPrintCustomer.IsVisible = result;
-                //End Ticket #74631 by pratik
             }
             catch (Exception ex)
 			{
@@ -63,14 +57,5 @@ namespace HikePOS
 			}
 		}
 
-        //Start Ticket #74631 iOS: Credit Note Receipt (FR) by pratik
-        async void PrintHandle_Clicked(object sender, System.EventArgs e)
-        {
-            using (new BaseViewModel.Busy(this.ViewModel, true))
-            {
-                await ViewModel.PrintInvoice(CreditNoteView);
-            };
-        }
-        //End Ticket #74631 by pratik
     }
 }

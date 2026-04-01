@@ -2,36 +2,39 @@
 
 namespace HikePOS.Models
 {
-	public class LoginModel
-	{
-        public LoginModel() {
-			DeviceDetails = new DeviceDetail() {
-				Id = GetDeviceInfo.GetDeviceID(),
-				Model = DeviceInfo.Current.Model,
-				Version = DeviceInfo.Current.Version.ToString(),
-				Platform = DeviceInfo.Current.Platform.ToString()
-			};
-		}
+    public class LoginModel
+    {
+        public LoginModel()
+        {
+            DeviceDetails = new DeviceDetail()
+            {
+                Id = GetDeviceInfo.GetDeviceID(),
+                Model = DeviceInfo.Current.Model,
+                Version = DeviceInfo.Current.Version.ToString(),
+                Platform = DeviceInfo.Current.Platform.ToString()
+            };
+        }
 
-		public string TenancyName { get; set; }
-		public string UsernameOrEmailAddress { get; set; }
-		public string Password { get; set; }
-		//public string SignalRConnectionId { get; set; }
-		public DeviceDetail DeviceDetails { get; set; }
-		public string NotificationToken { get; set; }
-	}
+        public string TenancyName { get; set; }
+        public string UsernameOrEmailAddress { get; set; }
+        public string Password { get; set; }
+        //public string SignalRConnectionId { get; set; }
+        public DeviceDetail DeviceDetails { get; set; }
+        public string NotificationToken { get; set; }
+    }
 
-	public class DeviceDetail { 
-		public string Id { get; set; }
-		public string Model { get; set; }
-		public string Version { get; set;}
-		public string Platform { get; set;}
-	}
+    public class DeviceDetail
+    {
+        public string Id { get; set; }
+        public string Model { get; set; }
+        public string Version { get; set; }
+        public string Platform { get; set; }
+    }
 
-	public class CheckTenantInputModel
-	{
-		public string Tenant { get; set; }
-	}
+    public class CheckTenantInputModel
+    {
+        public string Tenant { get; set; }
+    }
     public class LoginInformation
     {
         public User user { get; set; }
@@ -75,4 +78,11 @@ namespace HikePOS.Models
         public int TenantId { get; set; }
         public string StoreId { get; set; }
     }
+    public class LoginByPinModel
+    {
+        public int TenantId { get; set; }
+        public string UserPin { get; set; }
+        public string VerifyKey { get; set; }
+    }
+
 }

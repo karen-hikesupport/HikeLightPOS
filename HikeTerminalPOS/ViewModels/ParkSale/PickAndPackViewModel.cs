@@ -343,7 +343,6 @@ namespace HikePOS.ViewModels
                         }
 
                         IsSaveEnabled = false;
-                        await receiptPrintHandle_Clicked();
                     }
                 }
             }
@@ -515,71 +514,6 @@ namespace HikePOS.ViewModels
                 ex.Track();
             }
         }
-        private async Task receiptPrintHandle_Clicked()
-        {
-            using (new BaseViewModel.Busy(this, true))
-            {
-
-                if (Invoice == null)
-                {
-                    return;
-                }
-
-                if (Settings.GetCachePrinters != null)
-                {
-                    PickAndPackPage pickAndPackPage = (PickAndPackPage)NavigationService.ModalStack.LastOrDefault();
-                    if ((pickAndPackPage?._PickAndPackReceiptView?.Content != null && !Settings.IsTextPrint) || Settings.IsTextPrint )
-                    {
-                        await Task.Delay(1);
-                        var print = DependencyService.Get<IPrint>();
-
-                        List<Printer> AvailablePrinter = Settings.GetCachePrinters.Where(x => x.PrimaryReceiptPrint == true).ToList();
-
-                        if (print != null && AvailablePrinter != null && AvailablePrinter.Count > 0)
-                        {
-                            var mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
-                            //Ticket starts #70775:The client wants to connect  usb scanner to mc3 print in ipad.by rupesh
-                            var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any(x => (!string.IsNullOrEmpty(x.ModelName) && x.ModelName.Contains("POP")) || x.EnableUSBScanner);
-                            //var mPOPPrinterConfigure = AvailablePrinter != null && AvailablePrinter.Any();
-                            //Ticket end #70775.by rupesh
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.CloseService();
-                            }
-                            foreach (var objprinter in AvailablePrinter)
-                            {
-                                Settings.CurrentPrinter = objprinter;
-                                if(!Settings.IsTextPrint)
-                                {
-                                    Settings.IsPrintSKU = Settings.CurrentRegister.ReceiptTemplate.PrintSKU;
-                                    pickAndPackPage._PickAndPackReceiptView.Content.WidthRequest = objprinter.width;
-                                    pickAndPackPage._PickAndPackReceiptView.WidthRequest = objprinter.width;
-                                    pickAndPackPage._PickAndPackReceiptView.UpdateHtmlHeaderFooter(Settings.CurrentRegister.ReceiptTemplate, objprinter);
-                                    await Task.Delay(10);
-                                    pickAndPackPage._PickAndPackReceiptView.InvalidateMeasure();
-                                    var ViewHeight = pickAndPackPage._PickAndPackReceiptView.Content.Height;
-                                    print.PrintViews2(pickAndPackPage._PickAndPackReceiptView, ViewHeight, false, objprinter);
-                                }
-                                else
-                                    print.DoTextPrint(Invoice,Settings.CurrentRegister.ReceiptTemplate,Settings.SelectedOutlet,GeneralShopDto, objprinter,null,false,"pp",new InvoiceFulfillmentDto(){ InvoiceLineItems = FulfillmentInvoiceLineItems});
-                                Settings.CurrentPrinter = null;
-                            }
-
-                            if (mPOPPrinterConfigure)
-                            {
-                                mPOPStarBarcode.StartService();
-                            }
-                        }
-                        else
-                        {
-
-                            App.Instance.Hud.DisplayToast(LanguageExtension.Localize("PrinterValidationMessage"));
-                        }
-                    }
-                }
-            }
-        }
-
         //Ticket start:#71299 iPad - Feature: Adding the stock items manually in Pick and Pack.by rupesh
         public void OpenUpdateQuantity(Entry customEntry)
         {
