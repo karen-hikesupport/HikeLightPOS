@@ -26,60 +26,59 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0"
-                      VerticalOptions="FillAndExpand"
-                      ColumnDefinitions="50,*,100">
-                    <StackLayout
-                        Orientation="Horizontal"
-                        VerticalOptions="FillAndExpand"
-                        HorizontalOptions="End"
-                        >
+                      VerticalOptions="Fill"
+                      ColumnDefinitions="50,*,100"
+                      Padding="0">
+
+                    <!-- Back Button -->
+                    <StackLayout Orientation="Horizontal"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="End">
                         <Label Text="{Localize:Translate BackIconUnicode}"
-                               VerticalOptions="Center"
-                               Margin="0,0,0,2"
                                TextColor="Black"
                                FontSize="35"
+                               Margin="0,0,0,2"
                                Style="{x:Static resources:Styles.PageBackLabelStyle}"/>
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BackToEnterSaleCommand}"/>
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
+
+                    <!-- Page Title -->
                     <Label Text="{Localize:Translate EnterSale_TitleText}"
                            Grid.Column="1"
-                           Grid.Row="0"
-                           Style="{x:Static resources:Styles.PageTitleLabelStyle}"
                            VerticalOptions="Center"
                            HorizontalTextAlignment="Start"
-                           Margin="0,0,0,0"/>
-                    <HorizontalStackLayout Spacing="10"
-                                           Grid.Column="2"
-                                           Grid.Row="0"
-                                           HorizontalOptions="End">
+                           Style="{x:Static resources:Styles.PageTitleLabelStyle}"/>
+
+                    <!-- Search + Scan Buttons -->
+                    <HorizontalStackLayout Grid.Column="2"
+                                           Spacing="10"
+                                           HorizontalOptions="End"
+                                           VerticalOptions="Center">
+
                         <ImageButton Source="ic_search"
-                                     MinimumHeightRequest="32"
-                                     MinimumWidthRequest="32"
                                      WidthRequest="32"
                                      HeightRequest="32"
                                      Command="{Binding SearchProductCommand}"
                                      BackgroundColor="Transparent"
-                                     HorizontalOptions="End"
-                                     Padding="3,3,0,3"/>
+                                     Padding="3"/>
+
                         <ImageButton Source="scanicon"
-                                     MinimumHeightRequest="32"
-                                     MinimumWidthRequest="32"
                                      WidthRequest="32"
                                      HeightRequest="32"
-                                     HorizontalOptions="End"
-                                     BackgroundColor="Transparent"
                                      Command="{Binding BarcodeScanSelectedCommand}"
-                                     Padding="3,3,0,3"
+                                     BackgroundColor="Transparent"
+                                     Padding="3"
                                      Margin="0,0,20,0"/>
-                       
+
                     </HorizontalStackLayout>
                 </Grid>
                 <BoxView Grid.Row="1"
-                         VerticalOptions="FillAndExpand"
-                         HorizontalOptions="FillAndExpand"
+                         HeightRequest="1"
+                         HorizontalOptions="Fill"
                          Color="{x:Static resources:AppColors.HeaderSepratorColor}"/>
+
                 <Grid x:Name="MainGrid"
                       Grid.Row="2"
                       VerticalOptions="FillAndExpand"
@@ -282,8 +281,9 @@
                                                         BackgroundColor="Transparent"
                                                         SelectionMode="Single"
                                                         SelectedItem="{Binding SelectedInvoiceItem, Mode=TwoWay}"
-                                                        IsGrouped="{Binding ShopGeneralRule.ShowGroupProductsByCategory}">
-                                            <CollectionView.GroupHeaderTemplate>
+                                                        ItemSizingStrategy="MeasureFirstItem"
+                                                >
+                                            <!-- <CollectionView.GroupHeaderTemplate>
                                                 <DataTemplate x:DataType="Helpers:InvoiceLineiItemGroup">
                                                     <StackLayout HeightRequest="25"
                                                                  VerticalOptions="CenterAndExpand"
@@ -295,12 +295,12 @@
                                                                VerticalOptions="Center"/>
                                                     </StackLayout>
                                                 </DataTemplate>
-                                            </CollectionView.GroupHeaderTemplate>
+                                            </CollectionView.GroupHeaderTemplate> -->
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate x:DataType="model:InvoiceLineItemDto">
-                                                    <StackLayout Margin="12,0,12,0"
+                                                    <!-- <StackLayout Margin="12,0,12,0"
                                                                  Spacing="0"
-                                                                 VerticalOptions="FillAndExpand">
+                                                                 VerticalOptions="FillAndExpand"> -->
                                                         <Grid RowSpacing="0"
                                                               ColumnSpacing="0"
                                                               Margin="0,12,0,12">
@@ -313,7 +313,7 @@
                                                                 <ColumnDefinition Width="90"/>
                                                                 <ColumnDefinition Width="27"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <ContentView Grid.Row="0"
+                                                            <!-- <ContentView Grid.Row="0"
                                                                          Grid.Column="0"
                                                                          HeightRequest="40"
                                                                          WidthRequest="40"
@@ -375,7 +375,7 @@
                                                                                 Value="true"/>
                                                                     </DataTrigger>
                                                                 </ContentView.Triggers>
-                                                            </ContentView>
+                                                            </ContentView> -->
                                                             <StackLayout Grid.Row="0"
                                                                          Grid.Column="1"
                                                                          VerticalOptions="Start"
@@ -393,26 +393,26 @@
                                                                            Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}"
                                                                            VerticalOptions="Start"
                                                                            IsVisible="false">
-                                                                        <Label.Triggers>
+                                                                        <!-- <Label.Triggers>
                                                                             <DataTrigger TargetType="Label"
                                                                                          Binding="{Binding SeperatorVisible}"
                                                                                          Value="False">
                                                                                 <Setter Property="IsVisible"
                                                                                         Value="True"/>
                                                                             </DataTrigger>
-                                                                        </Label.Triggers>
+                                                                        </Label.Triggers> -->
                                                                     </Label>
                                                                     <Label Text="{Binding SoldPrice, StringFormat='@{0:c}'}"
                                                                            IsVisible="{Binding isEnable}"
                                                                            Style="{x:Static resources:Styles.InvoiceItemProductRetailPriceLabelStyle}">
-                                                                        <Label.Triggers>
+                                                                        <!-- <Label.Triggers>
                                                                             <DataTrigger TargetType="Label"
                                                                                          Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CheckOutViewModel}}, Path=IsArabicCulture, x:DataType=vm:CheckOutViewModel}"
                                                                                          Value="True">
                                                                                 <Setter Property="Text"
                                                                                         Value="{Binding SoldPrice, StringFormat='{}{0:c2}'}"/>
                                                                             </DataTrigger>
-                                                                        </Label.Triggers>
+                                                                        </Label.Triggers> -->
                                                                     </Label>
                                                                 </StackLayout>
 
@@ -429,16 +429,16 @@
                                                                        VerticalOptions="Start"
                                                                        IsVisible="{Binding ServedByName,Converter={Helpers:NullValueBoolConverter}}"
                                                                        TextColor="Black">
-                                                                    <Label.FormattedText>
+                                                                    <!-- <Label.FormattedText>
                                                                         <FormattedString>
                                                                             <Span Text="Served By: "
                                                                                   FontFamily="OpenSansSemibold"/>
                                                                             <Span Text="{Binding ServedByName}"/>
                                                                         </FormattedString>
-                                                                    </Label.FormattedText>
+                                                                    </Label.FormattedText> -->
                                                                 </Label>
                                                                 <!-- End #84287 By Pratik -->
-                                                                <StackLayout
+                                                                <!-- <StackLayout
                                                                     IsVisible="{Binding  EnableSerialNumber, Converter={Helpers:CheckStoreFeatureConverter}, ConverterParameter=HikePOSEnableSerialNumberTrackingFeature}">
                                                                     <Border StrokeShape="RoundRectangle 5"
                                                                             HorizontalOptions="StartAndExpand"
@@ -461,9 +461,9 @@
                                                                                                   Text="{Binding SerialNumber,Mode=TwoWay}"
                                                                                                   Unfocused="CustomEntry_Unfocused"
                                                                                                   Completed="CustomEntry_Completed"
-                                                                                                  BindingContext="{Binding .}">
+                                                                                                  BindingContext="{Binding .}"> -->
                                                                             <!--Start #90946 by Pratik-->
-                                                                            <userControls:CustomEntry.Triggers>
+                                                                            <!-- <userControls:CustomEntry.Triggers>
                                                                                 <DataTrigger TargetType="userControls:CustomEntry"
                                                                                              Binding="{Binding IsSerialNumberEditableFromEntersale}"
                                                                                              Value="True">
@@ -472,8 +472,8 @@
                                                                                 </DataTrigger>
                                                                             </userControls:CustomEntry.Triggers>
                                                                         </userControls:CustomEntry>
-                                                                    </Border>
-                                                                    <Label Text="{Binding SerialNumber,StringFormat='SN: {0}'}"
+                                                                    </Border> -->
+                                                                    <!-- <Label Text="{Binding SerialNumber,StringFormat='SN: {0}'}"
                                                                            Style="{x:Static resources:Styles.InvoiceItemProductOfferNoteLabelStyle}"
                                                                            IsVisible="True">
                                                                         <Label.Triggers>
@@ -494,8 +494,8 @@
 
 
                                                                     </Label>
-
-                                                                </StackLayout>
+ -->
+                                                                <!-- </StackLayout> -->
                                                             </StackLayout>
                                                             <StackLayout Grid.Row="0"
                                                                          Grid.Column="2"
@@ -504,14 +504,14 @@
                                                                          Spacing="1">
                                                                 <Label Text="{Binding TotalAmount, StringFormat='{}{0:c}'}"
                                                                        Style="{x:Static resources:Styles.InvoiceItemProductTotalAmountLabelStyle}">
-                                                                    <Label.Triggers>
+                                                                    <!-- <Label.Triggers>
                                                                         <DataTrigger TargetType="Label"
                                                                                      Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CheckOutViewModel}}, Path=IsArabicCulture, x:DataType=vm:CheckOutViewModel}"
                                                                                      Value="True">
                                                                             <Setter Property="Text"
                                                                                     Value="{Binding TotalAmount, StringFormat='{}{0:c2}'}"/>
                                                                         </DataTrigger>
-                                                                    </Label.Triggers>
+                                                                    </Label.Triggers> -->
                                                                 </Label>
                                                                 <Label Text="{Binding TotalReatilAmount, StringFormat='{}{0:c}'}"
                                                                        IsVisible="false"
@@ -529,12 +529,12 @@
                                                                             <Setter Property="IsVisible"
                                                                                     Value="True"/>
                                                                         </MultiTrigger>
-                                                                        <DataTrigger TargetType="Label"
+                                                                        <!-- <DataTrigger TargetType="Label"
                                                                                      Binding="{Binding Source={RelativeSource AncestorType={x:Type vm:CheckOutViewModel}}, Path=IsArabicCulture, x:DataType=vm:CheckOutViewModel}"
                                                                                      Value="True">
                                                                             <Setter Property="Text"
                                                                                     Value="{Binding TotalReatilAmount, StringFormat='{}{0:c2}'}"/>
-                                                                        </DataTrigger>
+                                                                        </DataTrigger> -->
                                                                     </Label.Triggers>
                                                                 </Label>
                                                             </StackLayout>
@@ -560,13 +560,13 @@
                                                                 </Grid.GestureRecognizers>
                                                             </Grid>
                                                         </Grid>
-                                                    </StackLayout>
+                                                    <!-- </StackLayout> -->
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
                             </Grid>
 
-                            <BoxView IsVisible="false"
+                            <!-- <BoxView IsVisible="false"
                                      Grid.Row="3"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
@@ -581,9 +581,9 @@
                                                 Value="True"/>
                                     </DataTrigger>
                                 </BoxView.Triggers>
-                            </BoxView>
+                            </BoxView> -->
 
-                            <StackLayout Grid.Row="4"
+                            <!-- <StackLayout Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
                                          HeightRequest="40"
@@ -634,8 +634,8 @@
                                 <Label Text="{Localize:Translate IsReStockWhenRefundText}"
                                        Style="{x:Static resources:Styles.InvoiceRestockCheckBoxLabelStyle}"
                                        Margin="20,0,0,0"/>
-                            </StackLayout>
-                            <VerticalStackLayout Grid.Row="5"
+                            </StackLayout> -->
+                            <!-- <VerticalStackLayout Grid.Row="5"
                                                  Grid.Column="0"
                                                  Grid.ColumnSpan="2">
                                 <userControls:ExpandCollapseView
@@ -687,8 +687,8 @@
                                                                 Value="2"/>
                                                     </DataTrigger>
                                                 </Label.Triggers>
-                                            </Label>
-                                            <Label Grid.Row="0"
+                                            </Label> -->
+                                            <!-- <Label Grid.Row="0"
                                                    Grid.Column="1"
                                                    Text="{Binding invoicemodel.Invoice.SubTotal, StringFormat='{}{0:c}'}"
                                                    Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
@@ -814,9 +814,9 @@
                                                                 Value="{Binding invoicemodel.Invoice.Tax, StringFormat='{}{0:c2}'}"/>
                                                     </DataTrigger>
                                                 </Label.Triggers>
-                                            </Label>
+                                            </Label> -->
 
-                                            <BoxView Grid.Row="5"
+                                            <!-- <BoxView Grid.Row="5"
                                                      Grid.Column="0"
                                                      Grid.ColumnSpan="2"
                                                      Color="{x:Static resources:AppColors.LightBordersColor}"
@@ -840,8 +840,8 @@
                                                 <Label.GestureRecognizers>
                                                     <TapGestureRecognizer Command="{Binding OpenTipCommand}"/>
                                                 </Label.GestureRecognizers>
-                                            </Label>
-                                            <Label x:Name="lblTip"
+                                            </Label> -->
+                                            <!-- <Label x:Name="lblTip"
                                                    Grid.Row="6"
                                                    Grid.Column="1"
                                                    IsVisible="{Binding TipVisible}"
@@ -865,9 +865,9 @@
                                                      Color="{x:Static resources:AppColors.LightBordersColor}"
                                                      HeightRequest="0.5"
                                                      VerticalOptions="Start"
-                                                     Margin="-20,0"/>
+                                                     Margin="-20,0"/> -->
 
-                                            <Label x:Name="btnShipping"
+                                            <!-- <Label x:Name="btnShipping"
                                                    Grid.Row="8"
                                                    Grid.Column="0"
                                                    Text="{Localize:Translate ShippingTax}"
@@ -891,16 +891,16 @@
                                                    IsVisible="{Binding ShippingVisible}"
                                                    Text="{Binding invoicemodel.Invoice.TotalShippingCost, StringFormat='{}{0:c}'}"
                                                    Style="{x:Static resources:Styles.InvoiceSummaryValueLabelStyle}">
-                                                <Label.Triggers>
+                                                <Label.Triggers> -->
                                                     <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
-                                                    <DataTrigger TargetType="Label"
+                                                    <!-- <DataTrigger TargetType="Label"
                                                                  Binding="{Binding IsArabicCulture}"
                                                                  Value="True">
                                                         <Setter Property="Text"
                                                                 Value="{Binding invoicemodel.Invoice.TotalTip, StringFormat='{}{0:c2}'}"/>
-                                                    </DataTrigger>
+                                                    </DataTrigger> -->
                                                     <!--Ticket #7760 End:By Nikhil.-->
-                                                </Label.Triggers>
+                                                <!-- </Label.Triggers>
                                             </Label>
 
                                             <BoxView Grid.Row="9"
@@ -911,9 +911,9 @@
                                                      Color="{x:Static resources:AppColors.LightBordersColor}"
                                                      HeightRequest="0.5"
                                                      VerticalOptions="Start"
-                                                     Margin="-20,0"/>
+                                                     Margin="-20,0"/> -->
 
-                                            <HorizontalStackLayout Grid.Row="10"
+                                            <!-- <HorizontalStackLayout Grid.Row="10"
                                                                    Grid.Column="0"
                                                                    Spacing="6">
                                                 <Label Text="{Localize:Translate TotalText}"
@@ -940,14 +940,14 @@
                                         </Grid>
                                     </userControls:ExpandCollapseView.ContainerContent>
                                 </userControls:ExpandCollapseView>
-                            </VerticalStackLayout>
-
+                            </VerticalStackLayout> -->
+<!-- 
                             <BoxView Grid.Row="6"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
                                      Color="{x:Static resources:AppColors.LightBordersColor}"
                                      HeightRequest="0.5"
-                                     VerticalOptions="Start"/>
+                                     VerticalOptions="Start"/> -->
                             <!--#94565-->
                             <StackLayout Grid.Row="7"
                                          Grid.Column="0"
@@ -969,16 +969,16 @@
                                        HeightRequest="55"
                                        VerticalTextAlignment="Center"
                                        Margin="0,0,20,0">
-                                    <Label.Triggers>
+                                    <!-- <Label.Triggers>  -->
                                         <!--Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.-->
-                                        <DataTrigger TargetType="Label"
+                                        <!-- <DataTrigger TargetType="Label"
                                                      Binding="{Binding IsArabicCulture}"
                                                      Value="True">
                                             <Setter Property="Text"
                                                     Value="{Binding invoicemodel.Invoice.TotalPay, StringFormat='{}{0:c2}'}"/>
-                                        </DataTrigger>
+                                        </DataTrigger> -->
                                         <!--Ticket #7760 End:By Nikhil.-->
-                                    </Label.Triggers>
+                                    <!-- </Label.Triggers> -->
                                 </Label>
                                 <ActivityIndicator Scale="1"
                                                    Color="White"
@@ -993,7 +993,7 @@
                                     <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
                                 </StackLayout.GestureRecognizers>
                             </StackLayout>
-                            <Grid Grid.Row="7"
+                            <!-- <Grid Grid.Row="7"
                                   Grid.Column="0"
                                   Grid.ColumnSpan="2"
                                   HeightRequest="55"
@@ -1076,9 +1076,9 @@
                                         <TapGestureRecognizer Command="{Binding PaymentCommand}"/>
                                     </StackLayout.GestureRecognizers>
                                 </StackLayout>
-                            </Grid>
+                            </Grid> -->
                             <!--#94565-->
-                            <Button Grid.Row="7"
+                            <!-- <Button Grid.Row="7"
                                     IsVisible="false"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="2"
@@ -1091,18 +1091,18 @@
                                                  Value="False">
                                         <Setter Property="IsVisible"
                                                 Value="True"/>
-                                    </DataTrigger>
+                                    </DataTrigger> -->
                                     <!--Ticket start:#74634 iOS FR: Pin Restriction.by rupesh-->
-                                    <DataTrigger TargetType="Button"
+                                    <!-- <DataTrigger TargetType="Button"
                                                  Binding="{Binding IsOpenRegisterPermission}"
                                                  Value="False">
                                         <Setter Property="TextColor"
                                                 Value="{x:Static resources:AppColors.PrimaryLightTextColor}"/>
-                                    </DataTrigger>
+                                    </DataTrigger> -->
                                     <!--Ticket end:#74634.by rupesh-->
-                                </Button.Triggers>
-                            </Button>
-                            <BoxView Grid.Row="0"
+                                <!-- </Button.Triggers>
+                            </Button> -->
+                            <!-- <BoxView Grid.Row="0"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
                                      IsVisible="false"
@@ -1116,10 +1116,11 @@
                                                 Value="True"/>
                                     </DataTrigger>
                                 </BoxView.Triggers>
-                            </BoxView>
+                            </BoxView> -->
 
                         </Grid>
                     </Grid>
+                    
                     <BoxView Grid.Row="0"
                              Grid.Column="0"
                              Grid.ColumnSpan="2"
@@ -1131,7 +1132,7 @@
                             <TapGestureRecognizer Command="{Binding BackgroundHandleCommand}"/>
                         </BoxView.GestureRecognizers>
                     </BoxView>
-                    <StackLayout Grid.Row="0"
+                    <!-- <StackLayout Grid.Row="0"
                                  Grid.ColumnSpan="2"
                                  Grid.Column="0"
                                  Grid.RowSpan="8"
@@ -1143,9 +1144,9 @@
                                  IsVisible="{OnPlatform Android={Binding IsOpenSearchCustomerPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
                         <local:SearchCustomerView x:Name="CustomerPopup"
                                                   IsActive="{Binding IsActive}"/>
-                    </StackLayout>
+                    </StackLayout> -->
 
-                    <StackLayout x:Name="DiscountTipPopup"
+                    <!-- <StackLayout x:Name="DiscountTipPopup"
                                  Grid.Row="0"
                                  Grid.ColumnSpan="2"
                                  Grid.Column="0"
@@ -1158,8 +1159,8 @@
                                  IsVisible="{OnPlatform Android={Binding IsOpenDiscountPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
                         <local:DiscountTipView PopupTitle="{Binding PopupTitle}"/>
                     </StackLayout>
-
-                    <StackLayout x:Name="TaxViewPopup"
+ -->
+                    <!-- <StackLayout x:Name="TaxViewPopup"
                                  Grid.Row="0"
                                  Grid.ColumnSpan="2"
                                  Grid.Column="0"
@@ -1171,7 +1172,7 @@
                                  Scale="{Binding IsOpenTaxViewPopUp}"
                                  IsVisible="{OnPlatform Android={Binding IsOpenTaxViewPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
                         <local:TaxView/>
-                    </StackLayout>
+                    </StackLayout> -->
 
                     <StackLayout x:Name="MoreOptionMenu"
                                  Grid.Row="0"
@@ -1198,7 +1199,7 @@
                             <TapGestureRecognizer  Command="{Binding BackgroundHandleCommand}"/>
                         </BoxView.GestureRecognizers>
                     </BoxView>
-                    <StackLayout Grid.Row="0"
+                    <!-- <StackLayout Grid.Row="0"
                             Grid.RowSpan="3"
                                  Grid.Column="0"
                                  TranslationX="-5"
@@ -1209,16 +1210,16 @@
                                  IsVisible="{OnPlatform Android={Binding IsOpenSortingFilterPopUp,Converter={Helpers:IntegerToBoolConverter}},Default=True}">
                         <local:ProductSortMenuView>
                         </local:ProductSortMenuView>
-                    </StackLayout>
+                    </StackLayout> -->
                     <!--Ticket end #37205 .by rupesh-->
 
                 </Grid>
-                <Grid IsVisible="{Binding invoicemodel.IsLoad}"
+                <!-- <Grid IsVisible="{Binding invoicemodel.IsLoad}"
                       BackgroundColor="Transparent"
                       Grid.Row="0"
                       Grid.RowSpan="3"
                       HorizontalOptions="FillAndExpand"
-                      VerticalOptions="FillAndExpand"/>
+                      VerticalOptions="FillAndExpand"/> -->
             </Grid>
         </Grid>
     </ContentPage.Content>

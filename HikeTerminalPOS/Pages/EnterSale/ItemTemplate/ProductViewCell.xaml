@@ -31,9 +31,9 @@
             </Grid.ColumnDefinitions>
             <Grid Grid.Row="0" Grid.Column="0"
                 BackgroundColor="{Binding Product.ColorType, Converter={Helpers:ColorTypeToColorConverter}}" HorizontalOptions="Fill">
-                <Label x:Name="lblname" TextColor="Black" Margin="5,0"
+                <!-- <Label x:Name="lblname" TextColor="Black" Margin="5,0"
                     Text="{Binding Product.ShortName}" Style="{x:Static resources:Styles.EntersaleItemImagePlaceholderLabelStyle}"
-                    VerticalOptions="Fill" HorizontalOptions="Fill" MaxLines="3" LineBreakMode="TailTruncation"/>                    
+                    VerticalOptions="Fill" HorizontalOptions="Fill" MaxLines="3" LineBreakMode="TailTruncation"/>                     -->
                 <ffimageloading:CachedImage
                     x:Name="ProductImage"
                     HeightRequest="95"
@@ -53,7 +53,7 @@
                 TextColor="{Binding Product.LayoutColor, Converter={Helpers:ColorTypeToColorConverter},ConverterParameter='text'}"
                 Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" Padding="10,0,10,0" />
 
-            <Border x:Name="ItemName1" Grid.Row="1" Grid.Column="0" Padding="0" Margin="0,-16,0,0"
+            <!-- <Border x:Name="ItemName1" Grid.Row="1" Grid.Column="0" Padding="0" Margin="0,-16,0,0"
                  BackgroundColor="Transparent" StrokeShape="RoundRectangle 10" Stroke="Transparent" 
                 HeightRequest="24" VerticalOptions="Start" HorizontalOptions="Center">
                 <Grid ColumnSpacing="0" RowSpacing="0">
@@ -69,7 +69,7 @@
                     <BoxView x:Name="InventoryCountBG" IsVisible="{Binding Product.ShowStockCountOnEnterSale}" Grid.Row="0" Grid.Column="1" BackgroundColor="#347ec0" HeightRequest="24" WidthRequest="40" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Opacity="0.75"/>
                     <Label x:Name="InventoryCountLabel" IsVisible="{Binding Product.ShowStockCountOnEnterSale}" Grid.Row="0" Grid.Column="1" Text="{Binding Product.Stock}" Style="{x:Static resources:Styles.EntersaleItemTitleLabelStyle}" TextColor="White" HeightRequest="24" WidthRequest="40" HorizontalOptions="Center" MaxLines="1" />
                 </Grid>
-             </Border> 
+             </Border>  -->
         </Grid>
     </ContentView>
     <Grid.GestureRecognizers>

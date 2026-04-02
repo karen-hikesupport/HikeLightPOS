@@ -30,6 +30,8 @@ namespace HikePOS
             // _PrintReceiptSummaryView = PrintReceiptSummaryView;
             // InvoiceNote = invoiceNote;
             // Customernamelbl = customernamelbl;
+             _= ViewModel.Initialize();
+
         }
 
         private void OnBindingContextChanged(object sender, EventArgs e)

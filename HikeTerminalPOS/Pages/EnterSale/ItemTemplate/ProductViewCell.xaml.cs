@@ -17,7 +17,7 @@ namespace HikePOS
             }
             if(Settings.StoreGeneralRule != null && Settings.StoreGeneralRule.DisplayFullProductNameOnPOS)
             {
-                lblname.FontSize = 14;
+                //lblname.FontSize = 14;
             }
         }
 

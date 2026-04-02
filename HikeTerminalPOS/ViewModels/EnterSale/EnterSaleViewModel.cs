@@ -355,22 +355,22 @@ namespace HikePOS.ViewModels
         //#94565
 
         public ObservableCollection<FloorDto> FloorList { get; set; } //#94565
-        
+        CheckOutPage CheckOutPage;
         #endregion
 
         #region Constructor
         public EnterSaleViewModel()
         {
-            App.Instance.Hud.DisplayProgress(LanguageExtension.Localize("Progress0_Text"));
-            productService = new ProductServices(productApiService);
-            offerService = new OfferServices(offerApiService);
-            paymentService = new PaymentServices(paymentApiService);
-            outletService = new OutletServices(outletApiService);
-            customerService = new CustomerServices(customerApiService);
-            saleService = new SaleServices(saleApiService);
-            userService = new UserServices(userApiService);
-            taxServices = new TaxServices(taxApiService);
-            RestaurantService = new RestaurantService(RestaurantApiService); //#94565
+            // App.Instance.Hud.DisplayProgress(LanguageExtension.Localize("Progress0_Text"));
+            // productService = new ProductServices(productApiService);
+            // offerService = new OfferServices(offerApiService);
+            // paymentService = new PaymentServices(paymentApiService);
+            // outletService = new OutletServices(outletApiService);
+            // customerService = new CustomerServices(customerApiService);
+            // saleService = new SaleServices(saleApiService);
+            // userService = new UserServices(userApiService);
+            // taxServices = new TaxServices(taxApiService);
+            // RestaurantService = new RestaurantService(RestaurantApiService); //#94565
             Categories = new ObservableCollection<CategoryDto>();
 
 
@@ -379,122 +379,151 @@ namespace HikePOS.ViewModels
             PaymentCommand = new Command(Payment);
             SearchProductCommand = new Command(SearchProduct);
             ShowOpenRegisterCommand = new Command(ShowOpenRegister);
-            PaymentSummaryCommand = new Command(PaymentSummaryClick);
-            NotesCommand = new Command(NotesClick);
 
             //start #84287 IOS- Feature:-Allow an option to add 'Sold by' user name on line items in the cart By Pratik
             IsServedBy = Settings.StoreGeneralRule.ServedByLineItem;
             //end #84287 .by Pratik
-            invoicemodel = new InvoiceViewModel(productService, customerService, outletService, saleService);
-            Settings.IsEnterSaleFirstTimeLoad = true;
-            _ = invoicemodel.ReopenSaleFromHistory(null);
+            // invoicemodel = new InvoiceViewModel(productService, customerService, outletService, saleService);
+            // Settings.IsEnterSaleFirstTimeLoad = true;
+           // _ = invoicemodel.ReopenSaleFromHistory(null);
 
-            invoicemodel.CustomerModel.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == "IsOpenSearchCustomerPopUp")
-                {
-                    if (invoicemodel.CustomerModel.IsOpenSearchCustomerPopUp == 1)
-                    {
-                        IsActive = true;
-                        //#97186 By PR
-                        if (invoicemodel.CustomerModel?.SearchCustomerView != null)
-                            invoicemodel.CustomerModel.SearchCustomerView.FocusOnEntry();
-                        //#97186 By PR
-                    }
-                    else
-                    {
-                        IsActive = false;
-                        //#97186 By PR
-                        if (invoicemodel.CustomerModel?.SearchCustomerView != null)
-                            invoicemodel.CustomerModel.SearchCustomerView.UnFocusOnEntry();
-                        //#97186 By PR
-                    }
+            // invoicemodel.CustomerModel.PropertyChanged += (sender, e) =>
+            // {
+            //     if (e.PropertyName == "IsOpenSearchCustomerPopUp")
+            //     {
+            //         if (invoicemodel.CustomerModel.IsOpenSearchCustomerPopUp == 1)
+            //         {
+            //             IsActive = true;
+            //             //#97186 By PR
+            //             if (invoicemodel.CustomerModel?.SearchCustomerView != null)
+            //                 invoicemodel.CustomerModel.SearchCustomerView.FocusOnEntry();
+            //             //#97186 By PR
+            //         }
+            //         else
+            //         {
+            //             IsActive = false;
+            //             //#97186 By PR
+            //             if (invoicemodel.CustomerModel?.SearchCustomerView != null)
+            //                 invoicemodel.CustomerModel.SearchCustomerView.UnFocusOnEntry();
+            //             //#97186 By PR
+            //         }
 
-                }
-            };
+            //     }
+            // };
 
-            if (Settings.IsAblyAsRealTime)
-                SetupAbly();
-            else
-                SetupPubNub();
+            // if (Settings.IsAblyAsRealTime)
+            //     SetupAbly();
+            // else
+            //     SetupPubNub();
 
             //if (mPOPStarBarcode == null)
             //    mPOPStarBarcode = DependencyService.Get<IMPOPStarBarcode>();
             //mPOPStarBarcode.StartService();
 
 
-            if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.ResetDataMessenger>(this))
-            {
-                WeakReferenceMessenger.Default.Register<Messenger.ResetDataMessenger>(this, (sender, arg) =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        if (invoicemodel != null && invoicemodel.Invoice != null)
-                        {
-                            invoicemodel.Invoice = null;
-                            invoicemodel.InvoiceLineItems = new ObservableCollection<InvoiceLineItemDto>();
-                        }
-                    });
-                });
-            }
+            // if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.ResetDataMessenger>(this))
+            // {
+            //     WeakReferenceMessenger.Default.Register<Messenger.ResetDataMessenger>(this, (sender, arg) =>
+            //     {
+            //         MainThread.BeginInvokeOnMainThread(() =>
+            //         {
+            //             if (invoicemodel != null && invoicemodel.Invoice != null)
+            //             {
+            //                 invoicemodel.Invoice = null;
+            //                 invoicemodel.InvoiceLineItems = new ObservableCollection<InvoiceLineItemDto>();
+            //             }
+            //         });
+            //     });
+            // }
 
-            if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.ProductStockChangeMessenger>(this))
-            {
-                WeakReferenceMessenger.Default.Register<Messenger.ProductStockChangeMessenger>(this, (sender, arg) =>
-                {
-                    if (arg.Value != null)
-                        updateEntersaleProductStock(arg.Value);
-                });
-            }
+            // if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.ProductStockChangeMessenger>(this))
+            // {
+            //     WeakReferenceMessenger.Default.Register<Messenger.ProductStockChangeMessenger>(this, (sender, arg) =>
+            //     {
+            //         if (arg.Value != null)
+            //             updateEntersaleProductStock(arg.Value);
+            //     });
+            // }
 
-            if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.BackgroundInvoiceUpdatedMessenger>(this))
-            {
-                WeakReferenceMessenger.Default.Register<Messenger.BackgroundInvoiceUpdatedMessenger>(this, (sender, arg) =>
-                {
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        InvoiceDto Invoice = arg.Value;
-                        Debug.WriteLine("BackgroundInvoiceUpdated data : " + Newtonsoft.Json.JsonConvert.SerializeObject(Invoice));
+            // if (!WeakReferenceMessenger.Default.IsRegistered<Messenger.BackgroundInvoiceUpdatedMessenger>(this))
+            // {
+            //     WeakReferenceMessenger.Default.Register<Messenger.BackgroundInvoiceUpdatedMessenger>(this, (sender, arg) =>
+            //     {
+            //         MainThread.BeginInvokeOnMainThread(() =>
+            //         {
+            //             InvoiceDto Invoice = arg.Value;
+            //             Debug.WriteLine("BackgroundInvoiceUpdated data : " + Newtonsoft.Json.JsonConvert.SerializeObject(Invoice));
 
-                        //#31380 iPad - Previous sale customer should not be redirect in POS screen after successfully completed sale.
-                        //Ticket start:#44177 Shopify sale has been replaced with incorrect Hike invoice.by rupesh
-                        if (invoicemodel.Invoice != null && Invoice.InvoiceTempId != null && invoicemodel.Invoice.InvoiceTempId == Invoice.InvoiceTempId)
-                        {
-                            //Ticket start:#44177 .by rupesh
-                            invoicemodel.Invoice.Id = Invoice.Id;
-
-
-
-                            //Ticket start:#27033 Hike store : iPAD : Can’t press email receipt button while processing a sale as it is greyed out.by rupesh
-
-                            invoicemodel.Invoice.CustomerId = Invoice.CustomerId;
-                            invoicemodel.Invoice.CustomerDetail = Invoice.CustomerDetail;
-                            invoicemodel.Invoice.CustomerName = Invoice.CustomerName;
-                            //Ticket start:#29657 Seach customer using phone number.by rupesh
-                            invoicemodel.Invoice.CustomerPhone = Invoice.CustomerPhone;
-                            //Ticket end:#29657 .by rupesh
-
-                            //Ticket start:#42068 iPad: multiple entry updated on sales history.by rupesh
-                            invoicemodel.Invoice.InvoiceHistories = Invoice.InvoiceHistories;
-                            //Ticket end:#42068 .by rupesh
+            //             //#31380 iPad - Previous sale customer should not be redirect in POS screen after successfully completed sale.
+            //             //Ticket start:#44177 Shopify sale has been replaced with incorrect Hike invoice.by rupesh
+            //             if (invoicemodel.Invoice != null && Invoice.InvoiceTempId != null && invoicemodel.Invoice.InvoiceTempId == Invoice.InvoiceTempId)
+            //             {
+            //                 //Ticket start:#44177 .by rupesh
+            //                 invoicemodel.Invoice.Id = Invoice.Id;
 
 
-                            //Ticket end:#27033 .by rupesh
-                        }
 
-                        //#31380 iPad - Previous sale customer should not be redirect in POS screen after successfully completed sale.
-                    });
-                });
-            }
+            //                 //Ticket start:#27033 Hike store : iPAD : Can’t press email receipt button while processing a sale as it is greyed out.by rupesh
+
+            //                 invoicemodel.Invoice.CustomerId = Invoice.CustomerId;
+            //                 invoicemodel.Invoice.CustomerDetail = Invoice.CustomerDetail;
+            //                 invoicemodel.Invoice.CustomerName = Invoice.CustomerName;
+            //                 //Ticket start:#29657 Seach customer using phone number.by rupesh
+            //                 invoicemodel.Invoice.CustomerPhone = Invoice.CustomerPhone;
+            //                 //Ticket end:#29657 .by rupesh
+
+            //                 //Ticket start:#42068 iPad: multiple entry updated on sales history.by rupesh
+            //                 invoicemodel.Invoice.InvoiceHistories = Invoice.InvoiceHistories;
+            //                 //Ticket end:#42068 .by rupesh
+
+
+            //                 //Ticket end:#27033 .by rupesh
+            //             }
+
+            //             //#31380 iPad - Previous sale customer should not be redirect in POS screen after successfully completed sale.
+            //         });
+            //     });
+            // }
 
             //Ticket #7760 Start:Rounding issue in Arabic language.By Nikhil.
-            CountrySpecificCode();
+            //CountrySpecificCode();
             //Ticket #7760 End:By Nikhil. 
 
             //Tmp code to view print preview if there is no printer.,
             //TempPrinterCode(); 
         }
+        public async Task Initialize()
+        {
+            if (invoicemodel == null)
+            {
+                
+                App.Instance.Hud.DisplayProgress(LanguageExtension.Localize("Progress0_Text"));
 
+                await Task.Run(() =>
+                {
+                    productService = new ProductServices(productApiService);
+                    offerService = new OfferServices(offerApiService);
+                    paymentService = new PaymentServices(paymentApiService);
+                    outletService = new OutletServices(outletApiService);
+                    customerService = new CustomerServices(customerApiService);
+                    saleService = new SaleServices(saleApiService);
+                    userService = new UserServices(userApiService);
+                    taxServices = new TaxServices(taxApiService);
+                    RestaurantService = new RestaurantService(RestaurantApiService);
+                });
+
+                invoicemodel = new InvoiceViewModel(
+                    productService,
+                    customerService,
+                    outletService,
+                    saleService
+                );
+
+                Settings.IsEnterSaleFirstTimeLoad = true;
+                CountrySpecificCode();
+            }
+
+        }
         //#94565
         private FloorDto getFlooreId(int tblid)
         {
@@ -775,39 +804,7 @@ namespace HikePOS.ViewModels
 
         //#94565
 
-        private void PaymentSummaryClick(object obj)
-        {
-            IsPaymentSummary = !IsPaymentSummary;
-            SetExpandHeight();
-        }
 
-        private void NotesClick(object obj)
-        {
-            IsNotes = !IsNotes;
-            SetExpandHeight();
-        }
-
-        public void SetExpandHeight()
-        {
-            if (IsNotes & IsPaymentSummary)
-                ExpandHeight = 294 + AddExpandHeight();
-            else if (!IsNotes & IsPaymentSummary)
-                ExpandHeight = 255 + AddExpandHeight();
-            else if (!IsNotes & !IsPaymentSummary)
-                ExpandHeight = 100;
-            else if (IsNotes & !IsPaymentSummary)
-                ExpandHeight = 140;
-        }
-
-        double AddExpandHeight()
-        {
-            double height = 0;
-            if (TipVisible)
-                height += 40;
-            if (ShippingVisible)
-                height += 40;
-            return height;
-        }
 
         private void sliderMenuHandle_Clicked()
         {
@@ -1203,13 +1200,6 @@ namespace HikePOS.ViewModels
                         }
                         //#94565
 
-                        SetExpandHeight();
-                        //Start ticket #76209 iOS:FR: User Permission : Add a permission for allowing 'Issue a Quote' By Pratik
-                        IsQuoteDisplay = Settings.StoreGeneralRule.EnableQuoteSale && Settings.GrantedPermissionNames.Any(s => s == "Pages.Tenant.POS.EnterSale.Quote");
-                        //End ticket #76209 By Pratik
-                        //Ticket start:#92764 iOS:FR Need to manage display product stock.by rupesh
-                        IsBackorderDisplay = Settings.StoreGeneralRule.EnableBackOrder && Settings.GrantedPermissionNames.Any(s => s == "Pages.Tenant.POS.EnterSale.BackOrder");
-                        //Ticket end:#92764.by rupesh
                         //#38783 iPad: Feature request - Register's Name in Process Sale
                         OutletName = Settings.CurrentRegister.OutletName;
                         RegisterName = Settings.CurrentRegister.Name;
@@ -1261,47 +1251,8 @@ namespace HikePOS.ViewModels
                             }
                         }
 
-                        //Ticket start:#92764 iOS:FR Need to manage display product stock.by rupesh
-                        //Ticket start:#22406 Quote sale.by rupesh
-                        if (IsQuoteOrBackorderDisplay)
-                        {
-                            //Start ticket #76209 iOS:FR: User Permission : Add a permission for allowing 'Issue a Quote' By Pratik
-                            if (Settings.IsQuoteSale && IsQuoteDisplay && (invoicemodel.Invoice == null || (invoicemodel.Invoice.Status == InvoiceStatus.initial
-                            || invoicemodel.Invoice.Status == InvoiceStatus.Pending || invoicemodel.Invoice.Status == InvoiceStatus.Quote)))
-                            {
-                                //End ticket #76209 By Pratik
-                                QuoteSelectedTapped(null);
-                            }
-                            else if (Settings.IsBackorderSaleSelected && IsBackorderDisplay && (invoicemodel.Invoice == null || (invoicemodel.Invoice.Status == InvoiceStatus.initial
-                            || invoicemodel.Invoice.Status == InvoiceStatus.Pending || invoicemodel.Invoice.Status == InvoiceStatus.BackOrder)))
-                            {
-                                BackorderSelected(null);
-                            }
-                            else
-                            {
-                                ProcessSaleSelectedTapped(null);
-                            }
-                        }
-                        else
-                        {
-                            Settings.IsQuoteSale = false;
-                        }
-                        //Ticket end:#22406 Quote sale.by rupesh
-                        //Ticket end:#92764.by rupesh
 
                         invoicemodel.NavigationService = NavigationService;
-
-                        //#32357 iPad :: Feature request :: Show Item Count on POS Screen
-                        IsItemCountVisible = Settings.StoreGeneralRule.ShowTotalQuantityOfItemsInBasket;
-                        //#32357 iPad :: Feature request :: Show Item Count on POS Screen
-
-                        //Debug.WriteLine("GetLocalInvoices 1: " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
-                        //var invoices = await BlobCache.LocalMachine.GetAllObjects<InvoiceDto>();
-                        //Debug.WriteLine("GetLocalInvoices 2: " + DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss"));
-
-                        //if (scanApiService == null)
-                        //    scanApiService = DependencyService.Get<IScanApiService>();
-                        //scanApiService.StartService();
 
                     });
 
@@ -4958,56 +4909,108 @@ namespace HikePOS.ViewModels
         public async void GoToCart_Click()
         {
             //IsPhoneGridVisible = false;
-            // if (CheckOutPage == null)
-            // {
-            //     CheckOutPage = new CheckOutPage();
-
-            //     CheckOutPage.ViewModel.invoicemodel = invoicemodel;
-            //     CheckOutPage.ViewModel.productService = productService;
-            //     CheckOutPage.ViewModel.offerService = offerService;
-            //     CheckOutPage.ViewModel.paymentService = paymentService;
-            //     CheckOutPage.ViewModel.outletService = outletService;
-            //     CheckOutPage.ViewModel.customerService = customerService;
-            //     CheckOutPage.ViewModel.saleService = saleService;
-            //     CheckOutPage.ViewModel.userService = userService;
-            //     CheckOutPage.ViewModel.taxServices = taxServices;
-            //     CheckOutPage.ViewModel.RestaurantService = RestaurantService;
-            //     CheckOutPage.ViewModel.EnterSaleItems = EnterSaleItems;
-            //     CheckOutPage.ViewModel.Categories = Categories;
-            //     CheckOutPage.ViewModel.SelectedCategory = SelectedCategory;
-            //     CheckOutPage.ViewModel.AllProducts = AllProducts;
-            //     CheckOutPage.ViewModel.AllUnitOfMeasures = AllUnitOfMeasures;
-            //     CheckOutPage.ViewModel.Offers = Offers;
-            //     CheckOutPage.ViewModel.AllPaymentOptionList = AllPaymentOptionList;
-            //     CheckOutPage.ViewModel.UpdateCheckOutPage();
-            // }
-            //await NavigationService.PushAsync(CheckOutPage);
-            var parameters = new Dictionary<string, object>
+            if (CheckOutPage == null)
             {
-                { "InvoiceModel", invoicemodel },
-                { "ProductService", productService },
-                { "OfferService", offerService },
-                { "PaymentService", paymentService },
-                { "OutletService", outletService },
-                { "CustomerService", customerService },
-                { "SaleService", saleService },
-                { "UserService", userService },
-                { "TaxServices", taxServices },
-                { "RestaurantService", RestaurantService },
-                { "EnterSaleItems", EnterSaleItems },
-                { "Categories", Categories },
-                { "SelectedCategory", SelectedCategory },
-                { "AllProducts", AllProducts },
-                { "AllUnitOfMeasures", AllUnitOfMeasures },
-                { "Offers", Offers },
-                { "AllPaymentOptionList", AllPaymentOptionList }
-            };
+                CheckOutPage = new CheckOutPage();
 
-            await Shell.Current.GoToAsync("CheckOutPage", parameters);
+                // CheckOutPage.ViewModel.invoicemodel = invoicemodel;
+                // CheckOutPage.ViewModel.productService = productService;
+                // CheckOutPage.ViewModel.offerService = offerService;
+                // CheckOutPage.ViewModel.paymentService = paymentService;
+                // CheckOutPage.ViewModel.outletService = outletService;
+                // CheckOutPage.ViewModel.customerService = customerService;
+                // CheckOutPage.ViewModel.saleService = saleService;
+                // CheckOutPage.ViewModel.userService = userService;
+                // CheckOutPage.ViewModel.taxServices = taxServices;
+                // CheckOutPage.ViewModel.RestaurantService = RestaurantService;
+                // CheckOutPage.ViewModel.EnterSaleItems = EnterSaleItems;
+                // CheckOutPage.ViewModel.Categories = Categories;
+                // CheckOutPage.ViewModel.SelectedCategory = SelectedCategory;
+                // CheckOutPage.ViewModel.AllProducts = AllProducts;
+                // CheckOutPage.ViewModel.AllUnitOfMeasures = AllUnitOfMeasures;
+                // CheckOutPage.ViewModel.Offers = Offers;
+                // CheckOutPage.ViewModel.AllPaymentOptionList = AllPaymentOptionList;
+                // CheckOutPage.ViewModel.UpdateCheckOutPage();
+            }
+            CheckOutPage.ViewModel.invoicemodel = new InvoiceViewModel(null, null, null, null);
+            await NavigationService.PushAsync(CheckOutPage);
+            _ = LoadDataAsync();
 
-        }
+            //var parameters = new Dictionary<string, object>
+            //{
+            //{ "InvoiceModel", invoicemodel },
+            // { "ProductService", productService },
+            // { "OfferService", offerService },
+            // { "PaymentService", paymentService },
+            // { "OutletService", outletService },
+            // { "CustomerService", customerService },
+            // { "SaleService", saleService },
+            // { "UserService", userService },
+            // { "TaxServices", taxServices },
+            // { "RestaurantService", RestaurantService },
+            // { "EnterSaleItems", EnterSaleItems },
+            // { "Categories", Categories },
+            // { "SelectedCategory", SelectedCategory },
+            // { "AllProducts", AllProducts },
+            // { "AllUnitOfMeasures", AllUnitOfMeasures },
+            // { "Offers", Offers },
+            // { "AllPaymentOptionList", AllPaymentOptionList }
+            //};
+
+            //  await Shell.Current.GoToAsync("CheckOutPage", parameters);
+
+            }
 
         //#94565
+        private async Task LoadDataAsync()
+        {
+            var vm = CheckOutPage.ViewModel;
+            await Task.Delay(100);
+
+
+            // Show loader
+            MainThread.BeginInvokeOnMainThread(() => App.Instance.Hud.DisplayProgress(LanguageExtension.Localize("Progress0_Text")));
+
+            try
+            {
+                // Do heavy work in background
+                await Task.Run(() =>
+                {
+                    if (vm.productService == null)
+                    {
+                        vm.productService = productService;
+                        vm.offerService = offerService;
+                        vm.paymentService = paymentService;
+                        vm.outletService = outletService;
+                        vm.customerService = customerService;
+                        vm.saleService = saleService;
+                        vm.userService = userService;
+                        vm.taxServices = taxServices;
+                        vm.RestaurantService = RestaurantService;
+                    }
+                });
+
+                // IMPORTANT: Update UI ONLY on main thread
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    vm.EnterSaleItems = EnterSaleItems;
+                    vm.Categories = Categories;
+                    vm.SelectedCategory = SelectedCategory;
+                    vm.AllProducts = AllProducts;
+                    vm.AllUnitOfMeasures = AllUnitOfMeasures;
+                    vm.Offers = Offers;
+                    vm.AllPaymentOptionList = AllPaymentOptionList;
+                    vm.invoicemodel = invoicemodel;
+
+                    vm.UpdateCheckOutPage();
+                });
+            }
+            finally
+            {
+                // Hide loader
+                MainThread.BeginInvokeOnMainThread(() => App.Instance.Hud.Dismiss());
+            }
+        }
         private async void Ordered_Click()
         {
             if (IsPaymentClicked)

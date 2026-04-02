@@ -27,7 +27,7 @@ namespace HikePOS
         {
             InitializeComponent();
             ViewModel.EnterSalePagePhone = this;
-            InvoiceNote = invoiceNote;
+            //InvoiceNote = invoiceNote;
             Customernamelbl = customernamelbl;
         }
 
