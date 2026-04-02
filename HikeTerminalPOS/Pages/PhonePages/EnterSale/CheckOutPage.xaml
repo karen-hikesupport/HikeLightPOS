@@ -303,9 +303,9 @@
                                                                  VerticalOptions="FillAndExpand"> -->
                                                         <Grid RowSpacing="0"
                                                               ColumnSpacing="0"
-                                                              Margin="0,12,0,12">
+                                                              Margin="12">
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="Auto"/>
+                                                                <RowDefinition Height="auto"/>
                                                             </Grid.RowDefinitions>
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition Width="40"/>
@@ -313,12 +313,18 @@
                                                                 <ColumnDefinition Width="90"/>
                                                                 <ColumnDefinition Width="27"/>
                                                             </Grid.ColumnDefinitions>
+                                                            
                                                             <!-- <ContentView Grid.Row="0"
                                                                          Grid.Column="0"
                                                                          HeightRequest="40"
                                                                          WidthRequest="40"
-                                                                         IsVisible="false">
-                                                                <Grid VerticalOptions="Start">
+                                                                         IsVisible="false"> -->
+                                                                <Grid Grid.Row="0"
+                                                          Grid.Column="0"
+                                                          HeightRequest="40"
+                                                          WidthRequest="40"
+                                                             VerticalOptions="Start"
+                                                        IsVisible="{Binding SeperatorVisible}">
                                                                     <Border StrokeShape="RoundRectangle 20"
                                                                             HorizontalOptions="Center"
                                                                             HeightRequest="40"
@@ -326,10 +332,10 @@
                                                                             Padding="0"
                                                                             Stroke="{x:Static resources:AppColors.LightBordersColor}">
                                                                         <Grid BackgroundColor="{x:Static resources:AppColors.ItemBackgroundColor}">
-                                                                            <Label Text="{Binding Title, Converter={Helpers:StringToAvtarNameConverter}}"
+                                                                            <!-- <Label Text="{Binding Title, Converter={Helpers:StringToAvtarNameConverter}}"
                                                                                    Style="{x:Static resources:Styles.InvoiceItemBackgroundLabelStyle}"
                                                                                    VerticalOptions="FillAndExpand"
-                                                                                   HorizontalOptions="FillAndExpand"/>
+                                                                                   HorizontalOptions="FillAndExpand"/> -->
 
                                                                             <Image
                                                                                 Aspect="Fill"
@@ -355,9 +361,8 @@
                                                                     <Border StrokeShape="RoundRectangle 10"
                                                                             HorizontalOptions="End"
                                                                             HeightRequest="20"
-                                                                            TranslationX="5"
-                                                                            TranslationY="-5"
                                                                             Padding="0"
+                                                                            Margin="0"
                                                                             Stroke="{x:Static resources:AppColors.LightBordersColor}"
                                                                             VerticalOptions="Start"
                                                                             BackgroundColor="{x:Static resources:AppColors.NavigationBarBackgroundColor}">
@@ -366,16 +371,17 @@
                                                                                Text="{Binding RoundedQuantity}"
                                                                                Style="{x:Static resources:Styles.InvoiceItemQuantityLabelStyle}"/>
                                                                     </Border>
+                                                                    
                                                                 </Grid>
-                                                                <ContentView.Triggers>
+                                                                <!-- <ContentView.Triggers>
                                                                     <DataTrigger TargetType="ContentView"
                                                                                  Binding="{Binding SeperatorVisible}"
                                                                                  Value="True">
                                                                         <Setter Property="IsVisible"
                                                                                 Value="true"/>
                                                                     </DataTrigger>
-                                                                </ContentView.Triggers>
-                                                            </ContentView> -->
+                                                                </ContentView.Triggers> -->
+                                                            <!-- </ContentView> -->
                                                             <StackLayout Grid.Row="0"
                                                                          Grid.Column="1"
                                                                          VerticalOptions="Start"

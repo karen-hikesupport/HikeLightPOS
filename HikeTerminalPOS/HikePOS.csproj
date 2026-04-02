@@ -31,7 +31,7 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-android|AnyCPU'">
 		<AndroidPackageFormat>apk</AndroidPackageFormat>
 		<JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
-		<RuntimeIdentifiers>android-arm</RuntimeIdentifiers> 
+		<!-- <RuntimeIdentifiers>android-arm</RuntimeIdentifiers>  -->
 	</PropertyGroup>
 	<ItemGroup>
 		<!-- App Icon -->

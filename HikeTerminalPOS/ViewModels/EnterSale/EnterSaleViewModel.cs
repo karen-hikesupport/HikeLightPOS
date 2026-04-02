@@ -4965,7 +4965,7 @@ namespace HikePOS.ViewModels
         private async Task LoadDataAsync()
         {
             var vm = CheckOutPage.ViewModel;
-            await Task.Delay(100);
+           // await Task.Delay(100);
 
 
             // Show loader
